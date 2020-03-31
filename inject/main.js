@@ -2,7 +2,7 @@ var a = {
 	preSelected: 3,
 	selected: 0,
 	extraSelector: 'div > div > div > div > div > div > div > div > div > div[role=main] > div > div > div > div > div > div',
-	selector: '.uiList li',
+	selector: 'div[role=tabpanel] ul.uiList',
 	ul: '',
 	init: function(e){
 		if(!$(a.selector).length){
@@ -21,11 +21,13 @@ var a = {
 			}
 		}else{
 			a.ul = $(a.selector).parent().eq(0);
+			console.log(a.ul)
 		}
 		a.ready()
 	},
 	ready: ()=>{
 		setInterval(()=>{
+			if(!a.extraEnabled) a.ul = $(a.selector);
 			a.ul.children(':not(.extensionExpertFriendBoxBinded)').each(function(){
 				$(this).addClass('extensionExpertFriendBoxBinded').find('div > a > img').parent().append('<div class="extensionExpertFriendBox" selected="false">✔</div>')
 				$(this).append('<div class="extensionExpertFriendBoxBindedScreen"></div>')
@@ -54,6 +56,7 @@ var a = {
 		}, 300)
 		// console.log($(document).width(), a.ul.children(':nth-child(2)').width(), a.ul.children(':nth-child(2)').offset().left)
 		var right = a.ul.children(':nth-child(2)').width() + a.ul.children(':nth-child(2)').offset().left
+		// if(!a.extraEnabled) right = a.ul.children(':nth-child(2)').width() + a.ul.children(':nth-child(2)').offset().left
 		$(`<div id="extensionExpertControls" style="left: ${right + 50}px;">
 			<button>Select All</button>
 			<button>Unfriend <span id="extensionExpertfFriendsCound">0</span> friends</button>
