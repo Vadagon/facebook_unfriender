@@ -1,16 +1,16 @@
-// if you checked "fancy-settings" in extensionizr.com, uncomment this lines
+// // if you checked "fancy-settings" in extensionizr.com, uncomment this lines
 
-// var settings = new Store("settings", {
-//     "sample_setting": "This is how you use Store.js to remember values"
-// });
+// // var settings = new Store("settings", {
+// //     "sample_setting": "This is how you use Store.js to remember values"
+// // });
 
 
-//example of using a message handler from the inject scripts
-chrome.extension.onMessage.addListener(
-  function(request, sender, sendResponse) {
-  	chrome.pageAction.show(sender.tab.id);
-    sendResponse();
-  });
+// //example of using a message handler from the inject scripts
+// chrome.extension.onMessage.addListener(
+//   function(request, sender, sendResponse) {
+//   	chrome.pageAction.show(sender.tab.id);
+//     sendResponse();
+//   });
 
 
 var user = {}
@@ -20,9 +20,6 @@ function getAccessTocken(data) {
     catcher(()=>{user.uid = data.split('\\"uid\\":')[1].split(',')[0]})
     catcher(()=>{
         user.path = data.split('path\\":\\"\\\\\\/')[1].split('\\"')[0];
-        // console.log(user.path, user.uid)
-        // generateLink()
-        // $('body').append("<iframe src='https://www.facebook.com/"+user.path+"/friends' width='454' height='668'></iframe>");
     })
     try{
         const config = {};
@@ -47,13 +44,22 @@ function getCreds(cb){
         let text = await response.text();
 
         user.creds = getAccessTocken(text);
-
+        gather()
         cb&&cb()
         resolve()
     });
 }
 getCreds()
 
+function gather(){
+	// $.get(`https://graph.facebook.com/v5.0/me/friends?limit=5000&access_token=${user.creds.access_token}`).done((data)=>{
+	//     catcher(()=>{
+ //            user.maximumFriends = data.summary.total_count;
+	//     })
+	// }).fail((err)=>{
+	//     // _gaq.push(['_trackEvent', 'httpErr', err]);
+	// });
+}
 
 
 function generateLink(){
@@ -65,8 +71,9 @@ function generateLink(){
 
     console.log(link)
     chrome.tabs.create({url: link}, function(tab){
-        chrome.tabs.executeScript(tab.id, {file:"/inject/main.js"});
+        chrome.tabs.executeScript(tab.id, {file:"/js/jquery.min.js"});
         chrome.tabs.insertCSS(tab.id, {file:"/inject/main.css"})
+        chrome.tabs.executeScript(tab.id, {file:"/inject/main.js"});
     })
 }
 
