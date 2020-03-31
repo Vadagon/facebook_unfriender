@@ -1,10 +1,32 @@
 var a = {
 	preSelected: 3,
 	selected: 0,
+	extraSelector: 'div > div > div > div > div > div > div > div > div > div[role=main] > div > div > div > div > div > div',
 	selector: '.uiList li',
-	init: ()=>{
+	ul: '',
+	init: function(e){
+		if(!$(a.selector).length){
+			a.ul = $(a.extraSelector + '   > div    > div > a > img').parent().parent().parent().parent().eq(0)
+			a.extraEnabled = true;
+			if(!a.ul.children().length){
+				if(e){
+					alert('Error! Please try again later.')
+				}else{
+					setTimeout(function() {
+						console.log('secondTimeInit')
+						a.init(true)
+					}, 2000);
+				}
+				return;
+			}
+		}else{
+			a.ul = $(a.selector).parent().eq(0);
+		}
+		a.ready()
+	},
+	ready: ()=>{
 		setInterval(()=>{
-			$(a.selector+':not(.extensionExpertFriendBoxBinded)').each(function(){
+			a.ul.children(':not(.extensionExpertFriendBoxBinded)').each(function(){
 				$(this).addClass('extensionExpertFriendBoxBinded').find('div > a > img').parent().append('<div class="extensionExpertFriendBox" selected="false">✔</div>')
 				$(this).append('<div class="extensionExpertFriendBoxBindedScreen"></div>')
 				var that = this;
@@ -30,8 +52,8 @@ var a = {
 				}
 			})
 		}, 300)
-		console.log($(document).width(), $(a.selector+':nth-child(2)').width(), $(a.selector+':nth-child(2)').offset().left)
-		var right = $('.uiList li:nth-child(2)').width() + $('.uiList li:nth-child(2)').offset().left
+		// console.log($(document).width(), a.ul.children(':nth-child(2)').width(), a.ul.children(':nth-child(2)').offset().left)
+		var right = a.ul.children(':nth-child(2)').width() + a.ul.children(':nth-child(2)').offset().left
 		$(`<div id="extensionExpertControls" style="left: ${right + 50}px;">
 			<button>Select All</button>
 			<button>Unfriend <span id="extensionExpertfFriendsCound">0</span> friends</button>
@@ -61,7 +83,7 @@ var a = {
 			<h1>Smart Friends Remover</h1>
 			<a href="https://bit.ly/39yAUjs" target="_blank">
 				<h3>Take a Break Timer</h3>
-				<p>Extremely simple and smart Chrome Extension that tell you when you need to take a break</p>
+				<p>Extremely simple and smart Chrome Extension which tells you when you need to take a break</p>
 			</a>
 			<h2>just doing the job<span>.<span></h2>
 		</div>`).appendTo('body')
@@ -82,21 +104,27 @@ var a = {
 		// $('.extensionExpertFriendBoxBindedScreen').each(function(){
 		// 	if(deselect == !!$(this).data('selected')) $(this).click();
 		// })
-
-
-
-
-		$('.uiList li .extensionExpertFriendBoxBindedScreen').each(function(){
+		a.ul.find('.extensionExpertFriendBoxBindedScreen').each(function(){
 			if($(this).data('selected')){
 				console.log($(this).offset().top)
 				$('body, html').scrollTop($(this).offset().top-300)
 
 				$(this).data('selected', false)
 
-				eventFire($(this).parent().find('a.friendButton')[0], 'click');
+				if(a.extraEnabled) $(this).parent().find('div[role=button]').click()
+				else eventFire($(this).parent().find('a.friendButton')[0], 'click');
 				
 				setTimeout(function() {
-					eventFire($('.uiContextualLayer .FriendListActionMenu .FriendListUnfriend > a')[0], 'click');
+					
+					if(a.extraEnabled){
+						$("div[role=menuitem] span:contains('Unfriend')").parent().parent().parent().parent().click();
+						setTimeout(function() {
+							$("body > div > div > div > div > div > div > div > div > div > div > div > div[role=button]")[0].click();
+						}, time/4);
+					}else {
+						eventFire($('.uiContextualLayer .FriendListActionMenu .FriendListUnfriend > a')[0], 'click');
+					}
+
 					a.selected--;
 					a.updateButtons();
 					if(a.selected <= 0) a.finished()
@@ -117,7 +145,10 @@ var a = {
 	}
 }
 
-a.init()
+
+$(document).ready(function() {
+	a.init()
+});
 
 
 function eventFire(el, etype){
