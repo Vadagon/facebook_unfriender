@@ -1,13 +1,11 @@
 {
-  "name": "CHANGE THIS : Extension boilerplate",
-  "version": "0.0.1",
+  "name": "Mass Unfriender for Facebook™",
+  "version": "1",
   "manifest_version": 2,
-  "description": "This extension was created with the awesome extensionizr.com",
-  "homepage_url": "http://extensionizr.com",
+  "description": "Remove all Facebook™ friends in few clicks.",
   "icons": {
-    "16": "icons/icon16.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
+    "19": "icons/icon12888.png",
+    "128": "icons/icon12888.png"
   },
   "default_locale": "en",
   "background": {
@@ -18,7 +16,7 @@
     "persistent": false
   },
   "browser_action": {
-    "default_icon": "icons/icon19.png",
+    "default_icon": "icons/icon12888.png",
     "default_title": "browser action demo"
   },
   "permissions": [
