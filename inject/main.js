@@ -1,13 +1,14 @@
 var a = {
+	purchased: false,
 	preSelected: 3,
 	selected: 0,
 	extraSelector: 'div > div > div > div > div > div > div > div > div > div[role=main] > div > div > div > div > div > div',
-	selector: 'div[role=tabpanel] ul.uiList',
+	selector: '#friends_center_main > div',
 	ul: '',
 	init: function(e){
 		if(!$(a.selector).length){
-			a.ul = $(a.extraSelector + '   > div    > div > a > img').parent().parent().parent().parent().eq(0)
-			a.extraEnabled = true;
+			a.ul = $(a.extraSelector + '   > div    > div > a > i').parent().parent().parent().parent().eq(0)
+			a.extraEnabled = false;
 			if(!a.ul.children().length){
 				if(e){
 					alert('Error! Please try again later.')
@@ -20,7 +21,7 @@ var a = {
 				return;
 			}
 		}else{
-			a.ul = $(a.selector).parent().eq(0);
+			a.ul = $(a.selector);
 			console.log(a.ul)
 		}
 		a.ready()
@@ -28,12 +29,12 @@ var a = {
 	ready: ()=>{
 		setInterval(()=>{
 			if(!a.extraEnabled) a.ul = $(a.selector);
-			a.ul.children(':not(.extensionExpertFriendBoxBinded)').each(function(){
-				$(this).addClass('extensionExpertFriendBoxBinded').find('div > a > img').parent().append('<div class="extensionExpertFriendBox" selected="false">✔</div>')
+			a.ul.children('div > div:not(.extensionExpertFriendBoxBinded)').each(function(){
+				$(this).addClass('extensionExpertFriendBoxBinded').find('div > a > i').append('<div class="extensionExpertFriendBox" selected="false">✔</div>')
 				$(this).append('<div class="extensionExpertFriendBoxBindedScreen"></div>')
 				var that = this;
 				$(this).find('.extensionExpertFriendBoxBindedScreen').click(function(event){
-					// console.log($(this).data('selected'))
+					console.log($(this).data('selected'))
 					if(!$(this).data('selected')){
 						$(this).data('selected', true)
 						a.selected++;
@@ -57,7 +58,7 @@ var a = {
 		// console.log($(document).width(), a.ul.children(':nth-child(2)').width(), a.ul.children(':nth-child(2)').offset().left)
 		var right = a.ul.children(':nth-child(2)').width() + a.ul.children(':nth-child(2)').offset().left
 		// if(!a.extraEnabled) right = a.ul.children(':nth-child(2)').width() + a.ul.children(':nth-child(2)').offset().left
-		$(`<div id="extensionExpertControls" style="left: ${right + 50}px;">
+		$(`<div id="extensionExpertControls" style="right: 100px;">
 			<button>Select All</button>
 			<button>Unfriend <span id="extensionExpertfFriendsCound">0</span> friends</button>
 		</div>`).appendTo('body')
@@ -68,6 +69,7 @@ var a = {
 			$('.extensionExpertFriendBoxBindedScreen').each(function(){
 				if(deselect == !!$(this).data('selected')) $(this).click();
 			})
+			if(deselect) a.selected = 0;
 		})
 		// delete all click
 		$('#extensionExpertControls button:nth-child(2)').click(function(event){
@@ -75,6 +77,7 @@ var a = {
 			a.deleteFriend();
 			a.proccess();
 		})
+		// a.proccess();
 	},
 	updateButtons: ()=>{
 		$('#extensionExpertfFriendsCound').text(a.selected)
@@ -83,7 +86,7 @@ var a = {
 	},
 	proccess: ()=>{
 		$(`<div id="extensionExpertScreen">
-			<h1>Smart Friends Remover</h1>
+			<h1>Mass Unfriender</h1>
 			<a href="https://bit.ly/39yAUjs" target="_blank">
 				<h3>Take a Break Timer</h3>
 				<p>Extremely simple and smart Chrome Extension which tells you when you need to take a break</p>
@@ -115,7 +118,7 @@ var a = {
 				$(this).data('selected', false)
 
 				if(a.extraEnabled) $(this).parent().find('div[role=button]').click()
-				else eventFire($(this).parent().find('a.friendButton')[0], 'click');
+				else eventFire($(this).parent().find('div > div > div > div > i[role=button]')[0], 'click');
 				
 				setTimeout(function() {
 					
@@ -125,7 +128,7 @@ var a = {
 							$("body > div > div > div > div > div > div > div > div > div > div > div > div[role=button]")[0].click();
 						}, time/4);
 					}else {
-						eventFire($('.uiContextualLayer .FriendListActionMenu .FriendListUnfriend > a')[0], 'click');
+						eventFire($('a[role=button][data-sigil="touchable touchable mflyout-remove-on-click m-unfriend-request"]')[0], 'click');
 					}
 
 					a.selected--;
@@ -150,7 +153,37 @@ var a = {
 
 
 $(document).ready(function() {
-	a.init()
+	chrome.extension.sendMessage({type: 'data'}, (e)=>{
+		a.purchased = e.purchased;
+		if(a.purchased){
+			a.init()
+		}else{
+			$(`<div id="payRequestUnfriender">
+				<div>
+					<div>
+						<div class="leftColumn">
+							<h2>Please use the email you have provided for purchasing MassUnfriender™</h2>
+							<p>
+								<form>
+									<input type="text" name="email"> <button>OK</button>
+								</form>
+							</p>
+						</div>
+						<div>
+							<h2>Access to MassUnfriender™ is paid</h2>
+							<p>
+								<a href="https://node.verblike.com/massunfriender/oneTime">Pay $5 with Stripe Checkout</a>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>`).appendTo('body').on('click', 'button', function(){
+				chrome.extension.sendMessage({email: $(this).parent().find('input').val()}, (e)=>{
+					console.log(e)
+				})
+			})
+		}
+	})
 });
 
 
