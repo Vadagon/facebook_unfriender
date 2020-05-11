@@ -160,7 +160,8 @@
     display: inline-block;
 }
 #payRequestUnfriender > div{
-    margin-top: calc(50vh - 95px);
+        margin-top: calc(50vh - 95px);
+    margin-top: calc(50vh - 12vw);
 }
 #payRequestUnfriender .leftColumn, #payRequestUnfriender .leftColumn + div{
     padding: 20px;

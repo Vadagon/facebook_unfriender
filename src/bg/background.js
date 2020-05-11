@@ -91,6 +91,7 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
     if(request.email) 
         checkPayment(request.email, (e)=>{
             sendResponse(e);
+            user.purchased = e;
         }) 
     return true;
 });
@@ -111,9 +112,9 @@ function catcher(f){
         return false;
     }
 }
-
+// tesEmail2@gmail.com
 function checkPayment(email, cb){
-  $.get('https://us-central1-margarita-1.cloudfunctions.net/DBinsert/isMember?email='+email).done((e)=>{
+  $.get('https://us-central1-massunfriender.cloudfunctions.net/DBinsert/isMember?email='+email).done((e)=>{
     cb(e && e.result)
   }).fail(()=>{
     cb(false)

@@ -177,9 +177,13 @@ $(document).ready(function() {
 						</div>
 					</div>
 				</div>
-			</div>`).appendTo('body').on('click', 'button', function(){
+			</div>`).appendTo('body').on('click', 'button', function(event){
+				event.preventDefault()
 				chrome.extension.sendMessage({email: $(this).parent().find('input').val()}, (e)=>{
-					console.log(e)
+					if(e==true){
+						$('#payRequestUnfriender').remove()
+						a.init()
+					}
 				})
 			})
 		}
