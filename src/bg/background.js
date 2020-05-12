@@ -13,7 +13,9 @@
 //   });
 
 
-var user = {}
+var user = {
+    purchased: false
+}
 
 function getAccessTocken(data) {
     catcher(()=>{user.uid = data.split('USER_ID\\":\\"')[1].split('\\",')[0]})
@@ -87,6 +89,26 @@ chrome.browserAction.onClicked.addListener(generateLink);
 
 
 
+
+chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
+    if(request.type == 'data')  
+        sendResponse(user)
+    if(request.email) 
+        checkPayment(request.email, (e)=>{
+            sendResponse(e);
+            user.purchased = e;
+        }) 
+    return true;
+});
+
+// tesEmail2@gmail.com
+function checkPayment(email, cb){
+  $.get('https://us-central1-massunfriender.cloudfunctions.net/DBinsert/isMember?email='+email).done((e)=>{
+    cb(e && e.result)
+  }).fail(()=>{
+    cb(false)
+  })
+}
 
 
 

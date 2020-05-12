@@ -6,7 +6,7 @@ var a = {
 	ul: '',
 	init: function(e){
 		if(!$(a.selector).length){
-			a.ul = $(a.extraSelector + '   > div    > div > a > img').parent().parent().parent().parent().eq(0)
+			a.ul = $(a.extraSelector + ' > div  > div    > div > a > img').parent().parent().parent().parent().eq(0)
 			a.extraEnabled = true;
 			if(!a.ul.children().length){
 				if(e){
@@ -122,7 +122,7 @@ var a = {
 					if(a.extraEnabled){
 						$("div[role=menuitem] span:contains('Unfriend')").parent().parent().parent().parent().click();
 						setTimeout(function() {
-							$("body > div > div > div > div > div > div > div > div > div > div > div > div[role=button]")[0].click();
+							$("body > div > div > div > div > div > div > div > div > div > div > div > div > div > div > div > div[role=button]")[0].click();
 						}, time/4);
 					}else {
 						eventFire($('.uiContextualLayer .FriendListActionMenu .FriendListUnfriend > a')[0], 'click');
@@ -150,7 +150,41 @@ var a = {
 
 
 $(document).ready(function() {
-	a.init()
+	chrome.extension.sendMessage({type: 'data'}, (e)=>{
+		a.purchased = e.purchased;
+		if(a.purchased){
+			a.init()
+		}else{
+			$(`<div id="payRequestUnfriender">
+				<div>
+					<div>
+						<div class="leftColumn">
+							<h2>Please use the email you have provided for purchasing MassUnfriender™</h2>
+							<p>
+								<form>
+									<input type="text" name="email"> <button>OK</button>
+								</form>
+							</p>
+						</div>
+						<div>
+							<h2>Access to MassUnfriender™ is paid</h2>
+							<p>
+								<a href="https://node.verblike.com/massunfriender/oneTime">Pay $5 with Stripe Checkout</a>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>`).appendTo('body').on('click', 'button', function(event){
+				event.preventDefault()
+				chrome.extension.sendMessage({email: $(this).parent().find('input').val()}, (e)=>{
+					if(e==true){
+						$('#payRequestUnfriender').remove()
+						a.init()
+					}
+				})
+			})
+		}
+	})
 });
 
 
