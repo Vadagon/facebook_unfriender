@@ -65,7 +65,6 @@ function gather(){
 
 
 function generateLink(){
-	getCreds();
 
     var link = "https://facebook.com/"+user.path+"/friends"
     if(user.path.includes('profile.php'))
@@ -77,6 +76,8 @@ function generateLink(){
         chrome.tabs.insertCSS(tab.id, {file:"/inject/main.css"})
         chrome.tabs.executeScript(tab.id, {file:"/inject/main.js"});
     })
+    
+	getCreds();
 }
 
 chrome.browserAction.onClicked.addListener(generateLink);

@@ -162,15 +162,21 @@ $(document).ready(function() {
 							<h2>Please use the email you have provided for purchasing MassUnfriender™</h2>
 							<p>
 								<form>
-									<input type="text" name="email"> <button>OK</button>
+									<input type="text" name="email" placeholder="Email"> <button>OK</button>
 								</form>
 							</p>
 						</div>
 						<div>
-							<h2>Access to MassUnfriender™ is paid</h2>
-							<p>
-								<a href="https://node.verblike.com/massunfriender/oneTime">Pay $5 with Stripe Checkout</a>
-							</p>
+							<h2>Access to MassUnfriender™ is paid
+							<br>
+							Choose payment below
+							</h2>
+							<div class="MassUnfrienderPlans">
+								<label>Plans available</label>
+								<p>Monthly subscription <a href="https://node.verblike.com/massunfriender/oneTime/month">$7</a></p>
+								<p>Annual subscription <a href="https://node.verblike.com/massunfriender/oneTime/annual">$60</a></p>
+								<p>Lifetime one-time payment <a href="https://node.verblike.com/massunfriender/oneTime/full">$197</a></p>
+							</div>
 						</div>
 					</div>
 				</div>
