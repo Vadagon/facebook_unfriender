@@ -149,58 +149,83 @@
     height: 100%;
     background: #000000c2;
     z-index: 12;
-    color: white;
+    /*color: black*/;
     text-align: center;
     cursor: auto;
+    background: #00000066;
+    z-index: 999999999999;
 }
 #payRequestUnfriender a{
-    color: white;
+    /*color: black;*/
 }
 #payRequestUnfriender > div > div{
     display: inline-block;
+    background: #fafafa;
+    color: #000000de;
+    box-shadow: 0px 0px 30px -5px #fafafa;
+    width: 66%;
+    border-radius: 5px;
+    padding: 20px 0;
 }
 #payRequestUnfriender > div{
-        margin-top: calc(50vh - 95px);
-    margin-top: calc(50vh - 12vw);
+            margin-top: calc(50vh - 95px);
+        margin-top: calc(50vh - 12vw);
+    margin-top: calc(50vh - 8vw);
+        margin-top: calc(50vh - 15em);
 }
 #payRequestUnfriender .leftColumn, #payRequestUnfriender .leftColumn + div{
     padding: 20px;
     margin: -2px;
     display: inline-block;
     width: 40%;
+    padding: 0 20px;
+        width: 49%;
+    box-sizing: border-box;
 }
 #payRequestUnfriender .leftColumn{
-    border-right: 2px solid white;
     text-align: left;
+    vertical-align: top;
 }
 #payRequestUnfriender .leftColumn + div p{
-    padding: 15px 0;
+    /*padding: 15px 0;*/
 }
 #payRequestUnfriender .leftColumn + div{
     text-align: left;
+    border-left: 1px solid #e6e6e6;
 }
 
 
 #payRequestUnfriender h1{
     line-height: 5.5vw;
-    color: #ffffffb0;
+    /*color: black*/;
     font-size: 3.5vw;
     text-align: center;
     line-height: 9vw;
 }
 #payRequestUnfriender h2{
     line-height: 2.5vw;
-    color: #ffffffb0;
+    /*color: black*/;
     font-size: 2vw;
-    font-family: monospace;
+    /*font-family: monospace;*/
     text-align: center;
     margin-bottom: 3vw;
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1.5;
+    margin-bottom: 2em;
 }
 #payRequestUnfriender p{
     line-height: 2.2vw;
-    color: #ffffffb0;
+    /*color: black*/;
     font-size: 1.5vw;
-    font-family: monospace;
+    /*font-family: monospace;*/
 }
 #payRequestUnfriender form{
     text-align: center;
@@ -210,6 +235,11 @@
     border: 0;
     background: #ffffffe0;
     padding: 5px;
+        border: 1px solid #b5b5b5;
+    border-radius: 3px;
+        background: none;
+    border: 1px solid #bfbfbf;
+    padding: 7px;
 }
 #payRequestUnfriender button{
     border-radius: 5px;
@@ -218,6 +248,9 @@
     padding: 7px;
     position: relative;
     top: -1px;
+        background: #5848f6;
+    color: white;
+    float: none !important;
 }
 #payRequestUnfriender a{
     position: relative;
@@ -231,6 +264,31 @@
     padding: 7px;
     color: white;
     font-family: sans-serif;
+}
+#payRequestUnfriender .MassUnfrienderPlans label{
+    font-size: 14px;
+    margin-bottom: 10px;
+    display: inline-block;
+    font-size: 1.3em;
+    color: #797979;
+}
+#payRequestUnfriender .MassUnfrienderPlans > p{
+    text-align: left;
+    margin-top: 0;
+    font-size: 1em;
+    line-height: 2.6em;
+    padding: 0;
+    margin: 10px 0;
+}
+#payRequestUnfriender .MassUnfrienderPlans p a, #payRequestUnfriender button{
+    float: right;
+    box-shadow: 0 2px 6px -2px #191919;
+    min-width: 5em;
+    text-align: center;
+    border-radius: 3px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.6em;
 }
 
 
