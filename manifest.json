@@ -1,8 +1,8 @@
 {
-  "name": "All Friends Remover for Facebook™",
+  "name": "Mass Friends Remover for Facebook™",
   "version": "4",
   "manifest_version": 2,
-  "description": "Easily manage your FB friends list. Remove all friends on Facebook in one click",
+  "description": "Remove all friends on Facebook in one click",
   "icons": {
     "19": "icons/icon12888.png",
     "128": "icons/icon12888.png"
