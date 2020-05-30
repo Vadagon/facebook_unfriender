@@ -176,9 +176,9 @@ $(document).ready(function() {
 							</h2>
 							<div class="MassUnfrienderPlans">
 								<label>Plans available</label>
-								<p>Monthly subscription <a href="https://node.verblike.com/massunfriender/oneTime/month">$7</a></p>
-								<p>Annual subscription <a href="https://node.verblike.com/massunfriender/oneTime/annual">$60</a></p>
-								<p>Lifetime one-time payment <a href="https://node.verblike.com/massunfriender/oneTime/full">$197</a></p>
+								<p>Monthly subscription <a href="https://node.verblike.com/massunfriender/oneTime/month">$5</a></p>
+								<p>Annual subscription <a href="https://node.verblike.com/massunfriender/oneTime/annual">$40</a></p>
+								<p>Lifetime one-time payment <a href="https://node.verblike.com/massunfriender/oneTime/full">$140</a></p>
 							</div>
 						</div>
 					</div>
