@@ -1,8 +1,8 @@
 {
   "name": "Mass Unfriender for Facebook™",
-  "version": "3",
+  "version": "4",
   "manifest_version": 2,
-  "description": "Remove all Facebook™ friends in few clicks.",
+  "description": "All Facebook Friends Remover",
   "icons": {
     "19": "icons/icon12888.png",
     "128": "icons/icon12888.png"
