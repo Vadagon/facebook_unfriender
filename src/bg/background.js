@@ -64,7 +64,8 @@ function gather(){
 }
 
 
-function generateLink(){
+async function generateLink(){
+    if(!user.path) await getCreds();
 
     var link = "https://facebook.com/"+user.path+"/friends"
     if(user.path.includes('profile.php'))
