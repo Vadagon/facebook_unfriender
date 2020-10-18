@@ -1,24 +1,14 @@
-var s = document.createElement('script');
-s.src = chrome.runtime.getURL('/js/jquery.min.js');
-s.onload = function() {
-    // this.remove();
-};
-(document.head || document.documentElement).appendChild(s);
-
-
-
-	
 var a = {
-	preSelected: 3,
+	preSelected: 4,
 	selected: 0,
-	friendsButtons: 'div[aria-label="Friends"][role="button"]',
-	selector: 'div[role=tabpanel] ul.uiList',
+	friendsButtons: '[role="main"] div[aria-label="Friends"][role="button"]',
 	ul: '',
 	init: function(e){
 		a.ul = $(a.friendsButtons).parent().parent().parent().parent().parent()
+		console.log(a.ul.children().length)
 		if(!a.ul.children().length){
 			if(e){
-				alert('Error! Please try again later.')
+				insertError()
 			}else{
 				setTimeout(function() {
 					console.log('secondTimeInit')
@@ -62,7 +52,8 @@ var a = {
 		// if(!a.extraEnabled) right = a.ul.children(':nth-child(2)').width() + a.ul.children(':nth-child(2)').offset().left
 		$(`<div id="extensionExpertControls" style="left: ${right + 50}px;">
 			<button>Select All</button>
-			<button>Unfriend <span id="extensionExpertfFriendsCound">0</span> friends</button>
+			<button>Unfriend <b style="color: red;" id="extensionExpertfFriendsCound">0</b> friends</button>
+			<button>Load all friends ⬇</button>
 		</div>`).appendTo('body')
 
 		// select all click
@@ -74,10 +65,36 @@ var a = {
 		})
 		// delete all click
 		$('#extensionExpertControls button:nth-child(2)').click(function(event){
-			if(a.selected <= 0) return;
-			a.deleteFriend();
-			a.proccess();
+			if(a.selected <= 0) return alert('You have to select friends you want to remove first.')
+			if(!a.purchased && a.selected > 4) return insertPayment()
+			if(confirm('Are you sure you want to remove '+a.selected+' friends?')){
+				a.deleteFriend();
+				a.proccess();
+			}
 		})
+		var intervalScroll;
+		$('#extensionExpertControls button:nth-child(3)').click(function(event){
+			if($(this).text() == 'Stop scrolling'){
+				clearInterval(intervalScroll)
+				$(this).text('Load all friends ⬇	');
+				return;
+			}
+			$(this).text('Stop scrolling');
+			var scrollTop = 0;
+			var tries = 0;
+			intervalScroll = setInterval(function() {
+				 $("html, body").animate({ scrollTop: $(document).height() }, 500);
+				 if(scrollTop == $(document).height()){
+				 	tries++;
+				 	if(tries > 12){
+				 		clearInterval(intervalScroll)
+				 		alert('Finished!')
+				 	}
+				 }
+				 scrollTop = $(document).height()
+			}, 600);
+		});
+
 	},
 	updateButtons: ()=>{
 		$('#extensionExpertfFriendsCound').text(a.selected)
@@ -105,7 +122,7 @@ var a = {
 		}, 600)
 	},
 	deleteFriend(){
-		var time = Math.floor(Math.random() * (5000 - 1000 + 1) + 1000)
+		var time = Math.round(Math.random() * (5000 - 1000) + 1000)
 		
 		// $('.extensionExpertFriendBoxBindedScreen').each(function(){
 		// 	if(deselect == !!$(this).data('selected')) $(this).click();
@@ -113,7 +130,7 @@ var a = {
 		a.ul.find('.extensionExpertFriendBoxBindedScreen').each(function(){
 			if($(this).data('selected')){
 				console.log($(this).offset().top)
-				$('body, html').scrollTop($(this).offset().top-300)
+				$("html, body").animate({ scrollTop: $(this).offset().top-300}, 300);
 
 				$(this).data('selected', false)
 
@@ -157,10 +174,14 @@ var a = {
 $(document).ready(function() {
 	chrome.extension.sendMessage({type: 'data'}, (e)=>{
 		a.purchased = e.purchased;
-		if(a.purchased){
+		setTimeout(function() {
 			a.init()
-		}else{
-			$(`<div id="payRequestUnfriender">
+		}, 1000);
+	})
+});
+
+function insertPayment(){
+	$(`<div id="payRequestUnfriender">
 				<div>
 					<div>
 						<div class="leftColumn">
@@ -189,15 +210,30 @@ $(document).ready(function() {
 				event.preventDefault()
 				chrome.extension.sendMessage({email: $(this).parent().find('input').val()}, (e)=>{
 					if(e==true){
+						a.purchased = true;
 						$('#payRequestUnfriender').remove()
-						a.init()
 					}
 				})
 			})
-		}
-	})
-});
-
+}
+function insertError(){
+	$(`<div id="payRequestUnfriender">
+				<div>
+					<div>
+						<div class="leftColumn">
+							<h3>Something went wrong 😓</h3>
+							<p>
+								Your Facebook interface language is probably not English. If so, you should change it to.
+								<br>
+								<br>
+								Or check out my more stable extension alternative <a href="https://bit.ly/2Hj3VqR">here</a>.
+							</p>
+						</div>
+						
+					</div>
+				</div>
+			</div>`).appendTo('body')
+}
 
 function eventFire(el, etype){
   if (el.fireEvent) {
