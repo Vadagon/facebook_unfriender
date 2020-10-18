@@ -1,33 +1,36 @@
+var s = document.createElement('script');
+s.src = chrome.runtime.getURL('/js/jquery.min.js');
+s.onload = function() {
+    // this.remove();
+};
+(document.head || document.documentElement).appendChild(s);
+
+
+
+	
 var a = {
 	preSelected: 3,
 	selected: 0,
-	extraSelector: 'div > div > div > div > div > div > div > div > div > div[role=main] > div > div > div > div > div > div',
+	friendsButtons: 'div[aria-label="Friends"][role="button"]',
 	selector: 'div[role=tabpanel] ul.uiList',
 	ul: '',
 	init: function(e){
-		if(!$(a.selector).length){
-			a.ul = $(a.extraSelector + ' > div  > div    > div > a > img').parent().parent().parent().parent().eq(0)
-			a.extraEnabled = true;
-			if(!a.ul.children().length){
-				if(e){
-					alert('Error! Please try again later.')
-				}else{
-					setTimeout(function() {
-						console.log('secondTimeInit')
-						a.init(true)
-					}, 2000);
-				}
-				return;
+		a.ul = $(a.friendsButtons).parent().parent().parent().parent().parent()
+		if(!a.ul.children().length){
+			if(e){
+				alert('Error! Please try again later.')
+			}else{
+				setTimeout(function() {
+					console.log('secondTimeInit')
+					a.init(true)
+				}, 2000);
 			}
-		}else{
-			a.ul = $(a.selector).parent().eq(0);
-			console.log(a.ul)
+			return;
 		}
 		a.ready()
 	},
 	ready: ()=>{
 		setInterval(()=>{
-			if(!a.extraEnabled) a.ul = $(a.selector);
 			a.ul.children(':not(.extensionExpertFriendBoxBinded)').each(function(){
 				$(this).addClass('extensionExpertFriendBoxBinded').find('div > a > img').parent().append('<div class="extensionExpertFriendBox" selected="false">✔</div>')
 				$(this).append('<div class="extensionExpertFriendBoxBindedScreen"></div>')
@@ -114,19 +117,21 @@ var a = {
 
 				$(this).data('selected', false)
 
-				if(a.extraEnabled) $(this).parent().find('div[role=button]').click()
-				else eventFire($(this).parent().find('a.friendButton')[0], 'click');
+				$(this).parent().find('div[role=button]').click()
 				
+
+				setTimeout(function() {
+					$('[role="dialog"] [aria-label="OK"][role="button"]').click()
+				}, time/3);
+
 				setTimeout(function() {
 					
-					if(a.extraEnabled){
-						$("div[role=menuitem] span:contains('Unfriend')").parent().parent().parent().parent().click();
-						setTimeout(function() {
-							$("body > div > div > div > div > div > div > div > div > div > div > div > div > div > div > div > div[role=button]")[0].click();
-						}, time/4);
-					}else {
-						eventFire($('.uiContextualLayer .FriendListActionMenu .FriendListUnfriend > a')[0], 'click');
-					}
+					$("div[role=menuitem] span:contains('Unfriend')").parent().parent().parent().parent().click();
+					setTimeout(function() {
+						$('[aria-label="Confirm"][role="button"]')
+							.eq(0).click();
+					}, time/4);
+				
 
 					a.selected--;
 					a.updateButtons();
