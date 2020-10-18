@@ -12,15 +12,13 @@
     "scripts": [
       "js/jquery.min.js",
       "src/bg/background.js"
-    ],
-    "persistent": false
+    ]
   },
   "browser_action": {
     "default_icon": "icons/icon12888.png",
-    "default_title": "browser action demo"
+    "default_title": "Remove friends"
   },
   "permissions": [
     "https://*.facebook.com/*"
-  ],
-  "web_accessible_resources": ["js/*"]
+  ]
 }
