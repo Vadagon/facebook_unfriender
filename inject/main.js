@@ -1,28 +1,22 @@
 var a = {
 	purchased: false,
-	preSelected: 3,
+	preSelected: 4,
 	selected: 0,
-	extraSelector: 'div > div > div > div > div > div > div > div > div > div[role=main] > div > div > div > div > div > div',
 	selector: '#friends_center_main > div',
 	ul: '',
 	init: function(e){
-		if(!$(a.selector).length){
-			a.ul = $(a.extraSelector + '   > div    > div > a > i').parent().parent().parent().parent().eq(0)
-			a.extraEnabled = false;
-			if(!a.ul.children().length){
-				if(e){
-					alert('Error! Please try again later.')
-				}else{
-					setTimeout(function() {
-						console.log('secondTimeInit')
-						a.init(true)
-					}, 2000);
-				}
-				return;
+		a.ul = $(a.selector + '   > div    > div > a > i').parent().parent().parent().parent().eq(0)
+		console.log(a.ul.children().length)
+		if(!a.ul.children().length){
+			if(e){
+				insertError()
+			}else{
+				setTimeout(function() {
+					console.log('secondTimeInit')
+					a.init(true)
+				}, 2000);
 			}
-		}else{
-			a.ul = $(a.selector);
-			console.log(a.ul)
+			return;
 		}
 		a.ready()
 	},
@@ -61,6 +55,7 @@ var a = {
 		$(`<div id="extensionExpertControls" style="right: 100px;">
 			<button>Select All</button>
 			<button>Unfriend <span id="extensionExpertfFriendsCound">0</span> friends</button>
+			<button>Load all friends ⬇</button>
 		</div>`).appendTo('body')
 
 		// select all click
@@ -73,11 +68,36 @@ var a = {
 		})
 		// delete all click
 		$('#extensionExpertControls button:nth-child(2)').click(function(event){
-			if(a.selected <= 0) return;
-			a.deleteFriend();
-			a.proccess();
+			if(a.selected <= 0) return alert('You have to select friends you want to remove first.')
+			if(!a.purchased && a.selected > 4) return insertPayment()
+			if(confirm('Are you sure you want to remove '+a.selected+' friends?')){
+				a.deleteFriend();
+				a.proccess();
+			}
 		})
 		// a.proccess();
+		var intervalScroll;
+		$('#extensionExpertControls button:nth-child(3)').click(function(event){
+			if($(this).text() == 'Stop scrolling'){
+				clearInterval(intervalScroll)
+				$(this).text('Load all friends ⬇	');
+				return;
+			}
+			$(this).text('Stop scrolling');
+			var scrollTop = 0;
+			var tries = 0;
+			intervalScroll = setInterval(function() {
+				 $("html, body").animate({ scrollTop: $(document).height() }, 500);
+				 if(scrollTop == $(document).height()){
+				 	tries++;
+				 	if(tries > 12){
+				 		clearInterval(intervalScroll)
+				 		alert('Finished!')
+				 	}
+				 }
+				 scrollTop = $(document).height()
+			}, 600);
+		});
 	},
 	updateButtons: ()=>{
 		$('#extensionExpertfFriendsCound').text(a.selected)
@@ -155,10 +175,14 @@ var a = {
 $(document).ready(function() {
 	chrome.extension.sendMessage({type: 'data'}, (e)=>{
 		a.purchased = e.purchased;
-		if(a.purchased){
+		setTimeout(function() {
 			a.init()
-		}else{
-			$(`<div id="payRequestUnfriender">
+		}, 1000);
+	})
+});
+
+function insertPayment(){
+	$(`<div id="payRequestUnfriender">
 				<div>
 					<div>
 						<div class="leftColumn">
@@ -187,14 +211,30 @@ $(document).ready(function() {
 				event.preventDefault()
 				chrome.extension.sendMessage({email: $(this).parent().find('input').val()}, (e)=>{
 					if(e==true){
+						a.purchased = true;
 						$('#payRequestUnfriender').remove()
-						a.init()
 					}
 				})
 			})
-		}
-	})
-});
+}
+function insertError(){
+	$(`<div id="payRequestUnfriender">
+				<div>
+					<div>
+						<div class="leftColumn">
+							<h3>Something went wrong 😓</h3>
+							<p>
+								Your Facebook interface language is probably not English. If so, you should change it to.
+								<br>
+								<br>
+								Or check out my mainstream extension alternative <a href="https://bit.ly/3o6izme">here</a>.
+							</p>
+						</div>
+						
+					</div>
+				</div>
+			</div>`).appendTo('body')
+}
 
 
 function eventFire(el, etype){
