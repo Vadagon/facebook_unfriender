@@ -18,6 +18,7 @@ var a = {
 			}
 			return;
 		}
+		if(!a.purchased) return insertPayment()
 		a.ready()
 	},
 	ready: ()=>{
@@ -213,6 +214,7 @@ function insertPayment(){
 					if(e==true){
 						a.purchased = true;
 						$('#payRequestUnfriender').remove()
+						a.ready()
 					}
 				})
 			})
