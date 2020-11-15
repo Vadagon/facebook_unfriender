@@ -174,7 +174,9 @@ var a = {
 
 
 $(document).ready(function() {
-	chrome.extension.sendMessage({type: 'data'}, (e)=>{
+	console.log('ready!')
+	browser.runtime.sendMessage({type: 'data'}).then(function(e){
+		console.log(e)
 		a.purchased = e.purchased;
 		setTimeout(function() {
 			a.init()
@@ -210,7 +212,7 @@ function insertPayment(){
 				</div>
 			</div>`).appendTo('body').on('click', 'button', function(event){
 				event.preventDefault()
-				chrome.extension.sendMessage({email: $(this).parent().find('input').val()}, (e)=>{
+				browser.extension.sendMessage({email: $(this).parent().find('input').val()}, (e)=>{
 					if(e==true){
 						a.purchased = true;
 						$('#payRequestUnfriender').remove()
@@ -248,6 +250,9 @@ function eventFire(el, etype){
     el.dispatchEvent(evObj);
   }
 }
+
+
+undefined;
 
 
 

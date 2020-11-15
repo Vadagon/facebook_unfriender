@@ -6,9 +6,9 @@
 
 
 // //example of using a message handler from the inject scripts
-// chrome.extension.onMessage.addListener(
+// browser.extension.onMessage.addListener(
 //   function(request, sender, sendResponse) {
-//   	chrome.pageAction.show(sender.tab.id);
+//   	browser.pageAction.show(sender.tab.id);
 //     sendResponse();
 //   });
 
@@ -63,31 +63,28 @@ function gather(){
 	// });
 }
 
-
 function generateLink(){
 	// getCreds();
 
     // var link = "https://facebook.com/"+user.path+"/friends"
     // if(user.path.includes('profile.php'))
     //     link = "https://facebook.com/profile.php?id="+user.uid+"&sk=friends";
-    link = 'https://m.facebook.com/friends/center/friends/'
-
-    console.log(link)
-    chrome.tabs.create({url: link}, function(tab){
-        chrome.tabs.executeScript(tab.id, {file:"/js/jquery.min.js"});
-        chrome.tabs.insertCSS(tab.id, {file:"/inject/main.css"})
-        chrome.tabs.executeScript(tab.id, {file:"/inject/main.js"});
-    })
+    var link = 'https://m.facebook.com/friends/center/friends/';
+    // alert(23123);
+    user.url = link;
+    return link;
 }
 
-chrome.browserAction.onClicked.addListener(generateLink);
+// chrome.browserAction.onClicked.addListener(generateLink);
 
 
 
 
-chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
-    if(request.type == 'data')  
+browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    if(request.type == 'data') {
+        generateLink();
         sendResponse(user)
+    } 
     if(request.email) 
         checkPayment(request.email, (e)=>{
             sendResponse(e);
