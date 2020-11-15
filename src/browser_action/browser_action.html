@@ -1,17 +1,31 @@
 <!doctype html>
-<style type="text/css">
-	#mainPopup {
-		padding: 10px;
-		height: 200px;
-		width: 400px;
-		font-family: Helvetica, Ubuntu, Arial, sans-serif;
-	}
-	h1 {
-		font-size: 2em;
-	}
-</style>
-
-<div id="mainPopup">
-<h1>Hello extensionizr!</h1>
-<p>To shut this popup down, edit the manifest file and remove the "default popup" key. To edit it, just edit ext/browser_action/browser_action.html. The CSS is there, too.</p>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="header">
+    <h4>Mass Unfriender for Facebook</h4>
 </div>
+<div class="scroll">
+    <div>
+    <button id="openMessenger" class="btn btn-border color-1 material-design" data-color="#2f5398">Step 1. Open Friends List</button>
+    <button id="removeMessages" class="btn btn-border color-1 material-design" data-color="#2f5398">Step 2. Unfriend inactive Friends</button>
+    <div class="clear" style="margin-top: 15px; clear: both;">
+        <a href="#" id="link" target="_blank" class="star">
+            <span class="">⭐</span>
+            <span class="">⭐</span>
+            <span class="">⭐</span>
+            <span class="">⭐</span>
+            <span class="">⭐</span>
+        </a>
+    </div>
+    <div style="margin-top: 5px;">Rate me 5 stars</div>
+</div>
+</div>
+<script src="/js/browser-polyfill.min.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script src="popup.js"></script>
+</body>
+</html>

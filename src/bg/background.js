@@ -71,17 +71,17 @@ async function generateLink(){
     if(user.path.includes('profile.php'))
         link = "https://facebook.com/profile.php?id="+user.uid+"&sk=friends";
 
-    console.log(link)
-    chrome.tabs.create({url: link}, function(tab){
-        chrome.tabs.executeScript(tab.id, {file:"/js/jquery.min.js"});
-        chrome.tabs.insertCSS(tab.id, {file:"/inject/main.css"})
-        chrome.tabs.executeScript(tab.id, {file:"/inject/main.js"});
-    })
-    
 	getCreds();
+    user.url = link;
+    return link;
+    // chrome.tabs.create({url: link}, function(tab){
+    //     chrome.tabs.executeScript(tab.id, {file:"/js/jquery.min.js"});
+    //     chrome.tabs.insertCSS(tab.id, {file:"/inject/main.css"})
+    //     chrome.tabs.executeScript(tab.id, {file:"/inject/main.js"});
+    // })
 }
 
-chrome.browserAction.onClicked.addListener(generateLink);
+// chrome.browserAction.onClicked.addListener(generateLink);
 
 
 
@@ -91,9 +91,9 @@ chrome.browserAction.onClicked.addListener(generateLink);
 
 
 
-
-chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
+browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if(request.type == 'data')  
+        generateLink();
         sendResponse(user)
     if(request.email) 
         checkPayment(request.email, (e)=>{
