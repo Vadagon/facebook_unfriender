@@ -36,6 +36,7 @@ class PopupActions {
     openPage() {
         console.log(this.pageFacebook)
         browser.tabs.create({url: this.pageFacebook});
+        window.close()
     }
 
 

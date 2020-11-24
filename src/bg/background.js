@@ -111,7 +111,7 @@ function catcher(f){
 }
 // tesEmail2@gmail.com
 function checkPayment(email, cb){
-  $.get('https://us-central1-massunfriender.cloudfunctions.net/DBinsert/isMember?email='+email).done((e)=>{
+  $.get('https://us-central1-extensions-uni.cloudfunctions.net/main/getUserByEmail/'+email).done((e)=>{
     cb(e && e.result)
   }).fail(()=>{
     cb(false)

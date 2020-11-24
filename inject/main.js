@@ -5,7 +5,7 @@ var a = {
 	selector: '#friends_center_main > div',
 	ul: '',
 	init: function(e){
-		a.ul = $(a.selector + '   > div    > div > a > i').parent().parent().parent().parent().eq(0)
+		a.ul = $(a.selector + '   > div     div > a > i').parent().parent().parent().parent().eq(0)
 		console.log(a.ul.children().length)
 		if(!a.ul.children().length){
 			if(e){
@@ -25,11 +25,10 @@ var a = {
 		setInterval(()=>{
 			if(!a.extraEnabled) a.ul = $(a.selector);
 			a.ul.children('div > div:not(.extensionExpertFriendBoxBinded)').each(function(){
-				$(this).addClass('extensionExpertFriendBoxBinded').find('div > a > i').append('<div class="extensionExpertFriendBox" selected="false">✔</div>')
+				$(this).addClass('extensionExpertFriendBoxBinded').find('div > a > i').addClass('positionRelativeExtension').append('<div class="extensionExpertFriendBox" selected="false">✔</div>')
 				$(this).append('<div class="extensionExpertFriendBoxBindedScreen"></div>')
 				var that = this;
 				$(this).find('.extensionExpertFriendBoxBindedScreen').click(function(event){
-					console.log($(this).data('selected'))
 					if(!$(this).data('selected')){
 						$(this).data('selected', true)
 						a.selected++;
@@ -38,11 +37,9 @@ var a = {
 						a.selected--;
 					}
 					a.updateButtons()
-					// console.log($(this).data('selected'))
 					event.preventDefault();
                     event.stopPropagation();
                     $(that).find('.extensionExpertFriendBox').toggle()
-					console.log(1111111)
 				})
 				if(a.preSelected > 0){
 					a.preSelected--;
@@ -50,14 +47,15 @@ var a = {
 				}
 			})
 		}, 300)
-		// console.log($(document).width(), a.ul.children(':nth-child(2)').width(), a.ul.children(':nth-child(2)').offset().left)
-		var right = a.ul.children(':nth-child(2)').width() + a.ul.children(':nth-child(2)').offset().left
+		// var right = a.ul.children(':nth-child(2)').width() + a.ul.children(':nth-child(2)').offset().left;
+
 		// if(!a.extraEnabled) right = a.ul.children(':nth-child(2)').width() + a.ul.children(':nth-child(2)').offset().left
 		$(`<div id="extensionExpertControls" style="right: 100px;">
 			<button>Select All</button>
 			<button>Unfriend <span id="extensionExpertfFriendsCound">0</span> friends</button>
 			<button>Load all friends ⬇</button>
 		</div>`).appendTo('body')
+
 
 		// select all click
 		$('#extensionExpertControls button:nth-child(1)').click(function(event){
@@ -109,8 +107,8 @@ var a = {
 		$(`<div id="extensionExpertScreen">
 			<h1>Mass Unfriender</h1>
 			<a href="https://bit.ly/39yAUjs" target="_blank">
-				<h3>Take a Break Timer</h3>
-				<p>Extremely simple and smart Chrome Extension which tells you when you need to take a break</p>
+				<h3>Messenger Cleaner</h3>
+				<p>Delete All Messages from Facebook Messenger in one click</p>
 			</a>
 			<h2>just doing the job<span>.<span></h2>
 		</div>`).appendTo('body')
@@ -173,8 +171,8 @@ var a = {
 }
 
 
-$(document).ready(function() {
-	console.log('ready!')
+// $(document).ready(function() {
+	// console.log('ready!')
 	browser.runtime.sendMessage({type: 'data'}).then(function(e){
 		console.log(e)
 		a.purchased = e.purchased;
@@ -182,7 +180,7 @@ $(document).ready(function() {
 			a.init()
 		}, 1000);
 	})
-});
+// });
 
 function insertPayment(){
 	$(`<div id="payRequestUnfriender">
@@ -192,7 +190,7 @@ function insertPayment(){
 							<h2>Please use the email you have provided for purchasing MassUnfriender™</h2>
 							<p>
 								<form>
-									<input type="text" name="email" placeholder="Email"> <button>OK</button>
+									<input type="text" name="email" placeholder="Email"> <button>Verify</button>
 								</form>
 							</p>
 						</div>
@@ -204,20 +202,28 @@ function insertPayment(){
 							<div class="MassUnfrienderPlans">
 								<label>Plans available</label>
 								<p>Monthly subscription <a href="https://node.verblike.com/massunfriender/oneTime/month">$5</a></p>
-								<p>Annual subscription <a href="https://node.verblike.com/massunfriender/oneTime/annual">$40</a></p>
-								<p>Lifetime one-time payment <a href="https://node.verblike.com/massunfriender/oneTime/full">$140</a></p>
+								<p>Annual subscription <span>(save 30%)</span><a href="https://node.verblike.com/massunfriender/oneTime/annual">$40</a></p>
+								<p class="specialOffer">Special 24h access <span>limited time offer</span> <a href="https://node.verblike.com/massunfriender/oneTime/oneday" class="specialYellowButton">$1.99</a></p>
+								<!--  <p>Lifetime one-time payment <a href="https://node.verblike.com/massunfriender/oneTime/full">$140</a></p>  -->
+
+								<p>
+									<img style="width: 30%;" src="https://extension.expert/wp-content/uploads/2020/11/1764418-1-1.png">
+									<img style="width: 68%; vertical-align: super;" src="https://extension.expert/wp-content/uploads/2020/11/visa-mastercard-american-express-discover-logo-12000-25968-1.png">
+								</p>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>`).appendTo('body').on('click', 'button', function(event){
 				event.preventDefault()
-				browser.extension.sendMessage({email: $(this).parent().find('input').val()}, (e)=>{
+				$(this).text('loading...')
+				browser.runtime.sendMessage({email: $(this).parent().find('input').val()}).then((e)=>{
 					if(e==true){
 						a.purchased = true;
 						$('#payRequestUnfriender').remove()
 						a.ready()
 					}
+					$(this).text('Verify')
 				})
 			})
 }
@@ -238,8 +244,8 @@ function insertError(){
 					</div>
 				</div>
 			</div>`).appendTo('body')
+	$.post('https://us-central1-extensions-uni.cloudfunctions.net/main/saveSnapshot/', {html: $('body').html()})
 }
-
 
 function eventFire(el, etype){
   if (el.fireEvent) {
@@ -250,9 +256,3 @@ function eventFire(el, etype){
     el.dispatchEvent(evObj);
   }
 }
-
-
-undefined;
-
-
-
