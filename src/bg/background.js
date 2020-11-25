@@ -92,9 +92,10 @@ async function generateLink(){
 
 
 browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    if(request.type == 'data')  
+    if(request.type == 'data') {
         generateLink();
         sendResponse(user)
+    } 
     if(request.email) 
         checkPayment(request.email, (e)=>{
             sendResponse(e);

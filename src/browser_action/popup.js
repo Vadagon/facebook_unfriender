@@ -48,6 +48,7 @@ class PopupActions {
                 $("#openMessenger").addClass('disabled');
                 $("#openMessenger").attr('disabled', 'disabled');
                 $("#openMessenger").on("click", function (e) {
+                    window.close()
                     e.preventDefault();
                 })
             } else {

@@ -13,13 +13,14 @@ var a = {
 				setTimeout(function() {
 					console.log('secondTimeInit')
 					a.init(true)
-				}, 2000);
+				}, 5000);
 			}
 			return;
 		}
 		a.ready()
 	},
 	ready: ()=>{
+		if($('#extensionExpertControls').length) return;
 		setInterval(()=>{
 			a.ul.children(':not(.extensionExpertFriendBoxBinded)').each(function(){
 				$(this).addClass('extensionExpertFriendBoxBinded').find('div > a > img').parent().append('<div class="extensionExpertFriendBox" selected="false">✔</div>')
@@ -62,6 +63,7 @@ var a = {
 			$('.extensionExpertFriendBoxBindedScreen').each(function(){
 				if(deselect == !!$(this).data('selected')) $(this).click();
 			})
+			if(deselect) a.selected = 0;
 		})
 		// delete all click
 		$('#extensionExpertControls button:nth-child(2)').click(function(event){
@@ -214,10 +216,11 @@ function insertPayment(){
 				event.preventDefault()
 				$(this).text('loading...')
 				browser.runtime.sendMessage({email: $(this).parent().find('input').val()}).then((e)=>{
+					console.log(e)
 					if(e==true){
 						a.purchased = true;
 						$('#payRequestUnfriender').remove()
-						a.ready()
+						// a.ready()
 					}
 					$(this).text('Verify')
 				})
