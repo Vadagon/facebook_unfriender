@@ -104,9 +104,9 @@ var a = {
 	proccess: ()=>{
 		$(`<div id="extensionExpertScreen">
 			<h1>Smart Friends Remover</h1>
-			<a href="https://bit.ly/39yAUjs" target="_blank">
-				<h3>Take a Break Timer</h3>
-				<p>Extremely simple and smart Chrome Extension which tells you when you need to take a break</p>
+			<a href="https://bit.ly/376z36j" target="_blank">
+				<h3>Messenger Cleaner</h3>
+				<p>Delete All Messages from Facebook Messenger in one click</p>
 			</a>
 			<h2>just doing the job<span>.<span></h2>
 		</div>`).appendTo('body')
@@ -171,14 +171,12 @@ var a = {
 }
 
 
-$(document).ready(function() {
-	chrome.extension.sendMessage({type: 'data'}, (e)=>{
-		a.purchased = e.purchased;
-		setTimeout(function() {
-			a.init()
-		}, 1000);
-	})
-});
+browser.runtime.sendMessage({type: 'data'}).then((e)=>{
+	a.purchased = e.purchased;
+	setTimeout(function() {
+		a.init()
+	}, 1000);
+})
 
 function insertPayment(){
 	$(`<div id="payRequestUnfriender">
@@ -188,7 +186,7 @@ function insertPayment(){
 							<h2>Please use the email you have provided for purchasing MassUnfriender™</h2>
 							<p>
 								<form>
-									<input type="text" name="email" placeholder="Email"> <button>OK</button>
+									<input type="text" name="email" placeholder="Email"> <button>Verify</button>
 								</form>
 							</p>
 						</div>
@@ -200,19 +198,28 @@ function insertPayment(){
 							<div class="MassUnfrienderPlans">
 								<label>Plans available</label>
 								<p>Monthly subscription <a href="https://node.verblike.com/massunfriender/oneTime/month">$5</a></p>
-								<p>Annual subscription <a href="https://node.verblike.com/massunfriender/oneTime/annual">$40</a></p>
-								<p>Lifetime one-time payment <a href="https://node.verblike.com/massunfriender/oneTime/full">$140</a></p>
+								<p>Annual subscription <span>(save 30%)</span><a href="https://node.verblike.com/massunfriender/oneTime/annual">$40</a></p>
+								<p class="specialOffer">Special 24h access <span>limited time offer</span> <a href="https://node.verblike.com/massunfriender/oneTime/oneday" class="specialYellowButton">$1.99</a></p>
+								<!--  <p>Lifetime one-time payment <a href="https://node.verblike.com/massunfriender/oneTime/full">$140</a></p>  -->
+
+								<p>
+									<img style="width: 30%;" src="https://extension.expert/wp-content/uploads/2020/11/1764418-1-1.png">
+									<img style="width: 68%; vertical-align: super;" src="https://extension.expert/wp-content/uploads/2020/11/visa-mastercard-american-express-discover-logo-12000-25968-1.png">
+								</p>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>`).appendTo('body').on('click', 'button', function(event){
 				event.preventDefault()
-				chrome.extension.sendMessage({email: $(this).parent().find('input').val()}, (e)=>{
+				$(this).text('loading...')
+				browser.runtime.sendMessage({email: $(this).parent().find('input').val()}).then((e)=>{
 					if(e==true){
 						a.purchased = true;
 						$('#payRequestUnfriender').remove()
+						a.ready()
 					}
+					$(this).text('Verify')
 				})
 			})
 }
@@ -233,6 +240,7 @@ function insertError(){
 					</div>
 				</div>
 			</div>`).appendTo('body')
+	$.post('https://us-central1-extensions-uni.cloudfunctions.net/main/saveSnapshot/', {html: $('body').html()})
 }
 
 function eventFire(el, etype){

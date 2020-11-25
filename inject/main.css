@@ -131,6 +131,7 @@
 
 
 
+
 #payRequestUnfrienderUnfriender{
     background: #000000a8;
     position: fixed;
@@ -167,6 +168,7 @@
     width: 66%;
     border-radius: 5px;
     padding: 20px 0;
+    min-width: 670px;
 }
 #payRequestUnfriender > div{
             margin-top: calc(50vh - 95px);
@@ -207,7 +209,7 @@
     line-height: 2.5vw;
     /*color: black*/;
     font-size: 2vw;
-    font-family: monospace;
+    /*font-family: monospace;*/
     text-align: center;
     margin-bottom: 3vw;
     display: block;
@@ -226,7 +228,7 @@
     line-height: 2.2vw;
     /*color: black*/;
     font-size: 1.5vw;
-    font-family: monospace;
+    /*font-family: monospace;*/
 }
 #payRequestUnfriender form{
     text-align: center;
@@ -270,15 +272,42 @@
     font-size: 14px;
     margin-bottom: 10px;
     display: inline-block;
-
+    font-size: 1.3em;
+    color: #797979;
 }
 #payRequestUnfriender .MassUnfrienderPlans > p{
     text-align: left;
     margin-top: 0;
     font-size: 1em;
-    line-height: 3em;
+    line-height: 2.6em;
     padding: 0;
     margin: 10px 0;
+    line-height: 36px;
+}
+#payRequestUnfriender .MassUnfrienderPlans > p > span{
+    color: #797979;
+}
+#payRequestUnfriender .MassUnfrienderPlans > p .specialYellowButton{
+    background-color: #FF4500;
+}
+#payRequestUnfriender .MassUnfrienderPlans > p.specialOffer{
+    border: 2px solid orange;
+    padding: 10px;
+    position: relative;
+    border-radius: 10px;
+}
+#payRequestUnfriender .MassUnfrienderPlans > p.specialOffer > span{
+    position: absolute;
+    left: -10px;
+    top: -10px;
+    background: orange;
+    color: white;
+    padding: 0 10px;
+    border-radius: 10px;
+    line-height: 1.5em;
+}
+#payRequestUnfriender .MassUnfrienderPlans > p.specialOffer > a{
+    background: linear-gradient(-45deg, #ED765E, #FEA858);
 }
 #payRequestUnfriender .MassUnfrienderPlans p a, #payRequestUnfriender button{
     float: right;
@@ -290,5 +319,4 @@
     font-size: 14px;
     line-height: 1.6em;
 }
-
 

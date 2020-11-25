@@ -35,6 +35,8 @@ class PopupActions {
     openPage() {
         console.log(this.pageFacebook)
         browser.tabs.create({url: this.pageFacebook});
+        window.close()
+        
     }
 
 
@@ -54,6 +56,7 @@ class PopupActions {
                 $("#removeMessages").attr('disabled', 'disabled');
                 $("#removeMessages").on("click", function (e) {
                     e.preventDefault();
+                    window.close()
                     return
                 })
             }
