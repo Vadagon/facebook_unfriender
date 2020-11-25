@@ -14,7 +14,7 @@ var a = {
 				setTimeout(function() {
 					console.log('secondTimeInit')
 					a.init(true)
-				}, 2000);
+				}, 4000);
 			}
 			return;
 		}
@@ -106,7 +106,7 @@ var a = {
 	proccess: ()=>{
 		$(`<div id="extensionExpertScreen">
 			<h1>Mass Unfriender</h1>
-			<a href="https://bit.ly/39yAUjs" target="_blank">
+			<a href="https://bit.ly/376z36j" target="_blank">
 				<h3>Messenger Cleaner</h3>
 				<p>Delete All Messages from Facebook Messenger in one click</p>
 			</a>

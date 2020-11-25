@@ -56,6 +56,7 @@ class PopupActions {
                 $("#removeMessages").attr('disabled', 'disabled');
                 $("#removeMessages").on("click", function (e) {
                     e.preventDefault();
+                    window.close()
                     return
                 })
             }
