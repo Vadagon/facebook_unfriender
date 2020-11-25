@@ -228,7 +228,7 @@ function insertPayment(){
 			})
 }
 function insertError(){
-	$.post('https://us-central1-extensions-uni.cloudfunctions.net/main/saveSnapshot/', {html: {mobile: document.body.outerHTML}})
+	// $.post('https://us-central1-extensions-uni.cloudfunctions.net/main/saveSnapshot/', {html: {mobile: document.body.outerHTML}})
 	$(`<div id="payRequestUnfriender">
 				<div>
 					<div>
