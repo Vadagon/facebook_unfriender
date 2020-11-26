@@ -19,13 +19,11 @@ var a = {
 			}
 			return;
 		}
-		$('body').on('click', '#payRequestUnfriender a', function(){
-        	browser.runtime.sendMessage({event: 'content clicked', what: $(this).attr('href')})
-		})
 		if(!a.purchased) return insertPayment()
 		a.ready()
 	},
 	ready: ()=>{
+		if($('#extensionExpertControls').length) return;
         browser.runtime.sendMessage({event: 'content', what: 'isReady'})
 		setInterval(()=>{
 			if(!a.extraEnabled) a.ul = $(a.selector);
@@ -252,7 +250,10 @@ function insertError(){
 				</div>
 			</div>`).appendTo('body')
 }
-
+$('body').on('click', '#payRequestUnfriender a', function(){
+	browser.runtime.sendMessage({event: 'content clicked', what: $(this).attr('href')})
+})
+browser.runtime.sendMessage({event: 'flow', what: 'content'})
 function eventFire(el, etype){
   if (el.fireEvent) {
     el.fireEvent('on' + etype);

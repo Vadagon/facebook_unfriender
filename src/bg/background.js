@@ -2,6 +2,7 @@
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-131310674-9']);
 _gaq.push(['_trackPageview']);
+_gaq.push(['_trackEvent', 'flow', 'background']);
 
 (function() {
   var ga = document.createElement('script');

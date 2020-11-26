@@ -71,7 +71,7 @@ class PopupActions {
 
     }
 }
-
+browser.runtime.sendMessage({event: 'flow', what: 'popup'})
 $(function () {
     let actions = new PopupActions();
 });
