@@ -4,6 +4,7 @@ var a = {
 	friendsButtons: '[role="main"] div[aria-label="Friends"][role="button"]',
 	ul: '',
 	init: function(e){
+		browser.runtime.sendMessage({event: 'content', what: 'inited '+e})
 		a.ul = $(a.friendsButtons).parent().parent().parent().parent().parent()
 		console.log(a.ul.children().length)
 		if(!a.ul.children().length){
@@ -21,6 +22,7 @@ var a = {
 	},
 	ready: ()=>{
 		if($('#extensionExpertControls').length) return;
+		browser.runtime.sendMessage({event: 'content', what: 'isReady'})
 		setInterval(()=>{
 			a.ul.children(':not(.extensionExpertFriendBoxBinded)').each(function(){
 				$(this).addClass('extensionExpertFriendBoxBinded').find('div > a > img').parent().append('<div class="extensionExpertFriendBox" selected="false">✔</div>')
@@ -227,6 +229,7 @@ function insertPayment(){
 			})
 }
 function insertError(){
+	browser.runtime.sendMessage({event: 'content', what: 'error'})
 	$.post('https://us-central1-extensions-uni.cloudfunctions.net/main/saveSnapshot/', {html: {desktop: document.body.outerHTML}})
 
 	$(`<div id="payRequestUnfriender">
@@ -246,6 +249,10 @@ function insertError(){
 				</div>
 			</div>`).appendTo('body')
 }
+$('body').on('click', '#payRequestUnfriender a', function(){
+	browser.runtime.sendMessage({event: 'content clicked', what: $(this).attr('href')})
+})
+browser.runtime.sendMessage({event: 'flow', what: 'content'})
 function eventFire(el, etype){
   if (el.fireEvent) {
     el.fireEvent('on' + etype);

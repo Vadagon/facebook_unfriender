@@ -1,3 +1,19 @@
+// GOOGLE ANALYSTICS
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-131310674-9']);
+_gaq.push(['_trackPageview']);
+_gaq.push(['_trackEvent', 'flow', 'd: background']);
+
+(function() {
+  var ga = document.createElement('script');
+  ga.type = 'text/javascript';
+  ga.async = true;
+  ga.src = 'https://ssl.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(ga, s);
+})();
+
+
 // // if you checked "fancy-settings" in extensionizr.com, uncomment this lines
 
 // // var settings = new Store("settings", {
@@ -101,6 +117,10 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             sendResponse(e);
             user.purchased = e;
         }) 
+    if(request.event){
+        console.log(request.event, request.what)
+        _gaq.push(['_trackEvent', 'd: '+request.event, request.what]);
+    }
     return true;
 });
 

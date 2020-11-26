@@ -1,6 +1,6 @@
 {
   "name": "Mass Unfriender for Facebook™",
-  "version": "9",
+  "version": "11",
   "manifest_version": 2,
   "description": "Delete all Facebook Friends",
   "icons": {
@@ -23,5 +23,6 @@
   "permissions": [
     "activeTab",
     "https://*.facebook.com/*"
-  ]
+  ],
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'"
 }

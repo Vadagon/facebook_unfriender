@@ -20,6 +20,7 @@ class PopupActions {
     }
 
     removeMessages() {
+        browser.runtime.sendMessage({event: 'popup', what: '2 step'})
         browser.tabs.query({currentWindow: true, active: true}).then((activeTabs)=>{
             activeTabs.map((tab)=>{
                 browser.tabs.executeScript(tab.id, {file:"/js/browser-polyfill.min.js"});
@@ -33,6 +34,7 @@ class PopupActions {
 
 
     openPage() {
+        browser.runtime.sendMessage({event: 'popup', what: '1 step'})
         console.log(this.pageFacebook)
         browser.tabs.create({url: this.pageFacebook});
         window.close()
@@ -62,11 +64,14 @@ class PopupActions {
                 })
             }
         }.bind(this));
+        $('#link').click(()=>{
+            browser.runtime.sendMessage({event: 'popup', what: '5 stars'})
+        })
         $("#link").attr('href', `https://browser.google.com/webstore/detail/${browser.runtime.id}`);
 
     }
 }
-
+browser.runtime.sendMessage({event: 'flow', what: 'popup'})
 $(function () {
     let actions = new PopupActions();
 });
