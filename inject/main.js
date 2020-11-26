@@ -183,6 +183,7 @@ browser.runtime.sendMessage({type: 'data'}).then((e)=>{
 })
 
 function insertPayment(){
+	browser.runtime.sendMessage({event: 'content', what: 'payment inserted'})
 	$(`<div id="payRequestUnfriender">
 				<div>
 					<div>
