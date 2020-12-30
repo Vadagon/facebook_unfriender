@@ -187,6 +187,7 @@ var a = {
 
 function insertPayment(){
 	browser.runtime.sendMessage({event: 'content', what: 'payment inserted'})
+	var dayAccess = `<p class="specialOffer">Special 24h access <span>limited time offer</span> <a href="https://node.verblike.com/massunfriender/oneTime/oneday" class="specialYellowButton">$1.99</a></p>`;
 	$(`<div id="payRequestUnfriender">
 				<div>
 					<div>
@@ -205,9 +206,9 @@ function insertPayment(){
 							</h2>
 							<div class="MassUnfrienderPlans">
 								<label>Plans available</label>
-								<p>Monthly subscription <a target="_blank" href="https://node.verblike.com/massunfriender/oneTime/month">$5</a></p>
-								<p>Annual subscription <span>(save 30%)</span><a target="_blank" href="https://node.verblike.com/massunfriender/oneTime/annual">$40</a></p>
-								<p class="specialOffer">Special 24h access <span>limited time offer</span> <a target="_blank" href="https://node.verblike.com/massunfriender/oneTime/oneday" class="specialYellowButton">$1.99</a></p>
+								<p>Access for 1 month<a href="https://node.verblike.com/massunfriender/oneTime/month">$5</a></p>
+								<p>Access for 1 year <span>(save 30%)</span><a href="https://node.verblike.com/massunfriender/oneTime/annual">$40</a></p>
+								${(Math.round(Date.now() / 1000 / 60 / 60 / 24 / 3)%2)?dayAccess:''}
 								<!--  <p>Lifetime one-time payment <a target="_blank" href="https://node.verblike.com/massunfriender/oneTime/full">$140</a></p>  -->
 
 								<p>
@@ -264,3 +265,4 @@ function eventFire(el, etype){
     el.dispatchEvent(evObj);
   }
 }
+
