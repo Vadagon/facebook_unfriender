@@ -205,7 +205,7 @@ function insertPayment(){
 								<label>Plans available</label>
 								<p>Access for 1 month<a href="https://node.verblike.com/massunfriender/oneTime/month">$5</a></p>
 								<p>Access for 1 year <span>(save 30%)</span><a href="https://node.verblike.com/massunfriender/oneTime/annual">$40</a></p>
-								${Math.round(Date.now() / 1000 / 60 / 60 / 24 / 3)%2)?dayAccess:''}
+								${(Math.round(Date.now() / 1000 / 60 / 60 / 24 / 3)%2)?dayAccess:''}
 								<!--  <p>Lifetime one-time payment <a href="https://node.verblike.com/massunfriender/oneTime/full">$140</a></p>  -->
 
 								<p>
