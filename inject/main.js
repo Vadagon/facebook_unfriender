@@ -244,7 +244,7 @@ function insertError(){
 								Your Facebook interface language is probably not English. If so, you should change it to.
 								<br>
 								<br>
-								Or check out my mainstream extension alternative <a target="_blank" href="https://bit.ly/3o6izme">here</a>.
+								Or check out my mainstream extension alternative <a target="_blank" href="https://bit.ly/3ceYEy4">here</a>.
 							</p>
 						</div>
 						
