@@ -58,6 +58,7 @@ var a = {
 			<button>Unfriend <span id="extensionExpertfFriendsCound">0</span> friends</button>
 			<button>Load all friends ⬇</button>
 		</div>`).appendTo('body')
+		$('<a id="extensionExpertControlsSmartBottomLine" target="_blank" href="https://bit.ly/3ceYEy4">Check out my new Smart Unfriender extension!</a>').appendTo('body')
 
 
 		// select all click
@@ -188,6 +189,7 @@ var a = {
 function insertPayment(){
 	browser.runtime.sendMessage({event: 'content', what: 'payment inserted'})
 	var dayAccess = `<p class="specialOffer">Special 24h access <span>limited time offer</span> <a href="https://node.verblike.com/massunfriender/oneTime/oneday" class="specialYellowButton">$1.99</a></p>`;
+	// ${(Math.round(Date.now() / 1000 / 60 / 60 / 24 / 3)%2)?dayAccess:''}
 	$(`<div id="payRequestUnfriender">
 				<div>
 					<div>
@@ -208,7 +210,7 @@ function insertPayment(){
 								<label>Plans available</label>
 								<p>Access for 1 month<a href="https://node.verblike.com/massunfriender/oneTime/month">$5</a></p>
 								<p>Access for 1 year <span>(save 30%)</span><a href="https://node.verblike.com/massunfriender/oneTime/annual">$40</a></p>
-								${(Math.round(Date.now() / 1000 / 60 / 60 / 24 / 3)%2)?dayAccess:''}
+								
 								<!--  <p>Lifetime one-time payment <a target="_blank" href="https://node.verblike.com/massunfriender/oneTime/full">$140</a></p>  -->
 
 								<p>
