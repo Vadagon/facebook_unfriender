@@ -58,6 +58,7 @@ var a = {
 			<button>Unfriend <b style="color: red;" id="extensionExpertfFriendsCound">0</b> friends</button>
 			<button>Load all friends ⬇</button>
 		</div>`).appendTo('body')
+		$('<a id="extensionExpertControlsSmartBottomLine" target="_blank" href="https://bit.ly/3ceYEy4">Check out my new Smart Unfriender extension!</a>').appendTo('body')
 
 		// select all click
 		$('#extensionExpertControls button:nth-child(1)').click(function(event){
@@ -70,7 +71,7 @@ var a = {
 		// delete all click
 		$('#extensionExpertControls button:nth-child(2)').click(function(event){
 			if(a.selected <= 0) return alert('You have to select friends you want to remove first.')
-			if(!a.purchased && a.selected > 4) return insertPayment()
+			if(!a.purchased && a.selected > 3) return insertPayment()
 			if(confirm('Are you sure you want to remove '+a.selected+' friends?')){
 				a.deleteFriend();
 				a.proccess();
