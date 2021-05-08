@@ -34,13 +34,15 @@ var user = {
 }
 
 function getAccessTocken(data) {
-    catcher(()=>{user.uid = data.split('USER_ID\\":\\"')[1].split('\\",')[0]})
-    catcher(()=>{user.uid = data.split('\\"uid\\":')[1].split(',')[0]})
+    const config = {};
     catcher(()=>{
-        user.path = data.split('path\\":\\"\\\\\\/')[1].split('\\"')[0];
+        config.path = data.split('path\\":\\"\\\\\\/')[1].split('\\"')[0];
+    })
+    catcher(()=>{
+      let id = data.match(/\\"USER_ID\\":\\"([^\\]+)/);
+      config.uid = id[1];
     })
     try{
-        const config = {};
         let o = data.match(/accessToken\\":\\"([^\\]+)/);
         let t = {};
         config.access_token = o[1];
@@ -67,7 +69,12 @@ function getCreds(cb){
         resolve()
     });
 }
-getCreds()
+getCreds(()=>{
+  if(user.creds.uid)
+    checkPayment(user.creds.uid, (e)=>{
+      // user.purchased = e
+    })
+})
 
 function gather(){
 	// $.get(`https://graph.facebook.com/v5.0/me/friends?limit=5000&access_token=${user.creds.access_token}`).done((data)=>{
@@ -81,11 +88,11 @@ function gather(){
 
 
 async function generateLink(){
-    if(!user.path) await getCreds();
+    if(!user.creds.path) await getCreds();
 
-    var link = "https://facebook.com/"+user.path+"/friends"
-    if(user.path.includes('profile.php'))
-        link = "https://facebook.com/profile.php?id="+user.uid+"&sk=friends";
+    var link = "https://facebook.com/"+user.creds.path+"/friends"
+    if(user.creds.path.includes('profile.php'))
+        link = "https://facebook.com/profile.php?id="+user.creds.uid+"&sk=friends";
 
 	getCreds();
     user.url = link;
@@ -126,7 +133,8 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 // tesEmail2@gmail.com
 function checkPayment(email, cb){
-  $.get('https://us-central1-extensions-uni.cloudfunctions.net/main/getUserByEmail/'+email).done((e)=>{
+  $.get(`https://us-central1-extensions-uni.cloudfunctions.net/main/${email.includes('@')?'isRegisteredEmail':'getUserByUID'}/`+email).done((e)=>{
+  // $.get('https://us-central1-extensions-uni.cloudfunctions.net/main/getUserByEmail/'+email).done((e)=>{
     cb(e && e.result)
   }).fail(()=>{
     cb(false)

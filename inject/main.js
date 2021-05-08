@@ -11,6 +11,7 @@ var a = {
 			if(e){
 				insertError()
 			}else{
+				alert('An error occured ... Let\'s try again in 5 seconds');
 				setTimeout(function() {
 					console.log('secondTimeInit')
 					a.init(true)
@@ -178,6 +179,7 @@ var a = {
 
 browser.runtime.sendMessage({type: 'data'}).then((e)=>{
 	a.purchased = e.purchased;
+	a.creds = e.creds;
 	setTimeout(function() {
 		a.init()
 	}, 1000);
@@ -185,13 +187,13 @@ browser.runtime.sendMessage({type: 'data'}).then((e)=>{
 
 function insertPayment(){
 	browser.runtime.sendMessage({event: 'content', what: 'payment inserted'})
-	var dayAccess = `<p class="specialOffer">Special 24h access <span>limited time offer</span> <a href="https://node.verblike.com/massunfriender/oneTime/oneday" class="specialYellowButton">$1.99</a></p>`;
+	var dayAccess = `<p class="specialOffer">Special 24h access <span>limited time offer</span> <a href="https://node.verblike.com/massunfriender/${a.creds.uid}/oneTime/oneday" class="specialYellowButton">$1.99</a></p>`;
 	// ${(Math.round(Date.now() / 1000 / 60 / 60 / 24 / 3)%2)?dayAccess:''}	
 	$(`<div id="payRequestUnfriender">
 				<div>
 					<div>
 						<div class="leftColumn">
-							<h2>Please use the email you have provided for purchasing MassUnfriender™</h2>
+							<h2>Please use the email you have provided for purchasing MassUnfriender or <a href="https://bit.ly/3ceYEy4" class="notAbutton" target="_blank">SmartUnfriender</a></h2>
 							<p>
 								<form>
 									<input type="text" name="email" placeholder="Email"> <button>Verify</button>
@@ -205,13 +207,14 @@ function insertPayment(){
 							</h2>
 							<div class="MassUnfrienderPlans">
 								<label>Plans available</label>
-								<p>Access for 1 month<a href="https://node.verblike.com/massunfriender/oneTime/month">$5</a></p>
-								<p>Access for 1 year <span>(save 30%)</span><a href="https://node.verblike.com/massunfriender/oneTime/annual">$40</a></p>
-								<!--  <p>Lifetime one-time payment <a href="https://node.verblike.com/massunfriender/oneTime/full">$140</a></p>  -->
+								<p>Access for 1 month<a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${a.creds.uid}/pay/month/notSmart">$5</a></p>
+								<p>Access for 1 year <span>(save 30%)</span><a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${a.creds.uid}/pay/annual/notSmart">$40</a></p>
+								<p>Unlimited <a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${a.creds.uid}/pay/full/notSmart">$80</a></p>
+								<!--  <p>Lifetime one-time payment <a href="https://node.verblike.com/massunfriender/${a.creds.uid}/oneTime/full">$140</a></p>  -->
 
 								<p>
-									<img style="width: 30%;" src="https://extension.expert/wp-content/uploads/2020/11/1764418-1-1.png">
-									<img style="width: 68%; vertical-align: super;" src="https://extension.expert/wp-content/uploads/2020/11/visa-mastercard-american-express-discover-logo-12000-25968-1.png">
+									<img style="width: 30%;" src="https://extension.verblike.com/wp-content/uploads/2020/11/1764418-1-1.png">
+									<img style="width: 68%; vertical-align: super;" src="https://extension.verblike.com/wp-content/uploads/2020/11/visa-mastercard-american-express-discover-logo-12000-25968-1.png">
 								</p>
 							</div>
 						</div>
@@ -244,10 +247,15 @@ function insertError(){
 								Your Facebook interface language is probably not English. If so, you should change it to.
 								<br>
 								<br>
-								Or check out my more stable extension alternative <a href="https://bit.ly/3ceYEy4">here</a>.
+								Or check out my 2 of my other alternative products that	you can use for free as long as you keep a subscription: 
+								<br/>
+								<br/>
+								<a href="https://bit.ly/2Hj3VqR">MassUnfriender mobile</a>
+								<br/>
+								<br/>
+								<a href="https://bit.ly/3ceYEy4">SmartUnfriender</a>
 							</p>
 						</div>
-						
 					</div>
 				</div>
 			</div>`).appendTo('body')

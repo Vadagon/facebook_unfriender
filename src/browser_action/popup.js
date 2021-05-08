@@ -67,7 +67,7 @@ class PopupActions {
         $('#link').click(()=>{
             browser.runtime.sendMessage({event: 'popup', what: '5 stars'})
         })
-        $("#link").attr('href', `https://browser.google.com/webstore/detail/${browser.runtime.id}`);
+        $("#link").attr('href', `https://chrome.google.com/webstore/detail/${browser.runtime.id}`);
 
     }
 }
