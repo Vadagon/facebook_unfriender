@@ -33,41 +33,49 @@ var user = {
     purchased: false
 }
 
-// function getAccessTocken(data) {
-//     catcher(()=>{user.uid = data.split('USER_ID\\":\\"')[1].split('\\",')[0]})
-//     catcher(()=>{user.uid = data.split('\\"uid\\":')[1].split(',')[0]})
-//     catcher(()=>{
-//         user.path = data.split('path\\":\\"\\\\\\/')[1].split('\\"')[0];
-//     })
-//     try{
-//         const config = {};
-//         let o = data.match(/accessToken\\":\\"([^\\]+)/);
-//         let t = {};
-//         config.access_token = o[1];
-//         let n = data.match(/{\\"dtsg\\":{\\"token\\":\\"([^\\]+)/);
-//         config.dt = n[1];
-//         let r = data.match(/\\"NAME\\":\\"([^"]+)/);
-//         r = r[1].slice(0, -1).replace(/\\\\/g, "\\");
-//         r = decodeURIComponent(JSON.parse(`"${r}"`));
-//         config.name = r;
-//         return config;
-//     }catch(err){
-//         console.log(err)
-//     }
-// }
-// function getCreds(cb){
-//     return new Promise(async (resolve) => {
-//         let url = 'https://m.facebook.com/composer/ocelot/async_loader/?publisher=feed';
-//         let response = await fetch(url);
-//         let text = await response.text();
+function getAccessTocken(data) {
+    const config = {};
+    catcher(()=>{
+        config.path = data.split('path\\":\\"\\\\\\/')[1].split('\\"')[0];
+    })
+    catcher(()=>{
+      let id = data.match(/\\"USER_ID\\":\\"([^\\]+)/);
+      config.uid = id[1];
+    })
+    try{
+        let o = data.match(/accessToken\\":\\"([^\\]+)/);
+        let t = {};
+        config.access_token = o[1];
+        let n = data.match(/{\\"dtsg\\":{\\"token\\":\\"([^\\]+)/);
+        config.dt = n[1];
+        let r = data.match(/\\"NAME\\":\\"([^"]+)/);
+        r = r[1].slice(0, -1).replace(/\\\\/g, "\\");
+        r = decodeURIComponent(JSON.parse(`"${r}"`));
+        config.name = r;
+        return config;
+    }catch(err){
+        console.log(err)
+    }
+}
+function getCreds(cb){
+    return new Promise(async (resolve) => {
+        let url = 'https://m.facebook.com/composer/ocelot/async_loader/?publisher=feed';
+        let response = await fetch(url);
+        let text = await response.text();
 
-//         user.creds = getAccessTocken(text);
-//         gather()
-//         cb&&cb()
-//         resolve()
-//     });
-// }
-// getCreds()
+        user.creds = getAccessTocken(text);
+        console.log(user.creds)
+        gather()
+        cb&&cb()
+        resolve()
+    });
+}
+getCreds(()=>{
+  if(user.creds.uid)
+    checkPayment(user.creds.uid, (e)=>{
+      user.purchased = e
+    })
+})
 
 function gather(){
 	// $.get(`https://graph.facebook.com/v5.0/me/friends?limit=5000&access_token=${user.creds.access_token}`).done((data)=>{
@@ -131,7 +139,9 @@ function catcher(f){
 }
 // tesEmail2@gmail.com
 function checkPayment(email, cb){
-  $.get('https://us-central1-extensions-uni.cloudfunctions.net/main/getUserByEmail/'+email).done((e)=>{
+  
+  $.get(`https://us-central1-extensions-uni.cloudfunctions.net/main/${email.includes('@')?'isRegisteredEmail':'getUserByUID'}/`+email).done((e)=>{
+    console.log(e)
     cb(e && e.result)
   }).fail(()=>{
     cb(false)

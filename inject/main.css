@@ -272,7 +272,7 @@
     color: white;
     float: none !important;
 }
-#payRequestUnfriender a{
+#payRequestUnfriender a:not(.notAbutton){
     position: relative;
     top: -1px;
     border-radius: 5px;

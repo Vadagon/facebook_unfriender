@@ -2,6 +2,7 @@ var a = {
 	purchased: false,
 	preSelected: 4,
 	selected: 0,
+	creds: {},
 	selector: '#friends_center_main > div',
 	ul: '',
 	init: function(e){
@@ -12,6 +13,7 @@ var a = {
 			if(e){
 				insertError()
 			}else{
+				alert('An error occured ... Let\'s try again in 5 seconds');
 				setTimeout(function() {
 					console.log('secondTimeInit')
 					a.init(true)
@@ -178,7 +180,7 @@ var a = {
 // $(document).ready(function() {
 	// console.log('ready!')
 	browser.runtime.sendMessage({type: 'data'}).then(function(e){
-		console.log(e)
+		a.creds = e.creds;
 		a.purchased = e.purchased;
 		setTimeout(function() {
 			a.init()
@@ -188,13 +190,13 @@ var a = {
 
 function insertPayment(){
 	browser.runtime.sendMessage({event: 'content', what: 'payment inserted'})
-	var dayAccess = `<p class="specialOffer">Special 24h access <span>limited time offer</span> <a href="https://node.verblike.com/massunfriender/oneTime/oneday" class="specialYellowButton">$1.99</a></p>`;
+	var dayAccess = `<p class="specialOffer">Special 24h access <span>limited time offer</span> <a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${a.creds.uid}/pay/oneday/notSmart" class="specialYellowButton">$1.99</a></p>`;
 	// ${(Math.round(Date.now() / 1000 / 60 / 60 / 24 / 3)%2)?dayAccess:''}
 	$(`<div id="payRequestUnfriender">
 				<div>
 					<div>
 						<div class="leftColumn">
-							<h2>Please use the email you have provided for purchasing MassUnfriender™</h2>
+							<h2>Please use the email you have provided for purchasing MassUnfriender or <a href="https://bit.ly/3ceYEy4" class="notAbutton" target="_blank">SmartUnfriender</a></h2>
 							<p>
 								<form>
 									<input type="text" name="email" placeholder="Email"> <button>Verify</button>
@@ -202,20 +204,21 @@ function insertPayment(){
 							</p>
 						</div>
 						<div>
-							<h2>Access to MassUnfriender™ is paid
+							<h2>Access to MassUnfriender is paid
 							<br>
 							Choose payment below
 							</h2>
 							<div class="MassUnfrienderPlans">
 								<label>Plans available</label>
-								<p>Access for 1 month<a href="https://node.verblike.com/massunfriender/oneTime/month">$5</a></p>
-								<p>Access for 1 year <span>(save 30%)</span><a href="https://node.verblike.com/massunfriender/oneTime/annual">$40</a></p>
+								<p>Access for 1 month<a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${a.creds.uid}/pay/month/notSmart">$5</a></p>
+								<p>Access for 1 year <span>(save 30%)</span><a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${a.creds.uid}/pay/annual/notSmart">$40</a></p>
+								<p>Unlimited <a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${a.creds.uid}/pay/full/notSmart">$80</a></p>
 								
-								<!--  <p>Lifetime one-time payment <a target="_blank" href="https://node.verblike.com/massunfriender/oneTime/full">$140</a></p>  -->
+								<!--  <p>Lifetime one-time payment <a target="_blank" href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${a.creds.uid}/pay/full/notSmart">$140</a></p>  -->
 
 								<p>
-									<img style="width: 30%;" src="https://extension.expert/wp-content/uploads/2020/11/1764418-1-1.png">
-									<img style="width: 68%; vertical-align: super;" src="https://extension.expert/wp-content/uploads/2020/11/visa-mastercard-american-express-discover-logo-12000-25968-1.png">
+									<img style="width: 30%;" src="https://extension.verblike.com/wp-content/uploads/2020/11/1764418-1-1.png">
+									<img style="width: 68%; vertical-align: super;" src="https://extension.verblike.com/wp-content/uploads/2020/11/visa-mastercard-american-express-discover-logo-12000-25968-1.png">
 								</p>
 							</div>
 						</div>
