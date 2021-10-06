@@ -64,6 +64,7 @@ function getCreds(cb){
         let text = await response.text();
 
         user.creds = getAccessTocken(text);
+        console.log(user);
         gather()
         cb&&cb()
         resolve()
@@ -88,10 +89,10 @@ function gather(){
 
 
 async function generateLink(){
-    if(!user.creds.path) await getCreds();
+    if(!user.creds.uid) await getCreds();
 
-    var link = "https://facebook.com/"+user.creds.path+"/friends"
-    if(user.creds.path.includes('profile.php'))
+    // var link = "https://facebook.com/"+user.creds.path+"/friends"
+    // if(user.creds.path.includes('profile.php'))
         link = "https://facebook.com/profile.php?id="+user.creds.uid+"&sk=friends";
 
 	getCreds();
