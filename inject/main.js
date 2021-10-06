@@ -210,16 +210,20 @@ function insertPayment(){
 							</h2>
 							<div class="MassUnfrienderPlans">
 								<label>Plans available</label>
-								<p>Access for 1 month<a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${a.creds.uid}/pay/month/notSmart">$5</a></p>
-								<p>Access for 1 year <span>(save 30%)</span><a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${a.creds.uid}/pay/annual/notSmart">$40</a></p>
-								<p>Unlimited <a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${a.creds.uid}/pay/full/notSmart">$80</a></p>
-								
-								<!--  <p>Lifetime one-time payment <a target="_blank" href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${a.creds.uid}/pay/full/notSmart">$140</a></p>  -->
+								<p>Access for 1 month<a href="https://us-central1-extensions-uni.cloudfunctions.net/way4pay/payWithId/${a.creds.uid}?productName=Smart%20Unfriender&regularMode=monthly&amount=5">$5</a></p>
+								<p>Access for 1 year <span>(save 30%)</span><a href="https://us-central1-extensions-uni.cloudfunctions.net/way4pay/payWithId/${a.creds.uid}?productName=Smart%20Unfriender&regularMode=yearly&amount=40">$40</a></p>
+								<p>Unlimited <a href="https://us-central1-extensions-uni.cloudfunctions.net/way4pay/payWithId/${a.creds.uid}?productName=Smart%20Unfriender&amount=80">$80</a></p>
 
-								<p>
-									<img style="width: 30%;" src="https://extension.verblike.com/wp-content/uploads/2020/11/1764418-1-1.png">
-									<img style="width: 68%; vertical-align: super;" src="https://extension.verblike.com/wp-content/uploads/2020/11/visa-mastercard-american-express-discover-logo-12000-25968-1.png">
-								</p>
+								<!--  <p>Access for 1 month<a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${a.creds.uid}/pay/month/notSmart">$5</a></p>  -->
+								<!--  <p>Access for 1 year <span>(save 30%)</span><a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${a.creds.uid}/pay/annual/notSmart">$40</a></p>  -->
+								<!--  <p>Unlimited <a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${a.creds.uid}/pay/full/notSmart">$80</a></p>  -->
+
+								<!--  <p>Lifetime one-time payment <a href="https://node.verblike.com/massunfriender/${a.creds.uid}/oneTime/full">$140</a></p>  -->
+
+								<div style="display: flex;">
+									<div><img style="width: 100%;" src="https://www.verblike.com/images/money-back.png"></div>
+									<div style="display: flex; align-items: center;"><img style="width: 100%; vertical-align: super;" src="https://www.verblike.com/images/stripe-secure.png"></div>
+								</div>
 							</div>
 						</div>
 					</div>
