@@ -12,7 +12,7 @@ class PopupActions {
     }
 
     isMessagePage(url) {
-        if(url.includes(this.pageFacebook.split('facebook.com')[1])){
+        if(url.includes('facebook') && url.includes('friends')){
             return true;
         } else {
             return false;
