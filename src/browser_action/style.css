@@ -607,7 +607,7 @@ a.star:hover {
     color: white !important;
     border-radius: 5px;
     font-weight: bold;
-    font-size: 13px;
+    font-size: 12px;
     margin: 10px 0 !important;
     text-decoration: none;
 }
@@ -615,6 +615,7 @@ a.star:hover {
 .otherProductsButt::after {
   content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==);
   margin: 0 3px 0 7px;
+  filter: invert(100%);
 }
 
 
