@@ -1,28 +1,19 @@
 {
   "name": "Mass Unfriender for Facebook | desktop",
-  "version": "21",
-  "manifest_version": 2,
+  "version": "31",
+  "manifest_version": 3,
   "description": "Delete all Facebook Friends",
   "icons": {
     "19": "icons/icon12888.png",
     "128": "icons/icon12888.png"
   },
   "default_locale": "en",
-  "background": {
-    "scripts": [
-      "js/browser-polyfill.min.js",
-      "js/jquery.min.js",
-      "src/bg/background.js"
-    ]
-  },
-  "browser_action": {
-    "default_icon": "icons/icon12888.png",
+  "action": {
     "default_popup": "src/browser_action/browser_action.html",
     "default_title": "Mass Unfriender"
   },
   "permissions": [
     "activeTab",
-    "https://*.facebook.com/*"
-  ],
-  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'"
+    "scripting"
+  ]
 }

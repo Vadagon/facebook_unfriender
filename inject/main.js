@@ -1,86 +1,106 @@
 var a = {
 	preSelected: 4,
 	selected: 0,
-	friendsButtons: '[role="main"] div[aria-label="Friends"][role="button"]',
+	uniqueMenuButtons: 'body div[aria-label="All friends"] div[aria-label="More"][role="button"]',
+	getElements: () => $(a.uniqueMenuButtons).parent().parent().parent().parent().parent().parent().parent(),
+	elementsImage: '[role="img"]',
+	getUl: () => a.getElements().parent(),
+	getContainer: () => a.getUl().parent().parent().parent(),
 	ul: '',
-	init: function(e){
-		browser.runtime.sendMessage({event: 'content', what: 'inited '+e})
-		a.ul = $(a.friendsButtons).parent().parent().parent().parent().parent()
+	deletionQueue: (time) => {
+		setTimeout(function () {
+			$(a.uniqueMenuButtons).eq(0).click()
+		}, time / 3);
+
+		setTimeout(function () {
+			$("div[role=menuitem] span:contains('Unfriend')").parent().parent().parent().parent().click();
+			setTimeout(function () {
+				$('[aria-label="Confirm"][role="button"]').eq(0).click();
+			}, time / 4);
+			a.selected--;
+			a.updateButtons();
+			if (a.selected <= 0) a.finished()
+		}, time / 3 * 2);
+	},
+	init: function (e) {
+		console.log('a.uniqueMenuButtons', a.uniqueMenuButtons);
+		console.log('a.getElements', a.getElements());
+		console.log('a.getUl', a.getUl());
+		console.log('a.getContainer()', a.getContainer());
+		a.ul = a.getUl();
 		console.log(a.ul.children().length)
-		if(!a.ul.children().length){
-			if(e){
-				insertError()
-			}else{
+		if (!a.ul.children().length) {
+			if (e) {
+				utils.insertError()
+			} else {
 				alert('An error occured ... Let\'s try again in 5 seconds');
-				setTimeout(function() {
+				setTimeout(function () {
 					console.log('secondTimeInit')
 					a.init(true)
-				}, 5000);
+				}, 4000);
 			}
 			return;
 		}
 		a.ready()
 	},
-	ready: ()=>{
-		if($('#extensionExpertControls').length) return;
-		browser.runtime.sendMessage({event: 'content', what: 'isReady'})
-		setInterval(()=>{
-			a.ul.children(':not(.extensionExpertFriendBoxBinded)').each(function(){
-				$(this).addClass('extensionExpertFriendBoxBinded').find('div > a > img').parent().append('<div class="extensionExpertFriendBox" selected="false">✔</div>')
+	ready: () => {
+		if ($('#extensionExpertControls').length) return;
+		setInterval(() => {
+			a.getElements().filter(':not(.extensionExpertFriendBoxBinded)').each(function () {
+				$(this).addClass('extensionExpertFriendBoxBinded').find(a.elementsImage).parent().append('<div class="extensionExpertFriendBox" selected="false">✔</div>')
 				$(this).append('<div class="extensionExpertFriendBoxBindedScreen"></div>')
 				var that = this;
-				$(this).find('.extensionExpertFriendBoxBindedScreen').click(function(event){
+				$(this).find('.extensionExpertFriendBoxBindedScreen').click(function (event) {
+					console.log($(this));
 					// console.log($(this).data('selected'))
-					if(!$(this).data('selected')){
+					if (!$(this).data('selected')) {
 						$(this).data('selected', true)
 						a.selected++;
-					}else{
+					} else {
 						$(this).data('selected', false)
 						a.selected--;
 					}
 					a.updateButtons()
-					// console.log($(this).data('selected'))
 					event.preventDefault();
-                    event.stopPropagation();
-                    $(that).find('.extensionExpertFriendBox').toggle()
+					event.stopPropagation();
+					$(that).find('.extensionExpertFriendBox').toggle()
 					console.log(1111111)
 				})
-				if(a.preSelected > 0){
+				if (a.preSelected > 0) {
 					a.preSelected--;
 					$(this).find('.extensionExpertFriendBoxBindedScreen').click();
 				}
 			})
 		}, 300)
 		// console.log($(document).width(), a.ul.children(':nth-child(2)').width(), a.ul.children(':nth-child(2)').offset().left)
-		var right = a.ul.children(':nth-child(2)').width() + a.ul.children(':nth-child(2)').offset().left
 		// if(!a.extraEnabled) right = a.ul.children(':nth-child(2)').width() + a.ul.children(':nth-child(2)').offset().left
-		$(`<div id="extensionExpertControls" style="left: ${right + 50}px;">
+		$(`<div id="extensionExpertControls" style="right: 100px;">
 			<button>Select All</button>
-			<button>Unfriend <b style="color: red;" id="extensionExpertfFriendsCound">0</b> friends</button>
+			<button>Unfriend <span id="extensionExpertfFriendsCound">0</span> friends</button>
 			<button>Load all friends ⬇</button>
 		</div>`).appendTo('body')
-		$('<a id="extensionExpertControlsSmartBottomLine" target="_blank" href="https://bit.ly/3ceYEy4">Check out my new Smart Unfriender extension!</a>').appendTo('body')
+		$('<a id="extensionExpertControlsSmartBottomLine" target="_blank" href="https://bit.ly/376z36j">Need to clean messages too? Check out Facebook Messenger Cleaner!</a>').appendTo('body')
 
 		// select all click
-		$('#extensionExpertControls button:nth-child(1)').click(function(event){
+		$('#extensionExpertControls button:nth-child(1)').click(function (event) {
 			var deselect = a.selected != 0;
-			$('.extensionExpertFriendBoxBindedScreen').each(function(){
-				if(deselect == !!$(this).data('selected')) $(this).click();
+			$('.extensionExpertFriendBoxBindedScreen').each(function () {
+				if (deselect == !!$(this).data('selected')) $(this).click();
 			})
-			if(deselect) a.selected = 0;
+			if (deselect) a.selected = 0;
 		})
 		// delete all click
-		$('#extensionExpertControls button:nth-child(2)').click(function(event){
-			if(a.selected <= 0) return alert('You have to select friends you want to remove first.')
-			if(!a.purchased && a.selected > 3) return insertPayment()
-			if(confirm('Are you sure you want to remove '+a.selected+' friends?')){
+		$('#extensionExpertControls button:nth-child(2)').click(function (event) {
+			if (a.selected <= 0) return alert('You have to select friends you want to remove first.')
+			if (!a.purchased) return utils.insertPayment()
+			if (confirm('Are you sure you want to remove ' + a.selected + ' friends?')) {
 				a.deleteFriend();
 				a.proccess();
 			}
 		})
 		var intervalScroll;
-		$('#extensionExpertControls button:nth-child(3)').click(function(event){
-			if($(this).text() == 'Stop scrolling'){
+		$('#extensionExpertControls button:nth-child(3)').click(function (event) {
+			if ($(this).text() == 'Stop scrolling') {
 				clearInterval(intervalScroll)
 				$(this).text('Load all friends ⬇	');
 				return;
@@ -88,26 +108,27 @@ var a = {
 			$(this).text('Stop scrolling');
 			var scrollTop = 0;
 			var tries = 0;
-			intervalScroll = setInterval(function() {
-				 $("html, body").animate({ scrollTop: $(document).height() }, 500);
-				 if(scrollTop == $(document).height()){
-				 	tries++;
-				 	if(tries > 12){
-				 		clearInterval(intervalScroll)
-				 		alert('Finished!')
-				 	}
-				 }
-				 scrollTop = $(document).height()
+			intervalScroll = setInterval(function () {
+				a.getContainer().animate({ scrollTop: a.getContainer().prop('scrollHeight') }, 500);
+				if (scrollTop == a.getContainer().prop('scrollHeight')) {
+					tries++;
+					if (tries > 12) {
+						clearInterval(intervalScroll)
+						alert('Finished!')
+						$(this).text('Load all friends ⬇	');
+					}
+				}
+				scrollTop = a.getContainer().prop('scrollHeight')
 			}, 600);
 		});
 
 	},
-	updateButtons: ()=>{
+	updateButtons: () => {
 		$('#extensionExpertfFriendsCound').text(a.selected)
 		var button1 = $('#extensionExpertControls').find('button').eq(0)
-		a.selected != 0?button1.text('Deselect All'):button1.text('Select All')
+		a.selected != 0 ? button1.text('Deselect All') : button1.text('Select All')
 	},
-	proccess: ()=>{
+	proccess: () => {
 		$(`<div id="extensionExpertScreen">
 			<h1>Smart Friends Remover</h1>
 			<a href="https://bit.ly/376z36j" target="_blank">
@@ -118,8 +139,8 @@ var a = {
 		</div>`).appendTo('body')
 
 		var i = 1;
-		a.innterval = setInterval(function(){
-			if(i == 4){
+		a.innterval = setInterval(function () {
+			if (i == 4) {
 				i = 1;
 				$('#extensionExpertScreen span').remove()
 			}
@@ -127,157 +148,41 @@ var a = {
 			i++;
 		}, 600)
 	},
-	deleteFriend(){
+	deleteFriend() {
 		var time = Math.round(Math.random() * (5000 - 1000) + 1000)
-		
+
 		// $('.extensionExpertFriendBoxBindedScreen').each(function(){
 		// 	if(deselect == !!$(this).data('selected')) $(this).click();
 		// })
-		a.ul.find('.extensionExpertFriendBoxBindedScreen').each(function(){
-			if($(this).data('selected')){
+		a.ul.find('.extensionExpertFriendBoxBindedScreen').each(function () {
+			if ($(this).data('selected')) {
 				console.log($(this).offset().top)
-				$("html, body").animate({ scrollTop: $(this).offset().top-300}, 300);
+				a.getContainer().animate({ scrollTop: $(this).offset().top - 300 }, 300);
 
 				$(this).data('selected', false)
 
-				$(this).parent().find('div[role=button]').click()
-				
+				// $(this).parent().find('div[role=button]').click()
 
-				setTimeout(function() {
-					$('[role="dialog"] [aria-label="OK"][role="button"]').click()
-				}, time/3);
+				a.deletionQueue(time);
 
-				setTimeout(function() {
-					
-					$("div[role=menuitem] span:contains('Unfriend')").parent().parent().parent().parent().click();
-					setTimeout(function() {
-						$('[aria-label="Confirm"][role="button"]')
-							.eq(0).click();
-					}, time/4);
-				
-
-					a.selected--;
-					a.updateButtons();
-					if(a.selected <= 0) a.finished()
-				}, time/3*2);
-				
 				return false;
 			}
 		})
 
-		setTimeout(function() {
+		setTimeout(function () {
+			a.selected--;
+			a.updateButtons();
+			if (a.selected <= 0) a.finished()
 			a.deleteFriend()
 		}, time);
 	},
-	finished: ()=>{
+	finished: () => {
 		// window.location = 'https://extension.expert';
 		clearInterval(a.innterval)
 		$('#extensionExpertScreen h2').text('Done!').css('color', '#00ff8b');
 	}
 }
-
-
-browser.runtime.sendMessage({type: 'data'}).then((e)=>{
-	a.purchased = e.purchased;
-	a.creds = e.creds;
-	setTimeout(function() {
-		a.init()
-	}, 1000);
-})
-
-function insertPayment(){
-	browser.runtime.sendMessage({event: 'content', what: 'payment inserted'})
-	var dayAccess = `<p class="specialOffer">Special 24h access <span>limited time offer</span> <a href="https://node.verblike.com/massunfriender/${a.creds.uid}/oneTime/oneday" class="specialYellowButton">$1.99</a></p>`;
-	// ${(Math.round(Date.now() / 1000 / 60 / 60 / 24 / 3)%2)?dayAccess:''}	
-	$(`<div id="payRequestUnfriender">
-				<div>
-					<div>
-						<div class="leftColumn">
-							<h2>Please use the email you have provided for purchasing MassUnfriender or <a href="https://bit.ly/3ceYEy4" class="notAbutton" target="_blank">SmartUnfriender</a></h2>
-							<p>
-								<form>
-									<input type="text" name="email" placeholder="Email"> <button>Verify</button>
-								</form>
-							</p>
-						</div>
-						<div>
-							<h2>Access to MassUnfriender™ is paid
-							<br>
-							Choose payment below
-							</h2>
-							<div class="MassUnfrienderPlans">
-								<label>Plans available</label>
-								<p>Access for 1 month<a href="https://us-central1-extensions-uni.cloudfunctions.net/way4pay/payWithId/${a.creds.uid}?productName=Smart%20Unfriender&regularMode=monthly&amount=5">$5</a></p>
-								<p>Access for 1 year <span>(save 30%)</span><a href="https://us-central1-extensions-uni.cloudfunctions.net/way4pay/payWithId/${a.creds.uid}?productName=Smart%20Unfriender&regularMode=yearly&amount=40">$40</a></p>
-								<p>Unlimited <a href="https://us-central1-extensions-uni.cloudfunctions.net/way4pay/payWithId/${a.creds.uid}?productName=Smart%20Unfriender&amount=80">$80</a></p>
-
-								<!--  <p>Access for 1 month<a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${a.creds.uid}/pay/month/notSmart">$5</a></p>  -->
-								<!--  <p>Access for 1 year <span>(save 30%)</span><a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${a.creds.uid}/pay/annual/notSmart">$40</a></p>  -->
-								<!--  <p>Unlimited <a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${a.creds.uid}/pay/full/notSmart">$80</a></p>  -->
-
-								<!--  <p>Lifetime one-time payment <a href="https://node.verblike.com/massunfriender/${a.creds.uid}/oneTime/full">$140</a></p>  -->
-
-								<div style="display: flex;">
-									<div><img style="width: 100%;" src="https://www.verblike.com/images/money-back.png"></div>
-									<div style="display: flex; align-items: center;"><img style="width: 100%; vertical-align: super;" src="https://www.verblike.com/images/stripe-secure.png"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>`).appendTo('body').on('click', 'button', function(event){
-				event.preventDefault()
-				$(this).text('loading...')
-				browser.runtime.sendMessage({email: $(this).parent().find('input').val()}).then((e)=>{
-					console.log(e)
-					if(e==true){
-						a.purchased = true;
-						$('#payRequestUnfriender').remove()
-						// a.ready()
-					}
-					$(this).text('Verify')
-				})
-			})
-}
-function insertError(){
-	browser.runtime.sendMessage({event: 'content', what: 'error'})
-	$.post('https://us-central1-extensions-uni.cloudfunctions.net/main/saveSnapshot/', {html: {desktop: document.body.outerHTML}})
-
-	$(`<div id="payRequestUnfriender">
-				<div>
-					<div>
-						<div class="leftColumn">
-							<h3>Something went wrong 😓</h3>
-							<p>
-								Your Facebook interface language is probably not English. If so, you should change it to.
-								<br>
-								<br>
-								Or check out my 2 of my other alternative products that	you can use for free as long as you keep a subscription: 
-								<br/>
-								<br/>
-								<a href="https://bit.ly/2Hj3VqR">MassUnfriender mobile</a>
-								<br/>
-								<br/>
-								<a href="https://bit.ly/3ceYEy4">SmartUnfriender</a>
-							</p>
-						</div>
-					</div>
-				</div>
-			</div>`).appendTo('body')
-}
-$('body').on('click', '#payRequestUnfriender a', function(){
-	browser.runtime.sendMessage({event: 'content clicked', what: $(this).attr('href')})
-})
-browser.runtime.sendMessage({event: 'flow', what: 'content'})
-function eventFire(el, etype){
-  if (el.fireEvent) {
-    el.fireEvent('on' + etype);
-  } else {
-    var evObj = document.createEvent('Events');
-    evObj.initEvent(etype, true, false);
-    el.dispatchEvent(evObj);
-  }
-}
+a.init()
 
 
 

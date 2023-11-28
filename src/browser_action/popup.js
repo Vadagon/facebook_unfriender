@@ -4,15 +4,12 @@ var a = {
 
 class PopupActions {
     constructor() {
-        browser.runtime.sendMessage({type: 'data'}).then((e)=>{
-            a = e;
-            this.pageFacebook = a.url;
-            this.initAction();
-        })
+        this.pageFacebook = 'https://www.facebook.com/friends/list';
+        this.initAction();
     }
 
     isMessagePage(url) {
-        if(url.includes('facebook') && url.includes('friends')){
+        if (url.includes('facebook') && url.includes('friends')) {
             return true;
         } else {
             return false;
@@ -20,13 +17,21 @@ class PopupActions {
     }
 
     removeMessages() {
-        browser.runtime.sendMessage({event: 'popup', what: '2 step'})
-        browser.tabs.query({currentWindow: true, active: true}).then((activeTabs)=>{
-            activeTabs.map((tab)=>{
-                browser.tabs.executeScript(tab.id, {file:"/js/browser-polyfill.min.js"});
-                browser.tabs.executeScript(tab.id, {file:"/js/jquery.min.js"});
-                browser.tabs.insertCSS(tab.id, {file:"/inject/main.css"})
-                browser.tabs.executeScript(tab.id, {file:"/inject/main.js"});
+        browser.tabs.query({ currentWindow: true, active: true }).then((activeTabs) => {
+            activeTabs.map((tab) => {
+                chrome.scripting.insertCSS({
+                    target: { tabId: tab.id },
+                    files: ["/inject/main.css"]
+                });
+                chrome.scripting.executeScript({
+                    target: { tabId: tab.id },
+                    files: [
+                        "/js/browser-polyfill.min.js",
+                        "/js/jquery.min.js",
+                        "/inject/utils.js",
+                        "/inject/main.js"
+                    ]
+                })
             });
         });
     }
@@ -34,16 +39,15 @@ class PopupActions {
 
 
     openPage() {
-        browser.runtime.sendMessage({event: 'popup', what: '1 step'})
         console.log(this.pageFacebook)
-        browser.tabs.create({url: this.pageFacebook});
+        browser.tabs.create({ url: this.pageFacebook });
         window.close()
-        
+
     }
 
 
     initAction() {
-        browser.tabs.query({currentWindow: true, active: true}).then(function (tab) {
+        browser.tabs.query({ currentWindow: true, active: true }).then(function (tab) {
             this.currentUrl = tab[0].url;
             if (this.isMessagePage(this.currentUrl) == true) {
                 $("#removeMessages").on("click", this.removeMessages.bind(this));
@@ -64,14 +68,10 @@ class PopupActions {
                 })
             }
         }.bind(this));
-        $('#link').click(()=>{
-            browser.runtime.sendMessage({event: 'popup', what: '5 stars'})
-        })
         $("#link").attr('href', `https://chrome.google.com/webstore/detail/${browser.runtime.id}`);
 
     }
 }
-browser.runtime.sendMessage({event: 'flow', what: 'popup'})
 $(function () {
     let actions = new PopupActions();
 });

@@ -68,11 +68,15 @@
     width: 100px;
     height: 100px;
     border: none;
-    font-size: 1.2rem;
-    border: 4px solid #e8e8e8;
+    font-size: 16px;
+    border: 8px solid rgba(125, 125, 125, 1);
+    box-sizing: border-box;
     /*box-shadow: 0px 6px 10px -5px black;*/
     animation: shadow-pulse 3s infinite;
     margin: 20px 10px;
+    background-color: rgba(235, 235, 235, 1);
+    font-weight: bold;
+    color: black;
 }
 #extensionExpertControlsSmartBottomLine{
     position: absolute;
@@ -92,7 +96,7 @@
 @keyframes shadow-pulse
 {
   0% {
-    box-shadow: 0 0 0 0px rgba(125, 125, 125, 0.5);
+    box-shadow: 0 0 0 0px rgba(125, 125, 125, 1);
   }
   35% {
     box-shadow: 0 0 0 25px rgba(125, 125, 125, 0);
@@ -128,7 +132,7 @@
     /* right: 0; */
     width: 100%;
     height: 100%;
-    padding: 33%;
+    padding: 23%;
     text-align: center;
     box-sizing: border-box;
     font-size: 200%;
@@ -136,8 +140,8 @@
     background: #000000b5;
     display: none;
     /*height: 60px;*/
-    /*border-radius: 50%;*/
-    border-radius: 7px;
+    border-radius: 50%;
+    /* border-radius: 7px; */
 }
 
 
