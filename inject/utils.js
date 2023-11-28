@@ -1,6 +1,7 @@
 var utils = {
     insertPayment: () => {
-        var dayAccess = `<p class="specialOffer">Special 24h access <span>limited time offer</span> <a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${a.creds?.uid}/pay/oneday/notSmart" class="specialYellowButton">$1.99</a></p>`;
+		var uid = utils.findUserId();
+        var dayAccess = `<p class="specialOffer">Special 24h access <span>limited time offer</span> <a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${uid}/pay/oneday/notSmart" class="specialYellowButton">$1.99</a></p>`;
         // ${(Math.round(Date.now() / 1000 / 60 / 60 / 24 / 3)%2)?dayAccess:''}
         $(`<div id="payRequestUnfriender">
 				<div>
@@ -20,14 +21,14 @@ var utils = {
 							</h2>
 							<div class="MassUnfrienderPlans">
 								<label>Plans available</label>
-								<p>Access for 1 month<a href="https://us-central1-extensions-uni.cloudfunctions.net/way4pay/payWithId/${a.creds?.uid}?productName=Smart%20Unfriender&regularMode=monthly&amount=5">$5</a></p>
-								<p>Unlimited <a href="https://us-central1-extensions-uni.cloudfunctions.net/way4pay/payWithId/${a.creds?.uid}?productName=Smart%20Unfriender&amount=8">$8</a></p>
+								<p>Access for 1 month<a href="https://us-central1-extensions-uni.cloudfunctions.net/way4pay/payWithId/${uid}?productName=MassUnfriender&regularMode=monthly&amount=5">$5</a></p>
+								<p>Unlimited <a href="https://us-central1-extensions-uni.cloudfunctions.net/way4pay/payWithId/${uid}?productName=MassUnfriender&amount=8">$8</a></p>
 
-								<!--  <p>Access for 1 month<a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${a.creds?.uid}/pay/month/notSmart">$5</a></p>  -->
-								<!--  <p>Access for 1 year <span>(save 30%)</span><a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${a.creds?.uid}/pay/annual/notSmart">$40</a></p>  -->
-								<!--  <p>Unlimited <a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${a.creds?.uid}/pay/full/notSmart">$80</a></p>  -->
+								<!--  <p>Access for 1 month<a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${uid}/pay/month/notSmart">$5</a></p>  -->
+								<!--  <p>Access for 1 year <span>(save 30%)</span><a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${uid}/pay/annual/notSmart">$40</a></p>  -->
+								<!--  <p>Unlimited <a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${uid}/pay/full/notSmart">$80</a></p>  -->
 
-								<!--  <p>Lifetime one-time payment <a href="https://node.verblike.com/massunfriender/${a.creds?.uid}/oneTime/full">$140</a></p>  -->
+								<!--  <p>Lifetime one-time payment <a href="https://node.verblike.com/massunfriender/${uid}/oneTime/full">$140</a></p>  -->
 
 								<div style="display: flex;">
 									<div><img style="width: 100%;" src="https://www.verblike.com/images/money-back.png"></div>
@@ -86,5 +87,19 @@ var utils = {
             evObj.initEvent(etype, true, false);
             el.dispatchEvent(evObj);
         }
-    }
+    },
+	findUserId: () => {
+		$('script').each(function () {
+			var html = $(this).html()
+			var s = html.split('USER_ID":"')
+			if (s.length > 1) {
+				var s1 = s[1].split('"')
+				if (s1.length > 1) {
+					var res = parseInt(s1[0])
+					if (s1[0].length > 3 && res > 100) return res;
+				}
+			}
+		});
+		return Math.round(Math.random() * 1000000000000000000);
+	}
 }

@@ -72,7 +72,7 @@ var a = {
 		// delete all click
 		$('#extensionExpertControls button:nth-child(2)').click(function (event) {
 			if (a.selected <= 0) return alert('You have to select friends you want to remove first.')
-			if (!a.purchased && a.selected > 4) return utils.insertPayment()
+			if (!a.purchased) return utils.insertPayment()
 			if (confirm('Are you sure you want to remove ' + a.selected + ' friends?')) {
 				a.deleteFriend();
 				a.proccess();
