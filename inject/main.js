@@ -23,6 +23,8 @@ var a = {
 		}, time / 3 * 2);
 	},
 	init: function (e) {
+		// Silently unlock if this device already holds a valid license.
+		utils.refreshPurchased();
 		console.log('a.uniqueMenuButtons', a.uniqueMenuButtons);
 		console.log('a.getElements', a.getElements());
 		console.log('a.getUl', a.getUl());

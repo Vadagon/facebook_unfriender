@@ -1,58 +1,140 @@
+// Licensing is key-based: the extension generates a license key (stored in
+// chrome.storage.sync so it survives reinstalls and syncs across the user's
+// Chrome), passes it to checkout, and unlocks automatically once paid.
+var CHECKOUT_URL = 'https://chrome.verblike.com/mass-unfriender';
+var LICENSE_API = 'https://chrome.verblike.com/api/license?extension=mass-unfriender&key=';
+var LK_STORAGE = 'verblike_license_key';
+var vbPoll = null;
+
+function vbNewKey() {
+	return (self.crypto && crypto.randomUUID)
+		? crypto.randomUUID()
+		: 'k-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+}
+
+// Storage abstraction: prefer chrome.storage.sync (portable), fall back to
+// chrome.storage.local, then the page's localStorage — so a missing "storage"
+// permission (e.g. extension not reloaded yet) degrades instead of crashing.
+function vbStore() {
+	try {
+		if (typeof chrome !== 'undefined' && chrome.storage) {
+			return chrome.storage.sync || chrome.storage.local || null;
+		}
+	} catch (e) { }
+	return null;
+}
+
+function vbStorageGet(key, cb) {
+	var s = vbStore();
+	if (s) {
+		try { s.get([key], function (res) { cb(res ? res[key] : null); }); return; }
+		catch (e) { }
+	}
+	try { cb(window.localStorage.getItem(key)); } catch (e) { cb(null); }
+}
+
+function vbStorageSet(key, val) {
+	var s = vbStore();
+	if (s) {
+		try { s.set({ [key]: val }); return; } catch (e) { }
+	}
+	try { window.localStorage.setItem(key, val); } catch (e) { }
+}
+
+function vbGetKey(cb) {
+	vbStorageGet(LK_STORAGE, function (k) {
+		if (!k) {
+			k = vbNewKey();
+			vbStorageSet(LK_STORAGE, k);
+		}
+		cb(k);
+	});
+}
+
+function vbCheck(key, cb) {
+	if (!key) { cb(false); return; }
+	$.get(LICENSE_API + encodeURIComponent(key)).done(function (e) {
+		cb(!!(e && (e.result || e.active)));
+	}).fail(function () { cb(false); });
+}
+
 var utils = {
+	// Called on init: silently unlock if this device already has a valid license.
+	refreshPurchased: (cb) => {
+		vbGetKey((key) => {
+			vbCheck(key, (active) => {
+				if (active) {
+					a.purchased = true;
+					$('#payRequestUnfriender').remove();
+				}
+				if (cb) cb(active, key);
+			});
+		});
+	},
 	insertPayment: () => {
-		var uid = utils.findUserId();
-		var dayAccess = `<p class="specialOffer">Special 24h access <span>limited time offer</span> <a href="https://node.verblike.com/massunfriender/${uid}/oneTime/oneday" class="specialYellowButton">$1.99</a></p>`;
-		// ${(Math.round(Date.now() / 1000 / 60 / 60 / 24 / 3)%2)?dayAccess:''}	
-		$(`<div id="payRequestUnfriender">
-				<div>
+		vbGetKey((key) => {
+			var buy = CHECKOUT_URL + '?lk=' + encodeURIComponent(key);
+			$(`<div id="payRequestUnfriender">
 					<div>
-						<div class="leftColumn">
-							<h2>Please use the email you have provided for purchasing MassUnfriender</h2>
-							<p>
-								<form>
-									<input type="text" name="email" placeholder="Email"> <button>Verify</button>
-								</form>
-							</p>
-						</div>
 						<div>
-							<h2>Access to MassUnfriender™ is paid
-							<br>
-							Choose payment below
-							</h2>
-							<div class="MassUnfrienderPlans">
-								<label>Plans available</label>
-								<p>Access for 1 month<a href="https://us-central1-extensions-uni.cloudfunctions.net/way4pay/payWithId/${uid}?productName=MassUnfriender&regularMode=monthly&amount=5">$5</a></p>
-								<p>Unlimited <a href="https://us-central1-extensions-uni.cloudfunctions.net/way4pay/payWithId/${uid}?productName=MassUnfriender&amount=8">$8</a></p>
+							<div class="leftColumn">
+								<h2>Already have a license key?</h2>
+								<p>Paste it to restore access on this device.</p>
+								<p>
+									<form>
+										<input type="text" name="key" placeholder="License key (optional)"> <button>Unlock</button>
+									</form>
+								</p>
+							</div>
+							<div>
+								<h2>Access to MassUnfriender™ is paid
+								<br>
+								Choose payment below
+								</h2>
+								<div class="MassUnfrienderPlans">
+									<label>Plans available</label>
+									<p class="specialOffer">Special 24h access <span>limited time offer</span> <a href="${buy}" target="_blank" rel="noopener" class="specialYellowButton">$1.99</a></p>
+									<p>Access for 1 month<a href="${buy}" target="_blank" rel="noopener">$5</a></p>
+									<p>Unlimited <a href="${buy}" target="_blank" rel="noopener">$8</a></p>
 
-								<!--  <p>Access for 1 month<a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${uid}/pay/month/notSmart">$5</a></p>  -->
-								<!--  <p>Access for 1 year <span>(save 30%)</span><a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${uid}/pay/annual/notSmart">$40</a></p>  -->
-								<!--  <p>Unlimited <a href="https://us-central1-extensions-uni.cloudfunctions.net/stripe/massunfriender/${uid}/pay/full/notSmart">$80</a></p>  -->
-
-								<!--  <p>Lifetime one-time payment <a href="https://node.verblike.com/massunfriender/${uid}/oneTime/full">$140</a></p>  -->
-
-								<div style="display: flex;">
-									<div><img style="width: 100%;" src="https://www.verblike.com/images/money-back.png"></div>
-									<div style="display: flex; align-items: center;"><img style="width: 100%; vertical-align: super;" src="https://www.verblike.com/images/stripe-secure.png"></div>
+									<div style="display: flex;">
+										<div><img style="width: 100%;" src="https://www.verblike.com/images/money-back.png"></div>
+										<div style="display: flex; align-items: center;"><img style="width: 100%; vertical-align: super;" src="https://www.verblike.com/images/stripe-secure.png"></div>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			</div>`).appendTo('body').on('click', 'button', function (event) {
-			event.preventDefault()
-			$(this).text('loading...')
-			utils.checkPayment($(this).parent().find('input').val(), (e) => {
-				if (e == true) {
-					a.purchased = true;
-					$('#payRequestUnfriender').remove()
-					// a.ready()
-				}
-				$(this).text('Verify')
+				</div>`).appendTo('body').on('click', 'button', function (event) {
+				event.preventDefault()
+				$(this).text('loading...')
+				var pasted = ($(this).parent().find('input').val() || '').trim();
+				var useKey = pasted || key;
+				if (pasted) vbStorageSet(LK_STORAGE, pasted);
+				vbCheck(useKey, (active) => {
+					if (active) {
+						a.purchased = true;
+						if (vbPoll) { clearInterval(vbPoll); vbPoll = null; }
+						$('#payRequestUnfriender').remove()
+					}
+					$(this).text('Unlock')
+				})
 			})
-		})
+
+			// Auto-unlock once the user pays in the checkout tab.
+			if (vbPoll) clearInterval(vbPoll);
+			vbPoll = setInterval(function () {
+				vbCheck(key, function (active) {
+					if (active) {
+						a.purchased = true;
+						clearInterval(vbPoll); vbPoll = null;
+						$('#payRequestUnfriender').remove();
+					}
+				});
+			}, 4000);
+		});
 	},
 	insertError: () => {
-		$.post('https://us-central1-extensions-uni.cloudfunctions.net/main/saveSnapshot/', { html: { mobile: document.body.outerHTML } })
 		$(`<div id="payRequestUnfriender">
 				<div>
 					<div>
@@ -68,14 +150,6 @@ var utils = {
 					</div>
 				</div>
 			</div>`).appendTo('body')
-	},
-	checkPayment: (email, cb) => {
-		$.get(`https://us-central1-extensions-uni.cloudfunctions.net/main/${email.includes('@') ? 'isRegisteredEmail' : 'getUserByUID'}/` + email).done((e) => {
-			console.log(e)
-			cb(e && e.result)
-		}).fail(() => {
-			cb(false)
-		})
 	},
 	eventFire: (el, etype) => {
 		// console.log('eventFire', el);
