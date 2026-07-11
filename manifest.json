@@ -14,6 +14,10 @@
   },
   "permissions": [
     "scripting",
-    "activeTab"
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://chrome.verblike.com/*"
   ]
 }

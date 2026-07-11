@@ -7,6 +7,8 @@ var a = {
 	getUl: ()=> $(a.selector + '   > div     div > a > i').parent().parent().parent().parent().eq(0),
 	ul: '',
 	init: function (e) {
+		// Silently unlock if this device already holds a valid license.
+		utils.refreshPurchased();
 		a.ul = a.getUl();
 		console.log(a.ul.children().length)
 		if (!a.ul.children().length) {
