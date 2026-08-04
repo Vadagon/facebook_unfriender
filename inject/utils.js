@@ -1,8 +1,8 @@
 // Licensing is key-based: the extension generates a license key (stored in
 // chrome.storage.sync so it survives reinstalls and syncs across the user's
 // Chrome), passes it to checkout, and unlocks automatically once paid.
-var CHECKOUT_URL = 'https://chrome.verblike.com/mass-unfriender';
-var LICENSE_API = 'https://chrome.verblike.com/api/license?extension=mass-unfriender&key=';
+var CHECKOUT_URL = 'https://cleanmysocial.verblike.com/mass-unfriender';
+var LICENSE_API = 'https://cleanmysocial.verblike.com/api/license?extension=cleanmysocial&key=';
 var LK_STORAGE = 'verblike_license_key';
 var vbPoll = null;
 
@@ -87,19 +87,15 @@ var utils = {
 								</p>
 							</div>
 							<div>
-								<h2>Access to MassUnfriender™ is paid
-								<br>
-								Choose payment below
-								</h2>
+								<h2>Unlock the complete CleanMySocial bundle</h2>
+								<p>One purchase unlocks this tool, Messenger Cleaner, and Friends Remover.</p>
 								<div class="MassUnfrienderPlans">
-									<label>Plans available</label>
-									<p class="specialOffer">Special 24h access <span>limited time offer</span> <a href="${buy}" target="_blank" rel="noopener" class="specialYellowButton">$1.99</a></p>
-									<p>Access for 1 month<a href="${buy}" target="_blank" rel="noopener">$5</a></p>
-									<p>Unlimited <a href="${buy}" target="_blank" rel="noopener">$8</a></p>
+									<label>Lifetime access</label>
+									<p class="specialOffer">All 3 extensions <span>one-time payment</span> <a href="${buy}" target="_blank" rel="noopener" class="specialYellowButton">$8</a></p>
 
 									<div style="display: flex;">
 										<div><img style="width: 100%;" src="https://www.verblike.com/images/money-back.png"></div>
-										<div style="display: flex; align-items: center;"><img style="width: 100%; vertical-align: super;" src="https://www.verblike.com/images/stripe-secure.png"></div>
+										<div style="display: flex; align-items: center;">Secure checkout by Creem</div>
 									</div>
 								</div>
 							</div>

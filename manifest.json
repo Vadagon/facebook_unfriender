@@ -1,6 +1,6 @@
 {
   "name": "Mass Unfriender for Facebook | desktop",
-  "version": "32",
+  "version": "34",
   "manifest_version": 3,
   "description": "Delete all Facebook Friends",
   "icons": {
@@ -18,6 +18,6 @@
     "storage"
   ],
   "host_permissions": [
-    "https://chrome.verblike.com/*"
+    "https://cleanmysocial.verblike.com/*"
   ]
 }
