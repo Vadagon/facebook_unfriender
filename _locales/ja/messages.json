@@ -1,0 +1,14 @@
+{
+  "extName": {
+    "message": "Facebook 一括友達削除 — Unfriender"
+  },
+  "extShortName": {
+    "message": "Unfriender"
+  },
+  "extDescription": {
+    "message": "Facebook の友達を全員削除、または特定の人を選んで一括友達解除。高速・プライベート・100% ローカル。"
+  },
+  "extActionTitle": {
+    "message": "一括友達削除を開く"
+  }
+}

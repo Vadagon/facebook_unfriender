@@ -1,0 +1,14 @@
+{
+  "extName": {
+    "message": "Eliminar amigos en masa para Facebook — Unfriender"
+  },
+  "extShortName": {
+    "message": "Unfriender"
+  },
+  "extDescription": {
+    "message": "Elimina todos tus amigos de Facebook o selecciona personas para borrarlas en bloque. Rápido, privado y 100% local."
+  },
+  "extActionTitle": {
+    "message": "Abrir el eliminador de amigos"
+  }
+}

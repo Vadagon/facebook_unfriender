@@ -1,0 +1,14 @@
+{
+  "extName": {
+    "message": "Facebook için toplu arkadaş kaldırma — Unfriender"
+  },
+  "extShortName": {
+    "message": "Unfriender"
+  },
+  "extDescription": {
+    "message": "Tüm Facebook arkadaşlarını silin veya toplu kaldırmak için kişileri seçin. Hızlı, gizli ve %100 yerel."
+  },
+  "extActionTitle": {
+    "message": "Toplu arkadaş kaldırmayı aç"
+  }
+}

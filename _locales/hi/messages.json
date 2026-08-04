@@ -1,0 +1,14 @@
+{
+  "extName": {
+    "message": "Facebook के लिए एक साथ कई दोस्त हटाएँ — Unfriender"
+  },
+  "extShortName": {
+    "message": "Unfriender"
+  },
+  "extDescription": {
+    "message": "सभी Facebook दोस्तों को हटाएँ या कुछ लोगों को चुनकर बल्क में अनफ्रेंड करें। तेज़, निजी और 100% लोकल।"
+  },
+  "extActionTitle": {
+    "message": "बल्क अनफ्रेंडर खोलें"
+  }
+}

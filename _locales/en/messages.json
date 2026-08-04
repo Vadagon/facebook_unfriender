@@ -1,0 +1,14 @@
+{
+  "extName": {
+    "message": "Mass Friends Remover for Facebook — Bulk Unfriender"
+  },
+  "extShortName": {
+    "message": "Unfriender"
+  },
+  "extDescription": {
+    "message": "Delete all Facebook friends or select specific people to bulk-unfriend. Fast, private mass friend remover — 100% local."
+  },
+  "extActionTitle": {
+    "message": "Open the bulk unfriender"
+  }
+}

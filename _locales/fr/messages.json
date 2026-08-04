@@ -1,0 +1,14 @@
+{
+  "extName": {
+    "message": "Suppression d'amis en masse pour Facebook — Unfriender"
+  },
+  "extShortName": {
+    "message": "Unfriender"
+  },
+  "extDescription": {
+    "message": "Supprimez tous vos amis Facebook ou sélectionnez des personnes à retirer en masse. Rapide, privé et 100% local."
+  },
+  "extActionTitle": {
+    "message": "Ouvrir le suppresseur d'amis"
+  }
+}

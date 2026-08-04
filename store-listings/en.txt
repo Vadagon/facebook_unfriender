@@ -1,0 +1,26 @@
+🧹 Mass Friends Remover for Facebook — Bulk Unfriender
+
+Tired of scrolling through hundreds of old friends one by one? Clean up your Facebook friends list in minutes. Select the people you want to remove and unfriend them all in one click — right on your own Facebook Friends page.
+
+✨ What you can do
+✅ Bulk unfriend — select many friends and remove them together
+🎯 Pick exactly who to remove with a checkbox on each friend
+🔀 Sort your list by name, mutual friends, or profile
+⚡ One-click "Select all" and "Deselect all"
+🕒 Smart, randomized delay between removals to stay safe
+🛑 Stop anytime — you're always in control
+
+🔒 100% private & local
+Everything runs inside your browser using your own logged-in session. Your friend list never leaves your computer. No account, no sign-up, no server, no tracking.
+
+⚙️ How it works
+1️⃣ Click the toolbar icon to open your Friends page
+2️⃣ Press "Load all" to bring in every friend
+3️⃣ Tick the friends you want to remove
+4️⃣ Click "Unfriend selected" and confirm
+
+Perfect for spring-cleaning your account, removing inactive friends, or starting fresh. 🌱
+
+⚠️ Note: Facebook may limit very fast changes, so a safe delay is used between removals.
+
+Not affiliated with, endorsed by, or sponsored by Meta Platforms, Inc. "Facebook" is a trademark of Meta Platforms, Inc.

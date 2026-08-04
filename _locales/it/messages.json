@@ -1,0 +1,14 @@
+{
+  "extName": {
+    "message": "Rimozione amici in massa per Facebook — Unfriender"
+  },
+  "extShortName": {
+    "message": "Unfriender"
+  },
+  "extDescription": {
+    "message": "Elimina tutti gli amici di Facebook o seleziona chi rimuovere in blocco. Veloce, privato e 100% locale."
+  },
+  "extActionTitle": {
+    "message": "Apri il rimuovi-amici"
+  }
+}

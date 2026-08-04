@@ -1,0 +1,14 @@
+{
+  "extName": {
+    "message": "Массовое удаление друзей для Facebook — Unfriender"
+  },
+  "extShortName": {
+    "message": "Unfriender"
+  },
+  "extDescription": {
+    "message": "Удалите всех друзей Facebook или выберите нужных людей для массового удаления. Быстро, приватно и 100% локально."
+  },
+  "extActionTitle": {
+    "message": "Открыть удаление друзей"
+  }
+}
