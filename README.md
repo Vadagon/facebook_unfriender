@@ -1,15 +1,17 @@
-# Mass Unfriender for Facebook
+# CleanMySocial Mass Unfriender
 
 A Chrome extension (Manifest V3) that lets you **unfriend people on Facebook in
 bulk** from your desktop — select many friends at once and remove them, instead
 of clicking through profiles one by one.
 
 Chrome Web Store:
-<https://chromewebstore.google.com/detail/mass-unfriender-for-faceb/imobgpikmofiapbnijmebknbkmkncdkl>
+<https://chromewebstore.google.com/detail/mass-unfriender-for-faceb/fegkbiinmaoipoonnlhekdoefgebmdnj>
 
-> **Note:** this is the same project as **Mass Friends Remover for Facebook**
+Extension ID: `fegkbiinmaoipoonnlhekdoefgebmdnj`
+
+> **Note:** this is the same product family as **CleanMySocial Friends Remover**
 > (a separate store listing built for a different Facebook UI, maintained on
-> another branch). They share the same Paddle product and license, so one
+> another branch). They share the same CleanMySocial product and license, so one
 > purchase unlocks either.
 
 ## What it does
@@ -27,23 +29,22 @@ Chrome Web Store:
    **Unfriend N friends**.
 4. If not yet unlocked, a plans panel appears; once licensed, removal proceeds.
 
-## Licensing (Paddle)
+## Licensing (Creem)
 
-Paid access is handled by **[chrome.verblike.com](https://chrome.verblike.com)**
-with Paddle as Merchant of Record. It's **key-based and auto-unlocking**:
+Paid access is handled by **[cleanmysocial.verblike.com](https://cleanmysocial.verblike.com)**
+with Creem as Merchant of Record. It's **key-based and auto-unlocking**:
 
 - On first run the extension generates a **license key** stored in
   `chrome.storage.sync` (survives reinstalls, syncs across the user's Chrome).
 - On load it silently checks the license (`utils.refreshPurchased()`), so paying
   users never see the paywall.
-- The plans panel opens checkout at `chrome.verblike.com/mass-unfriender?lk=<key>`;
+- The panel opens checkout at `cleanmysocial.verblike.com/mass-unfriender?lk=<key>`;
   after payment the extension **polls `/api/license` and unlocks automatically**.
 - The success page shows the key as a restore code; paste it into the panel to
   restore access on another browser/computer.
 
-Plans: **$1.99 (24-hour)**, **$5/month**, or **$8 unlimited** (one-time). Because
-the license is shared with Mass Friends Remover, either extension checks access
-with `extension=mass-unfriender`.
+One **$8 lifetime purchase** unlocks all three CleanMySocial extensions. Every
+extension checks the shared `cleanmysocial` license entitlement.
 
 ## How it works (code)
 
@@ -58,7 +59,7 @@ Injected into the friends-list tab from the popup
 | `src/browser_action/` | Toolbar popup that injects the content scripts |
 | `js/` | Bundled jQuery + webextension-polyfill |
 | `_locales/` | Localized strings |
-| `manifest.json` | MV3; permissions: `activeTab`, `scripting`, `storage`; host: `chrome.verblike.com` |
+| `manifest.json` | MV3; permissions: `activeTab`, `scripting`, `storage`; host: `cleanmysocial.verblike.com` |
 
 ## Privacy
 
