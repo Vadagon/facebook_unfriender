@@ -9,7 +9,9 @@ const FACEBOOK_URLS = ["https://www.facebook.com/*", "https://web.facebook.com/*
 const FRIENDS_URL = "https://www.facebook.com/me/friends";
 const PURCHASE_URL = "https://cleanmysocial.verblike.com/mass-unfriender";
 const REVIEW_URL = "https://chromewebstore.google.com/detail/fegkbiinmaoipoonnlhekdoefgebmdnj/reviews";
-const LICENSE_API = "https://cleanmysocial.verblike.com/api/license?extension=cleanmysocial&key=";
+// Identify this extension specifically, so the server can tell which tool is
+// asking. Asking as "cleanmysocial" means any purchase unlocks everything.
+const LICENSE_API = "https://cleanmysocial.verblike.com/api/license?extension=mass-unfriender&key=";
 const LICENSE_KEY_STORAGE = "verblike_license_key";
 const LICENSE_CACHE_STORAGE = "mass_unfriender_license_cache";
 const LICENSE_CACHE_TTL = 5 * 60 * 1000;
