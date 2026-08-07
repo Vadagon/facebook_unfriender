@@ -19,15 +19,22 @@ control panel.
 3. Click **Unfriend selected**, review the confirmation, and confirm.
 4. **Stop** safely ends loading or unfriending after the current operation.
 
-Facebook may rate-limit rapid changes, so unfriending uses a conservative random
-20–45 second delay by default. Existing `cms_settings` in extension storage can
-override the minimum and maximum delay.
+Facebook may rate-limit rapid changes. The panel offers Fast (5–10 seconds),
+Normal (12–20 seconds), and Safe (20–45 seconds) pacing. Safe is the default,
+the chosen preset is stored in `cms_settings`, and a live countdown shows the
+time remaining before each next action.
+
+The `UNLIMITED` button beside the panel title opens the CleanMySocial purchase
+and license-restoration interface at any time. Its proactive copy describes the
+bundle without exposing internal free-batch thresholds.
 
 ## Access and licensing
 
 The extension follows the shared CleanMySocial license contract. It creates an
 anonymous UUID in Chrome sync under `verblike_license_key`, validates it against
-`https://cleanmysocial.verblike.com/api/license?extension=cleanmysocial`, and
+`https://cleanmysocial.verblike.com/api/license?extension=mass-unfriender` —
+naming this extension rather than the shared `cleanmysocial` group, so licences
+bought for other tools do not unlock it — and
 passes the same key to checkout. A confirmed license is cached locally under
 `mass_unfriender_license_cache` for five minutes.
 
