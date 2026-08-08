@@ -1,26 +1,32 @@
 🧹 Suppression d'amis en masse pour Facebook — Unfriender
 
-Fatigué de parcourir des centaines d'amis un par un ? Nettoyez votre liste d'amis Facebook en quelques minutes. Sélectionnez les personnes à retirer et supprimez-les toutes en un clic, directement sur votre page Amis Facebook.
+Fatigué de parcourir des centaines d'amis un par un ? Ouvrez le panneau latéral : votre liste d'amis se charge toute seule, puis cochez les personnes à retirer et supprimez-les ensemble.
 
 ✨ Ce que vous pouvez faire
-✅ Suppression groupée : sélectionnez plusieurs amis et retirez-les d'un coup
-🎯 Choisissez précisément qui retirer grâce à une case sur chaque ami
-🔀 Triez la liste par nom, amis en commun ou profil
-⚡ « Tout sélectionner » et « Tout désélectionner » en un clic
-🕒 Délai aléatoire et intelligent entre les suppressions pour plus de sécurité
-🛑 Arrêtez à tout moment : vous gardez le contrôle
+✅ Suppression en masse : sélectionnez de nombreux amis et retirez-les d'un coup
+⚡ Toute votre liste d'amis se charge automatiquement, sans rien presser
+💾 La liste est enregistrée sur votre appareil : la rouvrir est instantané
+🔎 Recherche par nom, filtres amis communs ou sans photo, tri A→Z
+☑️ Un clic sélectionne tout ce qui est affiché
+🐢 Quatre vitesses — Lente et Normale sont gratuites
+⏱️ Compte à rebours en direct avant la suppression suivante et progression
+⭳ Exportez votre liste d'amis en CSV
+🛑 Arrêtez quand vous voulez — vous gardez le contrôle
 
 🔒 100% privé et local
-Tout fonctionne dans votre navigateur avec votre propre session. Votre liste d'amis ne quitte jamais votre ordinateur. Aucun compte, aucune inscription, aucun serveur, aucun suivi.
+Tout fonctionne dans votre navigateur avec votre propre session. Votre liste d'amis ne quitte jamais votre ordinateur. Pas de compte, pas d'inscription, aucun suivi.
 
 ⚙️ Comment ça marche
-1️⃣ Cliquez sur l'icône pour ouvrir votre page Amis
-2️⃣ Appuyez sur « Tout charger » pour afficher tous vos amis
+1️⃣ Cliquez sur l'icône : le panneau latéral s'ouvre aussitôt
+2️⃣ Vos amis se chargent seuls ; le bouton de rechargement repart de zéro
 3️⃣ Cochez les amis à retirer
-4️⃣ Cliquez sur « Retirer la sélection » et confirmez
+4️⃣ Cliquez sur "Retirer la sélection" et confirmez
+
+💎 Gratuit et illimité
+La version gratuite retire jusqu'à 20 amis par jour en vitesse Lente ou Normale. L'offre illimitée, en achat unique, supprime la limite quotidienne, débloque les vitesses Rapide et Ultra et exporte toute votre liste.
 
 Parfait pour faire le tri dans votre compte, retirer les amis inactifs ou repartir de zéro. 🌱
 
-⚠️ Remarque : Facebook peut limiter les changements trop rapides, c'est pourquoi un délai sécurisé est appliqué entre les suppressions.
+⚠️ Remarque : Facebook limite les changements d'amis trop rapides, donc un délai sûr est respecté entre les suppressions.
 
 Non affilié à, approuvé par ou sponsorisé par Meta Platforms, Inc. « Facebook » est une marque de Meta Platforms, Inc.

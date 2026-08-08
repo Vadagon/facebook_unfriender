@@ -1,26 +1,32 @@
 🧹 Rimozione amici in massa per Facebook — Unfriender
 
-Stanco di scorrere centinaia di amici uno per uno? Ripulisci la tua lista amici di Facebook in pochi minuti. Seleziona le persone da rimuovere ed elimina tutte le amicizie con un clic, direttamente dalla tua pagina Amici di Facebook.
+Stanco di scorrere centinaia di amici uno per uno? Apri il pannello laterale: il tuo elenco amici si carica da solo, poi spunti chi vuoi togliere e li rimuovi insieme.
 
 ✨ Cosa puoi fare
-✅ Rimozione in blocco: seleziona molti amici e rimuovili insieme
-🎯 Scegli esattamente chi rimuovere con una casella su ogni amico
-🔀 Ordina la lista per nome, amici in comune o profilo
-⚡ "Seleziona tutto" e "Deseleziona tutto" con un clic
-🕒 Pausa intelligente e casuale tra le rimozioni per maggiore sicurezza
+✅ Rimozione in massa: seleziona molti amici e rimuovili insieme
+⚡ L'intero elenco amici si carica in automatico, senza premere nulla
+💾 L'elenco resta salvato sul tuo dispositivo: riaprirlo è immediato
+🔎 Cerca per nome, filtra per amici in comune o senza foto, ordina A→Z
+☑️ Un tocco seleziona tutto quello che vedi in quel momento
+🐢 Quattro velocità — Lenta e Normale sono gratuite
+⏱️ Countdown dal vivo alla prossima rimozione e avanzamento
+⭳ Esporta il tuo elenco amici in CSV
 🛑 Fermati quando vuoi: il controllo è sempre tuo
 
 🔒 100% privato e locale
-Tutto funziona nel tuo browser con la tua sessione. La tua lista amici non lascia mai il tuo computer. Nessun account, nessuna registrazione, nessun server, nessun tracciamento.
+Tutto funziona nel tuo browser con la tua sessione. Il tuo elenco amici non lascia mai il computer. Nessun account, nessuna registrazione, nessun tracciamento.
 
 ⚙️ Come funziona
-1️⃣ Clicca sull'icona per aprire la pagina Amici
-2️⃣ Premi "Carica tutto" per caricare tutti gli amici
+1️⃣ Clicca l'icona: il pannello laterale si apre subito
+2️⃣ Gli amici si caricano da soli; il pulsante di ricarica riparte da zero
 3️⃣ Spunta gli amici da rimuovere
-4️⃣ Clicca su "Rimuovi selezionati" e conferma
+4️⃣ Clicca "Rimuovi selezionati" e conferma
 
-Perfetto per riordinare l'account, rimuovere amici inattivi o ripartire da zero. 🌱
+💎 Gratis e illimitato
+La versione gratuita rimuove fino a 20 amici al giorno a velocità Lenta o Normale. L'upgrade con acquisto una sola volta elimina il limite giornaliero, sblocca le velocità Veloce e Ultra ed esporta l'intero elenco.
 
-⚠️ Nota: Facebook può limitare le modifiche molto rapide, quindi viene usata una pausa sicura tra le rimozioni.
+Perfetto per fare pulizia nell'account, rimuovere amici inattivi o ripartire da zero. 🌱
+
+⚠️ Nota: Facebook limita i cambi di amicizia troppo rapidi, quindi tra le rimozioni resta una pausa sicura.
 
 Non affiliato, approvato o sponsorizzato da Meta Platforms, Inc. "Facebook" è un marchio di Meta Platforms, Inc.

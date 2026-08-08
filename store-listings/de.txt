@@ -1,26 +1,32 @@
 🧹 Massen-Freunde-Entferner für Facebook — Unfriender
 
-Keine Lust, Hunderte Freunde einzeln durchzugehen? Räumen Sie Ihre Facebook-Freundesliste in Minuten auf. Wählen Sie die Personen aus, die Sie entfernen möchten, und beenden Sie alle Freundschaften mit einem Klick – direkt auf Ihrer Facebook-Freundesseite.
+Keine Lust, dich einzeln durch hunderte alte Freunde zu klicken? Öffne das Seitenpanel — deine komplette Freundesliste lädt von selbst. Dann hakst du ab, wer weg soll, und entfernst alle zusammen.
 
-✨ Das können Sie tun
-✅ Freunde in Massen entfernen: viele auswählen und gemeinsam entfernen
-🎯 Genau auswählen, wen Sie entfernen – mit einem Kästchen an jedem Freund
-🔀 Liste nach Name, gemeinsamen Freunden oder Profil sortieren
-⚡ „Alle auswählen" und „Alle abwählen" mit einem Klick
-🕒 Intelligente, zufällige Pause zwischen den Entfernungen für mehr Sicherheit
-🛑 Jederzeit stoppen – Sie behalten die Kontrolle
+✨ Was du tun kannst
+✅ Massen-Entfernen: viele Freunde auswählen und zusammen entfernen
+⚡ Die ganze Freundesliste lädt automatisch, ohne Knopfdruck
+💾 Die Liste wird auf deinem Gerät gespeichert — erneutes Öffnen geht sofort
+🔎 Nach Namen suchen, nach gemeinsamen Freunden oder fehlendem Foto filtern, A→Z sortieren
+☑️ Ein Klick wählt alles aus, was gerade angezeigt wird
+🐢 Vier Geschwindigkeiten — Langsam und Normal sind kostenlos
+⏱️ Live-Countdown bis zur nächsten Entfernung und Fortschrittsanzeige
+⭳ Freundesliste als CSV exportieren
+🛑 Jederzeit stoppen — du behältst die Kontrolle
 
 🔒 100% privat & lokal
-Alles läuft in Ihrem Browser mit Ihrer eigenen Sitzung. Ihre Freundesliste verlässt nie Ihren Computer. Kein Konto, keine Anmeldung, kein Server, kein Tracking.
+Alles läuft in deinem Browser mit deiner eigenen angemeldeten Sitzung. Deine Freundesliste verlässt deinen Computer nie. Kein Konto, keine Anmeldung, kein Tracking.
 
-⚙️ So funktioniert's
-1️⃣ Auf das Symbol klicken, um Ihre Freundesseite zu öffnen
-2️⃣ „Alle laden" drücken, um alle Freunde zu laden
-3️⃣ Die Freunde markieren, die Sie entfernen möchten
-4️⃣ Auf „Ausgewählte entfernen" klicken und bestätigen
+⚙️ So funktioniert es
+1️⃣ Auf das Symbol klicken — das Seitenpanel öffnet sich sofort
+2️⃣ Die Freunde laden von allein; die Neu-laden-Taste holt eine frische Liste
+3️⃣ Die Freunde abhaken, die entfernt werden sollen
+4️⃣ Auf "Ausgewählte entfernen" klicken und bestätigen
 
-Perfekt zum Aufräumen Ihres Kontos, Entfernen inaktiver Freunde oder für einen Neuanfang. 🌱
+💎 Kostenlos und unbegrenzt
+Die kostenlose Version entfernt bis zu 20 Freunde pro Tag mit Langsam oder Normal. Das einmalige Upgrade hebt das Tageslimit auf, schaltet Schnell und Ultra frei und exportiert deine ganze Liste.
 
-⚠️ Hinweis: Facebook kann sehr schnelle Änderungen einschränken, daher wird eine sichere Pause zwischen den Entfernungen verwendet.
+Perfekt für den Frühjahrsputz im Konto, zum Entfernen inaktiver Freunde oder für einen Neuanfang. 🌱
 
-Nicht verbunden mit, unterstützt von oder gesponsert durch Meta Platforms, Inc. „Facebook" ist eine Marke von Meta Platforms, Inc.
+⚠️ Hinweis: Facebook begrenzt sehr schnelle Freundesänderungen, deshalb liegt zwischen den Entfernungen eine sichere Pause.
+
+Nicht verbunden mit, unterstützt von oder gesponsert durch Meta Platforms, Inc. "Facebook" ist eine Marke von Meta Platforms, Inc.

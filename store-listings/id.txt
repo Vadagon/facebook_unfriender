@@ -1,26 +1,32 @@
 🧹 Penghapus teman massal untuk Facebook — Unfriender
 
-Bosan memeriksa ratusan teman satu per satu? Bersihkan daftar teman Facebook Anda dalam hitungan menit. Pilih orang yang ingin dihapus dan batalkan pertemanan sekaligus dengan satu klik — langsung di halaman Teman Facebook Anda.
+Lelah menyusuri ratusan teman satu per satu? Buka panel samping dan seluruh daftar teman Anda dimuat sendiri — lalu centang siapa yang ingin dihapus dan hapus sekaligus.
 
 ✨ Yang bisa Anda lakukan
-✅ Hapus massal: pilih banyak teman dan hapus sekaligus
-🎯 Pilih persis siapa yang dihapus lewat kotak centang di tiap teman
-🔀 Urutkan daftar berdasarkan nama, teman bersama, atau profil
-⚡ "Pilih semua" dan "Batalkan semua" dengan satu klik
-🕒 Jeda acak yang cerdas antar penghapusan demi keamanan
-🛑 Berhenti kapan saja — Anda selalu memegang kendali
+✅ Hapus massal: pilih banyak teman dan hapus bersamaan
+⚡ Seluruh daftar teman dimuat otomatis, tanpa menekan tombol apa pun
+💾 Daftar disimpan di perangkat Anda, jadi membuka panel lagi terasa instan
+🔎 Cari berdasarkan nama, filter teman bersama atau tanpa foto, urutkan A→Z
+☑️ Satu ketukan memilih semua yang sedang ditampilkan
+🐢 Empat kecepatan — Lambat dan Normal gratis
+⏱️ Hitung mundur langsung ke penghapusan berikutnya dan kemajuan proses
+⭳ Ekspor daftar teman Anda ke CSV
+🛑 Hentikan kapan saja — kendali selalu di tangan Anda
 
-🔒 100% pribadi & lokal
-Semuanya berjalan di browser Anda dengan sesi Anda sendiri. Daftar teman tidak pernah keluar dari komputer Anda. Tanpa akun, tanpa pendaftaran, tanpa server, tanpa pelacakan.
+🔒 100% privat & lokal
+Semuanya berjalan di browser Anda memakai sesi Anda sendiri. Daftar teman Anda tidak pernah keluar dari komputer. Tanpa akun, tanpa pendaftaran, tanpa pelacakan.
 
-⚙️ Cara kerja
-1️⃣ Klik ikon untuk membuka halaman Teman Anda
-2️⃣ Tekan "Muat semua" untuk memuat semua teman
+⚙️ Cara kerjanya
+1️⃣ Klik ikon di bilah alat — panel samping langsung terbuka
+2️⃣ Teman Anda dimuat sendiri; tombol muat ulang mengambil daftar dari awal
 3️⃣ Centang teman yang ingin dihapus
-4️⃣ Klik "Hapus yang dipilih" dan konfirmasi
+4️⃣ Klik "Hapus yang dipilih" lalu konfirmasi
 
-Cocok untuk merapikan akun, menghapus teman tidak aktif, atau memulai dari awal. 🌱
+💎 Gratis dan tanpa batas
+Versi gratis menghapus hingga 20 teman per hari pada kecepatan Lambat atau Normal. Upgrade sekali bayar menghilangkan batas harian, membuka kecepatan Cepat dan Ultra, serta mengekspor seluruh daftar.
 
-⚠️ Catatan: Facebook dapat membatasi perubahan yang terlalu cepat, jadi jeda aman digunakan antar penghapusan.
+Cocok untuk bersih-bersih akun, menghapus teman tidak aktif, atau memulai dari awal. 🌱
 
-Tidak berafiliasi, didukung, atau disponsori oleh Meta Platforms, Inc. "Facebook" adalah merek dagang Meta Platforms, Inc.
+⚠️ Catatan: Facebook membatasi perubahan pertemanan yang sangat cepat, jadi ada jeda aman di antara penghapusan.
+
+Tidak berafiliasi dengan, didukung, atau disponsori oleh Meta Platforms, Inc. "Facebook" adalah merek dagang Meta Platforms, Inc.

@@ -1,0 +1,32 @@
+🧹 Xóa bạn bè hàng loạt cho Facebook — Unfriender
+
+Mệt vì phải lướt qua hàng trăm người bạn cũ từng người một? Mở bảng bên và toàn bộ danh sách bạn bè sẽ tự tải — rồi tích chọn những người muốn gỡ và xóa cùng lúc.
+
+✨ Bạn có thể làm gì
+✅ Xóa hàng loạt: chọn nhiều bạn và gỡ cùng lúc
+⚡ Toàn bộ danh sách bạn bè tự tải, không cần bấm nút nào
+💾 Danh sách được lưu trên máy bạn nên lần mở sau là tức thì
+🔎 Tìm theo tên, lọc theo bạn chung hoặc không ảnh, sắp xếp A→Z
+☑️ Một chạm chọn tất cả những gì đang hiển thị
+🐢 Bốn tốc độ — Chậm và Bình thường miễn phí
+⏱️ Đếm ngược trực tiếp tới lần xóa kế tiếp và tiến độ của đợt
+⭳ Xuất danh sách bạn bè ra CSV
+🛑 Dừng bất cứ lúc nào — bạn luôn nắm quyền kiểm soát
+
+🔒 100% riêng tư và cục bộ
+Mọi thứ chạy trong trình duyệt của bạn bằng chính phiên đăng nhập của bạn. Danh sách bạn bè không bao giờ rời khỏi máy tính. Không tài khoản, không đăng ký, không theo dõi.
+
+⚙️ Cách hoạt động
+1️⃣ Bấm biểu tượng trên thanh công cụ — bảng bên mở ra ngay
+2️⃣ Bạn bè tự tải; nút tải lại sẽ lấy danh sách từ đầu
+3️⃣ Tích chọn những người bạn muốn xóa
+4️⃣ Bấm "Xóa những người đã chọn" và xác nhận
+
+💎 Miễn phí và không giới hạn
+Bản miễn phí xóa tối đa 20 bạn mỗi ngày ở tốc độ Chậm hoặc Bình thường. Nâng cấp trả một lần sẽ bỏ giới hạn hằng ngày, mở tốc độ Nhanh và Cực nhanh, và xuất toàn bộ danh sách.
+
+Rất hợp để dọn dẹp tài khoản, gỡ những người bạn không còn liên lạc, hoặc bắt đầu lại từ đầu. 🌱
+
+⚠️ Lưu ý: Facebook giới hạn việc thay đổi bạn bè quá nhanh, nên giữa các lần xóa luôn có khoảng nghỉ an toàn.
+
+Không liên kết, không được xác nhận hay tài trợ bởi Meta Platforms, Inc. "Facebook" là thương hiệu của Meta Platforms, Inc.

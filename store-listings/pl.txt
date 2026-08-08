@@ -1,0 +1,32 @@
+🧹 Masowe usuwanie znajomych z Facebooka — Unfriender
+
+Masz dość przewijania setek starych znajomych po kolei? Otwórz panel boczny, a cała lista znajomych wczyta się sama — potem zaznacz osoby do usunięcia i usuń je razem.
+
+✨ Co możesz zrobić
+✅ Masowe usuwanie: zaznacz wielu znajomych i usuń ich naraz
+⚡ Cała lista znajomych wczytuje się automatycznie, bez klikania
+💾 Lista jest zapisana na Twoim urządzeniu, więc ponowne otwarcie jest natychmiastowe
+🔎 Szukaj po imieniu, filtruj po wspólnych znajomych lub braku zdjęcia, sortuj A→Z
+☑️ Jedno kliknięcie zaznacza wszystko, co widać w danej chwili
+🐢 Cztery szybkości — Wolno i Normalnie są darmowe
+⏱️ Odliczanie na żywo do kolejnego usunięcia i postęp partii
+⭳ Wyeksportuj listę znajomych do CSV
+🛑 Zatrzymaj w każdej chwili — kontrolę masz zawsze Ty
+
+🔒 100% prywatnie i lokalnie
+Wszystko działa w Twojej przeglądarce na Twojej własnej sesji. Lista znajomych nigdy nie opuszcza komputera. Bez konta, bez rejestracji, bez śledzenia.
+
+⚙️ Jak to działa
+1️⃣ Kliknij ikonę na pasku — panel boczny otworzy się od razu
+2️⃣ Znajomi wczytują się sami; przycisk odświeżania pobiera listę od nowa
+3️⃣ Zaznacz znajomych, których chcesz usunąć
+4️⃣ Kliknij "Usuń zaznaczonych" i potwierdź
+
+💎 Za darmo i bez limitu
+Wersja darmowa usuwa do 20 znajomych dziennie z szybkością Wolno lub Normalnie. Jednorazowy zakup znosi dzienny limit, odblokowuje szybkości Szybko i Ultra oraz eksportuje całą listę.
+
+Idealne do wiosennych porządków na koncie, usunięcia nieaktywnych znajomych albo zaczęcia od nowa. 🌱
+
+⚠️ Uwaga: Facebook ogranicza bardzo szybkie zmiany na liście znajomych, dlatego między usunięciami zachowywana jest bezpieczna przerwa.
+
+Niepowiązane z Meta Platforms, Inc., nie jest przez nią wspierane ani sponsorowane. "Facebook" jest znakiem towarowym Meta Platforms, Inc.

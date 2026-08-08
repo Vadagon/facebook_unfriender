@@ -1,26 +1,32 @@
 🧹 Facebook için toplu arkadaş kaldırma — Unfriender
 
-Yüzlerce arkadaşı tek tek gözden geçirmekten yoruldunuz mu? Facebook arkadaş listenizi dakikalar içinde temizleyin. Kaldırmak istediğiniz kişileri seçin ve hepsini tek tıkla arkadaşlıktan çıkarın — doğrudan Facebook Arkadaşlar sayfanızda.
+Yüzlerce eski arkadaşı tek tek gezmekten yoruldunuz mu? Yan paneli açın, tüm arkadaş listeniz kendiliğinden yüklensin; sonra çıkarmak istediklerinizi işaretleyip topluca kaldırın.
 
-✨ Neler yapabilirsiniz
-✅ Toplu kaldırma: birçok arkadaşı seçip birlikte çıkarın
-🎯 Her arkadaşın yanındaki kutucukla tam olarak kimi kaldıracağınızı seçin
-🔀 Listeyi ada, ortak arkadaşlara veya profile göre sıralayın
-⚡ Tek tıkla "Tümünü seç" ve "Seçimi kaldır"
-🕒 Güvenlik için kaldırmalar arasında akıllı, rastgele bekleme
-🛑 İstediğiniz zaman durun — kontrol her zaman sizde
+✨ Yapabilecekleriniz
+✅ Toplu kaldırma: birçok arkadaşı seçin ve bir arada çıkarın
+⚡ Tüm arkadaş listeniz otomatik yüklenir, düğmeye basmanız gerekmez
+💾 Liste cihazınıza kaydedilir, paneli yeniden açmak anında olur
+🔎 İsimle arama, ortak arkadaş veya fotoğrafsız filtreleri, A→Z sıralama
+☑️ Tek dokunuşla o an görünen herkesi seçin
+🐢 Dört hız — Yavaş ve Normal ücretsiz
+⏱️ Sıradaki kaldırmaya canlı geri sayım ve işlem ilerlemesi
+⭳ Arkadaş listenizi CSV olarak dışa aktarın
+🛑 Dilediğiniz an durdurun — kontrol her zaman sizde
 
 🔒 %100 gizli ve yerel
-Her şey kendi oturumunuzla tarayıcınızda çalışır. Arkadaş listeniz asla bilgisayarınızdan çıkmaz. Hesap yok, kayıt yok, sunucu yok, takip yok.
+Her şey kendi oturumunuzla tarayıcınızda çalışır. Arkadaş listeniz bilgisayarınızdan hiç çıkmaz. Hesap yok, kayıt yok, takip yok.
 
 ⚙️ Nasıl çalışır
-1️⃣ Arkadaşlar sayfanızı açmak için simgeye tıklayın
-2️⃣ Tüm arkadaşları yüklemek için "Tümünü yükle"ye basın
+1️⃣ Araç çubuğundaki simgeye tıklayın — yan panel hemen açılır
+2️⃣ Arkadaşlarınız kendiliğinden yüklenir; yenile düğmesi listeyi sıfırdan alır
 3️⃣ Kaldırmak istediğiniz arkadaşları işaretleyin
-4️⃣ "Seçilenleri kaldır"a tıklayıp onaylayın
+4️⃣ "Seçilenleri kaldır"a tıklayın ve onaylayın
 
-Hesabınızı düzenlemek, aktif olmayan arkadaşları kaldırmak veya sıfırdan başlamak için mükemmel. 🌱
+💎 Ücretsiz ve sınırsız
+Ücretsiz sürüm, Yavaş veya Normal hızda günde 20 arkadaşa kadar kaldırır. Tek seferlik yükseltme günlük limiti kaldırır, Hızlı ve Ultra hızları açar ve tüm listenizi dışa aktarır.
 
-⚠️ Not: Facebook çok hızlı değişiklikleri sınırlayabilir, bu yüzden kaldırmalar arasında güvenli bir bekleme kullanılır.
+Hesabınızı baştan düzenlemek, hareketsiz arkadaşları çıkarmak veya sıfırdan başlamak için ideal. 🌱
 
-Meta Platforms, Inc. ile bağlantılı, onaylı veya sponsorlu değildir. "Facebook", Meta Platforms, Inc. şirketinin ticari markasıdır.
+⚠️ Not: Facebook çok hızlı arkadaş değişikliklerini sınırlar, bu yüzden kaldırmalar arasında güvenli bir bekleme süresi bırakılır.
+
+Meta Platforms, Inc. ile bağlantılı değildir, onun tarafından onaylanmamış veya desteklenmemiştir. "Facebook", Meta Platforms, Inc. şirketinin ticari markasıdır.

@@ -1,26 +1,32 @@
 🧹 Eliminar amigos en masa para Facebook — Unfriender
 
-¿Cansado de revisar cientos de amigos uno por uno? Limpia tu lista de amigos de Facebook en minutos. Selecciona a las personas que quieres quitar y elimínalas todas con un solo clic, directamente en tu página de Amigos de Facebook.
+¿Cansado de recorrer cientos de amigos uno por uno? Abre el panel lateral y tu lista completa se carga sola: marca a quienes quieres quitar y elimínalos juntos.
 
-✨ Qué puedes hacer
-✅ Eliminar amigos en bloque: selecciona muchos y quítalos a la vez
-🎯 Elige exactamente a quién quitar con una casilla en cada amigo
-🔀 Ordena tu lista por nombre, amigos en común o perfil
-⚡ "Seleccionar todo" y "Deseleccionar todo" con un clic
-🕒 Pausa aleatoria e inteligente entre eliminaciones para mayor seguridad
-🛑 Detente cuando quieras: siempre tienes el control
+✨ Lo que puedes hacer
+✅ Eliminación masiva: selecciona muchos amigos y quítalos a la vez
+⚡ Toda tu lista de amigos se carga automáticamente, sin pulsar nada
+💾 La lista se guarda en tu dispositivo, así que volver a abrirla es instantáneo
+🔎 Busca por nombre, filtra por amigos en común o sin foto, ordena A→Z
+☑️ Un toque selecciona todo lo que se está mostrando
+🐢 Cuatro velocidades — Lenta y Normal son gratis
+⏱️ Cuenta atrás en vivo hasta la siguiente eliminación y progreso del lote
+⭳ Exporta tu lista de amigos a CSV
+🛑 Detén cuando quieras: siempre tienes el control
 
 🔒 100% privado y local
-Todo funciona dentro de tu navegador con tu propia sesión. Tu lista de amigos nunca sale de tu ordenador. Sin cuentas, sin registro, sin servidores, sin rastreo.
+Todo funciona dentro de tu navegador con tu propia sesión. Tu lista de amigos nunca sale de tu ordenador. Sin cuenta, sin registro, sin seguimiento.
 
 ⚙️ Cómo funciona
-1️⃣ Haz clic en el icono para abrir tu página de Amigos
-2️⃣ Pulsa "Cargar todo" para ver a todos tus amigos
-3️⃣ Marca los amigos que quieres quitar
-4️⃣ Haz clic en "Eliminar seleccionados" y confirma
+1️⃣ Pulsa el icono de la barra: el panel lateral se abre al instante
+2️⃣ Tus amigos se cargan solos; el botón de recarga trae una copia nueva
+3️⃣ Marca los amigos que quieres eliminar
+4️⃣ Pulsa "Eliminar seleccionados" y confirma
+
+💎 Gratis e ilimitado
+La versión gratuita elimina hasta 20 amigos al día en velocidad Lenta o Normal. La mejora de pago único quita el límite diario, desbloquea las velocidades Rápida y Ultra y exporta tu lista completa.
 
 Perfecto para ordenar tu cuenta, quitar amigos inactivos o empezar de cero. 🌱
 
-⚠️ Nota: Facebook puede limitar los cambios muy rápidos, por eso se usa una pausa segura entre eliminaciones.
+⚠️ Nota: Facebook limita los cambios de amistad muy rápidos, así que se mantiene una pausa segura entre eliminaciones.
 
-No está afiliado, avalado ni patrocinado por Meta Platforms, Inc. "Facebook" es una marca comercial de Meta Platforms, Inc.
+No está afiliado a, respaldado por ni patrocinado por Meta Platforms, Inc. "Facebook" es una marca de Meta Platforms, Inc.

@@ -3,45 +3,39 @@
   "default_locale": "en",
   "name": "__MSG_extName__",
   "short_name": "__MSG_extShortName__",
-  "version": "50.6",
+  "version": "52.0",
   "description": "__MSG_extDescription__",
+  "minimum_chrome_version": "114",
   "icons": {
     "16": "icons/16.png",
     "48": "icons/48.png",
     "128": "icons/128.png"
   },
   "action": {
-    "default_title": "__MSG_extActionTitle__"
+    "default_title": "__MSG_extActionTitle__",
+    "default_icon": {
+      "16": "icons/16.png",
+      "48": "icons/48.png",
+      "128": "icons/128.png"
+    }
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
   },
   "background": {
     "service_worker": "background.js"
   },
   "permissions": [
     "storage",
-    "tabs"
+    "tabs",
+    "sidePanel",
+    "scripting",
+    "cookies",
+    "declarativeNetRequest"
   ],
   "host_permissions": [
     "https://www.facebook.com/*",
     "https://web.facebook.com/*",
     "https://cleanmysocial.verblike.com/*"
-  ],
-  "content_scripts": [
-    {
-      "matches": [
-        "https://www.facebook.com/*",
-        "https://web.facebook.com/*"
-      ],
-      "js": ["content.js"],
-      "run_at": "document_idle"
-    }
-  ],
-  "web_accessible_resources": [
-    {
-      "resources": ["inject.js"],
-      "matches": [
-        "https://www.facebook.com/*",
-        "https://web.facebook.com/*"
-      ]
-    }
   ]
 }

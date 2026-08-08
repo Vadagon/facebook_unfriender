@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unfriender</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <header class="topbar">
+    <img class="brand-mark" src="icons/48.png" width="40" height="40" alt="">
+    <div class="brand-copy">
+      <h1 data-i18n="panelTitle">Unfriender</h1>
+      <p data-i18n="panelSubtitle">Bulk-remove Facebook friends</p>
+    </div>
+    <button id="accessBadge" class="upgrade-badge" type="button" data-i18n="getUnlimited">GET UNLIMITED</button>
+  </header>
+
+  <main>
+    <section id="connectCard" class="card step-card step-active">
+      <div class="step-title">
+        <span class="step-number">1</span>
+        <h2 data-i18n="connectTitle">Facebook session</h2>
+        <span id="connectBadge" class="step-badge waiting" data-i18n="checking">Checking…</span>
+      </div>
+      <p class="step-copy" data-i18n="connectDescription">Your friends load straight into this panel using your signed-in Facebook session. No Facebook tab has to stay open.</p>
+
+      <div class="connection-row" aria-live="polite">
+        <span id="sessionDot" class="connection-dot"></span>
+        <div class="connection-copy">
+          <strong id="sessionTitle" data-i18n="checkingSession">Checking your Facebook session…</strong>
+          <span id="sessionNote" data-i18n="localOnly">Everything stays in your browser</span>
+        </div>
+        <button id="refreshButton" class="icon-button" type="button" data-i18n-aria="refresh" aria-label="Refresh">↻</button>
+      </div>
+
+      <div id="offlineView" class="offline-view" hidden>
+        <p data-i18n="loginDescription">Sign in to Facebook, then reopen this panel.</p>
+        <button id="openFacebookButton" class="primary-button" type="button" data-i18n="openFacebook">Open Facebook</button>
+      </div>
+    </section>
+
+    <div id="controlsView" hidden>
+      <section id="breakageNotice" class="card breakage-card" hidden>
+        <div class="breakage-head">
+          <span class="breakage-icon" aria-hidden="true">!</span>
+          <h2 data-i18n="breakageTitle">Facebook changed something</h2>
+        </div>
+        <p data-i18n="breakageBody">Your friends list can't be read right now. This is not a problem with your account or your computer — Facebook changed how the page works, and the extension needs a small update to keep up.</p>
+        <p class="breakage-hint" data-i18n="breakageHint">Let us know and we'll fix it. Nothing about you or your friends is sent — only that this stopped working.</p>
+        <button id="reportButton" class="secondary-button" type="button" data-i18n="reportButton">Tell the developer</button>
+        <p id="reportStatus" class="report-status" aria-live="polite"></p>
+      </section>
+
+      <section id="listStep" class="card step-card step-active">
+        <div class="step-title">
+          <span class="step-number">2</span>
+          <h2 data-i18n="selectTitle">Select friends</h2>
+          <span id="listBadge" class="step-badge waiting" data-i18n="loading">Loading…</span>
+        </div>
+
+        <div class="search-wrap">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input id="searchInput" class="search-input" type="search" autocomplete="off" spellcheck="false" data-i18n-placeholder="searchPlaceholder" placeholder="Search friends by name…  ( / )">
+        </div>
+
+        <div class="filter-chips" role="group" data-i18n-aria="filters" aria-label="Filters">
+          <button class="fchip" type="button" data-filter="mutual" aria-pressed="false" data-i18n="filterMutual">Mutual</button>
+          <button class="fchip" type="button" data-filter="nonMutual" aria-pressed="false" data-i18n="filterNonMutual">Non-mutual</button>
+          <button class="fchip" type="button" data-filter="noPhoto" aria-pressed="false" data-i18n="filterNoPhoto">No photo</button>
+          <button class="fchip" type="button" data-filter="sortAz" aria-pressed="false" data-i18n="sortAz">Name A→Z</button>
+        </div>
+
+        <div class="list-meta">
+          <span id="countLine" class="count-line"><strong id="countShown">0</strong> / <span id="countTotal">0</span></span>
+          <button id="reloadButton" class="round-button" type="button" data-i18n-aria="reload" aria-label="Reload from Facebook">↻</button>
+          <button id="exportButton" class="chip-button" type="button" disabled>
+            <span aria-hidden="true">↓</span> <span data-i18n="export">Export</span>
+          </button>
+          <label class="select-all"><input id="selectAllCheckbox" type="checkbox"><span data-i18n="selectAll">Select all</span></label>
+        </div>
+
+        <div id="loadingStrip" class="loading-strip" hidden aria-live="polite">
+          <span class="loading-bar"><i></i></span>
+          <span id="loadingText"></span>
+        </div>
+
+        <div id="friendList" class="friend-list" aria-live="polite">
+          <p class="list-empty" data-i18n="loadingFriends">Loading your friends…</p>
+        </div>
+      </section>
+
+      <section id="runStep" class="card step-card step-disabled">
+        <div class="step-title">
+          <span class="step-number">3</span>
+          <h2 data-i18n="removeTitle">Remove friends</h2>
+          <span id="runBadge" class="step-badge waiting" data-i18n="waiting">Waiting</span>
+        </div>
+
+        <div class="speed-grid" id="speedGrid" role="group" data-i18n-aria="speed" aria-label="Speed"></div>
+        <p class="speed-hint" id="speedHint" data-i18n="speedHintFree">Slow and Normal keep Facebook comfortable. Fast and Ultra are part of the unlimited upgrade.</p>
+
+        <div class="process-status" aria-live="polite">
+          <div class="status-heading">
+            <span id="statusSpinner" class="spinner" hidden></span>
+            <span id="statusReadyIcon" class="status-ready" aria-hidden="true">✓</span>
+            <div>
+              <span id="statusKicker" data-i18n="ready">Ready</span>
+              <strong id="statusMessage" data-i18n="selectToStart">Select the friends you want to remove</strong>
+            </div>
+            <button id="stopButton" class="stop-button" type="button" hidden data-i18n="stop">Stop</button>
+          </div>
+
+          <section id="runProgress" class="progress-block" hidden>
+            <div class="progress-label">
+              <span data-i18n="batchProgress">Batch progress</span>
+              <strong id="runCount">0/0</strong>
+            </div>
+            <div class="track"><i id="runFill"></i></div>
+          </section>
+
+          <section id="quotaCard" class="progress-block quota-progress" hidden>
+            <div class="progress-label">
+              <span data-i18n="dailyFreeUsage">Daily free removals</span>
+              <strong id="quotaCount">0/20</strong>
+            </div>
+            <div class="track"><i id="quotaFill"></i></div>
+            <div class="quota-footer">
+              <span data-i18n="quotaExplanation">The free plan removes up to 20 friends per day.</span>
+              <button id="upgradeButton" type="button" data-i18n="getUnlimited">Get unlimited</button>
+            </div>
+          </section>
+        </div>
+
+        <div style="margin-top: 12px;">
+          <button id="removeButton" class="danger-button" type="button" disabled data-i18n="removeSelected">Unfriend selected</button>
+        </div>
+      </section>
+
+    </div>
+
+    <footer>
+      <p><span aria-hidden="true">◈</span> <span data-i18n="localPrivacy">Runs locally in your browser</span> · <span data-i18n="noData">No friend data collected</span></p>
+      <span id="extensionVersion">v—</span>
+    </footer>
+  </main>
+
+  <dialog id="confirmDialog">
+    <form method="dialog" class="dialog-content">
+      <div class="dialog-icon danger">!</div>
+      <h2 id="confirmTitle" data-i18n="confirmTitle">Unfriend the selected people?</h2>
+      <p id="confirmDescription" data-i18n="confirmDescription">Facebook does not offer an undo for this. You would have to send a new friend request to each person.</p>
+      <label class="confirm-check"><input id="confirmCheckbox" type="checkbox"><span data-i18n="confirmCheckbox">I understand this cannot be undone</span></label>
+      <div class="dialog-actions">
+        <button value="cancel" class="secondary-button" data-i18n="cancel">Cancel</button>
+        <button id="confirmRemoveButton" value="confirm" class="danger-button" disabled data-i18n="removeNow">Unfriend now</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="upgradeDialog">
+    <form method="dialog" class="dialog-content">
+      <button class="dialog-close" value="close" data-i18n-aria="close" aria-label="Close">×</button>
+      <div class="dialog-icon upgrade">∞</div>
+      <p id="upgradeEyebrow" class="dialog-eyebrow" data-i18n="freePlanLimit">FREE PLAN LIMIT</p>
+      <h2 id="upgradeTitle" data-i18n="dailyLimitTitle">Your 20 free removals are used</h2>
+      <p id="upgradeDescription" data-i18n="dailyLimitDescription">The free plan removes up to 20 friends each day. Upgrade to clear your whole list in one go.</p>
+      <ul class="benefits">
+        <li data-i18n="unlimitedBenefit">Unlimited removals every day</li>
+        <li data-i18n="speedBenefit">Fast and Ultra speeds unlocked</li>
+        <li data-i18n="exportBenefit">Export your whole friends list</li>
+        <li data-i18n="lifetimeBenefit">One-time purchase</li>
+      </ul>
+      <button id="purchaseButton" class="primary-button" type="button" data-i18n="getUnlimitedAccess">Get unlimited access</button>
+      <div class="license-divider"><span data-i18n="alreadyPurchased">Already purchased?</span></div>
+      <div class="license-row">
+        <input id="licenseInput" type="text" autocomplete="off" spellcheck="false" data-i18n-placeholder="licensePlaceholder" placeholder="License key">
+        <button id="unlockButton" type="button" data-i18n="unlock">Unlock</button>
+      </div>
+      <p id="licenseMessage" class="license-message" aria-live="polite"></p>
+    </form>
+  </dialog>
+
+  <dialog id="reviewDialog">
+    <form method="dialog" class="dialog-content">
+      <div class="dialog-icon review">★</div>
+      <p class="dialog-eyebrow" data-i18n="batchComplete">BATCH COMPLETE</p>
+      <h2 id="congratsTitle" data-i18n="congratsTitle">Nicely done!</h2>
+      <p id="congratsMessage" data-i18n="congratsMessage">Your friends list is tidier already.</p>
+      <div class="summary-row">
+        <div class="summary-cell"><strong id="summaryRemoved">0</strong><span data-i18n="summaryRemoved">Removed</span></div>
+        <div class="summary-cell"><strong id="summaryRemaining">0</strong><span data-i18n="summaryRemaining">Friends left</span></div>
+      </div>
+      <p data-i18n="reviewDescription">A quick Chrome Web Store review helps more people find the extension.</p>
+      <div class="dialog-actions">
+        <button value="later" class="secondary-button" data-i18n="maybeLater">Maybe later</button>
+        <button id="reviewButton" type="button" class="primary-button" data-i18n="leaveReview">Leave a review</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="sidepanel.js"></script>
+</body>
+</html>
