@@ -6,9 +6,18 @@ panel directly, and the friends list is loaded into the panel itself.
 
 ## Install
 
-1. Open `chrome://extensions` and enable **Developer mode**.
-2. Choose **Load unpacked** and select this folder.
-3. Sign in to Facebook and click the extension toolbar icon.
+1. Run `npm install` and `npm run build` in this folder.
+2. Open `chrome://extensions` and enable **Developer mode**.
+3. Choose **Load unpacked** and select the generated `dist` folder.
+4. Sign in to Facebook and click the extension toolbar icon.
+
+Use `npm run typecheck` for a compiler-only check. The Vite development server
+is useful for ordinary UI work, but Chrome extension APIs are available only
+when the built `dist` directory is loaded as an extension.
+
+`npm run build` also creates a versioned archive in `release/`, ready for the
+Chrome Web Store. Its `manifest.json` is at the ZIP root, as required. Run
+`npm run package` when `dist/` already exists and only the ZIP needs rebuilding.
 
 ## Use
 
@@ -37,7 +46,7 @@ is many requests and any of them can fail:
   attempts) with a countdown in the loading strip, instead of giving up. Rows
   already loaded stay on screen throughout.
 - The list, the pagination cursor and whether more remain are saved to
-  `chrome.storage.local` under `cms_unfriender_friends_cache`, keyed to the
+  `chrome.storage.local` under `friend_sweep_v2_roster`, keyed to the
   signed-in account id so another profile never sees this one's list.
 - Reopening the panel shows the saved list immediately and makes **no** network
   request when the list was complete. If it was cut short — panel closed, browser
@@ -70,7 +79,7 @@ friends to CSV; on the free plan a selection over 20 opens the upgrade prompt
 instead of exporting, with no inline message either way. A batch never runs at a locked
 speed even if a licence lapsed after that speed was chosen — the panel falls
 back to Slow. The choice is stored in `chrome.storage.local` under
-`cms_unfriender_settings`.
+`friend_sweep_v2_preferences`.
 
 ## Access and licensing
 
@@ -81,11 +90,11 @@ The extension follows the shared CleanMySocial licence contract described in
 naming this extension rather than the shared `cleanmysocial` group, so licences
 bought for other tools do not unlock it — and passes the same key to checkout as
 `?lk=`. A confirmed licence is cached in `chrome.storage.local` under
-`mass_unfriender_license_cache` for five minutes; a licence-server outage
+`friend_sweep_v2_entitlement` for five minutes; a licence-server outage
 preserves an already-confirmed licence but never promotes a new or inactive key.
 
 **Free plan: 20 removals per local calendar day**, at Slow or Normal speed.
-Usage lives in `chrome.storage.local` under `mass_unfriender_daily_usage` as
+Usage lives in `chrome.storage.local` under `friend_sweep_v2_daily_meter` as
 `{ "date": "2026-08-08", "count": 4 }` and resets when the stored date stops
 matching today. Only a removal Facebook confirmed is counted, so failed or
 stopped work never burns a free slot, and the counter is updated through a
@@ -152,7 +161,7 @@ Facebook session. No friend list or Facebook personal data is sent to a
 CleanMySocial server. Only the anonymous licence key is sent to the licence
 endpoint, and only a failure code when the user presses the report button.
 
-The friends list is cached on the device under `cms_unfriender_friends_cache` so
+The friends list is cached on the device under `friend_sweep_v2_roster` so
 the panel does not have to refetch thousands of friends on every open. It holds
 names, profile URLs and avatar URLs, never leaves the browser, and is cleared by
 the reload button.
@@ -162,6 +171,15 @@ the reload button.
 | File | Role |
 | --- | --- |
 | `background.js` | Service worker: Facebook session and GraphQL calls, friends pagination, the unfriend mutation, licence checks, the daily quota, and opening checkout / the review page. |
-| `sidepanel.html` / `sidepanel.css` / `sidepanel.js` | The whole interface: session state, automatic list loading with retry and resume, the local copy, search/filters/sort/export, selection, speed picker, batch loop with countdown, quota and upgrade prompts, completion congratulations. |
+| `src/App.tsx` | React side-panel interface: session state, automatic list loading with retry and resume, search/filters/sort/export, selection, batch progress, quota, upgrade and review dialogs. |
+| `src/protocol.ts` | Typed worker bridge and the versioned `friend_sweep_v2` storage namespace. |
+| `src/main.tsx` / `sidepanel.html` / `sidepanel.css` | React entry point, HTML shell and panel styling. |
+| `vite.config.ts` | Production bundle and extension asset copying into `dist`. |
 | `manifest.json` | MV3 config. Permissions: `storage`, `tabs`, `sidePanel`, `scripting`, `cookies`, `declarativeNetRequest`; hosts: Facebook and the CleanMySocial licence site. |
 | `_locales/` | UI and store strings in 21 languages. |
+
+On the first v54 run, the extension copies the previous settings, roster,
+entitlement cache, daily meter and review flag into the v2 namespace, then
+removes the old local keys. The shared `verblike_license_key` sync key and the
+server/Facebook request fields remain unchanged because they are external
+contracts rather than implementation identifiers.

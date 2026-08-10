@@ -1,0 +1,25 @@
+{
+  "name": "clean-my-social-friend-sweep",
+  "private": true,
+  "version": "54.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit && vite build && npm run package",
+    "dev": "vite",
+    "package": "node scripts/package-release.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "vite": "latest",
+    "typescript": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "@types/chrome": "latest",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "fflate": "latest"
+  },
+  "devDependencies": {}
+}

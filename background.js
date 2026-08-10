@@ -5,7 +5,7 @@
 //
 //   * the Facebook GraphQL session (fb_dtsg token, actor id, request headers),
 //   * loading the friends list page by page,
-//   * the unfriend mutation,
+//   * the friend-removal mutation,
 //   * the shared CleanMySocial licence and the free daily removal quota.
 //
 // No content script and no visible Facebook tab are needed. Requests are made
@@ -30,23 +30,54 @@ const LICENSE_API =
 const REPORT_API = "https://cleanmysocial.verblike.com/api/report";
 const EXTENSION_SLUG = "mass-unfriender";
 
-const LICENSE_KEY_STORAGE = "verblike_license_key";
-const LICENSE_CACHE_STORAGE = "mass_unfriender_license_cache";
-const DAILY_USAGE_STORAGE = "mass_unfriender_daily_usage";
-const SETTINGS_STORAGE = "cms_unfriender_settings";
+const SHARED_LICENSE_TOKEN = "verblike_license_key";
+const ENTITLEMENT_VAULT = "friend_sweep_v2_entitlement";
+const DAILY_METER_VAULT = "friend_sweep_v2_daily_meter";
+const PREFERENCES_VAULT = "friend_sweep_v2_preferences";
+const LEGACY_VAULT = {
+  entitlement: "mass_unfriender_license_cache",
+  dailyMeter: "mass_unfriender_daily_usage",
+  preferences: "cms_unfriender_settings"
+};
+
+async function migrateWorkerVault() {
+  const legacyKeys = Object.values(LEGACY_VAULT);
+  const stored = await chrome.storage.local.get([
+    ENTITLEMENT_VAULT,
+    DAILY_METER_VAULT,
+    PREFERENCES_VAULT,
+    ...legacyKeys
+  ]);
+  const additions = {};
+  if (stored[ENTITLEMENT_VAULT] == null && stored[LEGACY_VAULT.entitlement] != null) {
+    additions[ENTITLEMENT_VAULT] = stored[LEGACY_VAULT.entitlement];
+  }
+  if (stored[DAILY_METER_VAULT] == null && stored[LEGACY_VAULT.dailyMeter] != null) {
+    additions[DAILY_METER_VAULT] = stored[LEGACY_VAULT.dailyMeter];
+  }
+  if (stored[PREFERENCES_VAULT] == null && stored[LEGACY_VAULT.preferences] != null) {
+    additions[PREFERENCES_VAULT] = stored[LEGACY_VAULT.preferences];
+  }
+  if (Object.keys(additions).length) await chrome.storage.local.set(additions);
+  await chrome.storage.local.remove(legacyKeys);
+}
+
+const workerVaultReady = migrateWorkerVault().catch(error => {
+  console.error("[FriendSweep] storage migration failed:", error);
+});
 const LICENSE_CACHE_TTL = 5 * 60 * 1000;
 const SESSION_TTL = 15 * 60 * 1000;
 const DAILY_LIMIT = 20;
 const FRIENDS_PAGE_SIZE = 30;
 const FB_HEADER_RULE_ID = 2;
 
-const FRIENDS_QUERY = {
+const ROSTER_PAGE_OPERATION = {
   docId: "29498081956473146",
   friendly: "FriendingCometFriendsListPaginationQuery",
   variables: (cursor, count) => ({ count, cursor, name: null, scale: 2 })
 };
 
-const UNFRIEND_MUTATION = {
+const FRIEND_REMOVAL_OPERATION = {
   docId: "24028849793460009",
   friendly: "FriendingCometUnfriendMutation",
   variables: (friend, session) => ({
@@ -66,20 +97,22 @@ chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true }).catch(() => 
 chrome.sidePanel.setOptions({ path: "sidepanel.html", enabled: true }).catch(() => {});
 
 chrome.runtime.onInstalled.addListener(async () => {
+  await migrateWorkerVault();
   await chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true }).catch(() => {});
   await chrome.sidePanel.setOptions({ path: "sidepanel.html", enabled: true }).catch(() => {});
-  const stored = await chrome.storage.local.get(SETTINGS_STORAGE);
-  if (!stored[SETTINGS_STORAGE]) {
-    await chrome.storage.local.set({ [SETTINGS_STORAGE]: { speed: "slow" } });
+  const stored = await chrome.storage.local.get(PREFERENCES_VAULT);
+  if (!stored[PREFERENCES_VAULT]) {
+    await chrome.storage.local.set({ [PREFERENCES_VAULT]: { speed: "slow" } });
   }
-  await getLicenseKey().catch(() => {});
-  await applyFacebookHeaderRule();
+  await resolveLicenseToken().catch(() => {});
+  await installFacebookRequestHeaders();
 });
 
 chrome.runtime.onStartup.addListener(async () => {
+  await migrateWorkerVault();
   await chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true }).catch(() => {});
   await chrome.sidePanel.setOptions({ path: "sidepanel.html", enabled: true }).catch(() => {});
-  await applyFacebookHeaderRule();
+  await installFacebookRequestHeaders();
 });
 
 /* --------------------------------------------------------- request headers */
@@ -87,9 +120,9 @@ chrome.runtime.onStartup.addListener(async () => {
 // Facebook rejects GraphQL calls whose Origin/Referer are the extension. A
 // session rule rewrites both on requests made from the extension itself
 // (tabIds: [-1]) without touching anything the user's own tabs send.
-let headerRuleReady = applyFacebookHeaderRule();
+let headerRuleReady = installFacebookRequestHeaders();
 
-async function applyFacebookHeaderRule() {
+async function installFacebookRequestHeaders() {
   try {
     await chrome.declarativeNetRequest.updateDynamicRules({ removeRuleIds: [FB_HEADER_RULE_ID] });
     await chrome.declarativeNetRequest.updateSessionRules({
@@ -123,7 +156,7 @@ async function applyFacebookHeaderRule() {
 let sessionCache = null;
 let sessionCachedAt = 0;
 
-async function getActorId() {
+async function resolveSignedInAccount() {
   try {
     const cookie = await chrome.cookies.get({ url: FACEBOOK_URL, name: "c_user" });
     return cookie?.value || null;
@@ -133,7 +166,7 @@ async function getActorId() {
 }
 
 // Cheapest source first: any open Facebook tab already holds the token.
-async function readTokenFromTab() {
+async function discoverTokenInOpenTab() {
   try {
     const tabs = (await chrome.tabs.query({ url: "*://*.facebook.com/*" })).filter(
       tab => tab.id != null
@@ -166,11 +199,11 @@ async function readTokenFromTab() {
   }
 }
 
-function firstMatch(text, pattern) {
+function captureFirst(text, pattern) {
   return text.match(pattern)?.[1] || "";
 }
 
-async function fetchTokenFromPage(attempt = 0) {
+async function discoverTokenFromFallbackPage(attempt = 0) {
   try {
     const html = await (await fetch(DTSG_FALLBACK_URL, { credentials: "include" })).text();
     // Facebook sometimes answers with its "switch back to the full site" page.
@@ -180,12 +213,12 @@ async function fetchTokenFromPage(attempt = 0) {
         /"(https:\/\/m\.facebook\.com\/a\/preferences\.php\?fast_switch_site[^"]+)"/.exec(html);
       if (!switchUrl) return null;
       await fetch(switchUrl[1].replace(/&amp;/g, "&"), { credentials: "include" });
-      return fetchTokenFromPage(attempt + 1);
+      return discoverTokenFromFallbackPage(attempt + 1);
     }
     return (
-      firstMatch(html, /name="fb_dtsg"\s+value="([^"]+)"/) ||
-      firstMatch(html, /"DTSGInitialData",\[\],\{"token":"([^"]+)"/) ||
-      firstMatch(html, /"DTSGInitData",\[\],\{"token":"([^"]+)"/) ||
+      captureFirst(html, /name="fb_dtsg"\s+value="([^"]+)"/) ||
+      captureFirst(html, /"DTSGInitialData",\[\],\{"token":"([^"]+)"/) ||
+      captureFirst(html, /"DTSGInitData",\[\],\{"token":"([^"]+)"/) ||
       null
     );
   } catch {
@@ -193,14 +226,14 @@ async function fetchTokenFromPage(attempt = 0) {
   }
 }
 
-async function getSession() {
-  const userId = await getActorId();
-  if (!userId) throw new Error("not_logged_in");
+async function acquireFacebookSession() {
+  const userId = await resolveSignedInAccount();
+  if (!userId) throw new Error("session_absent_v2");
   if (sessionCache?.userId === userId && Date.now() - sessionCachedAt < SESSION_TTL) {
     return sessionCache;
   }
-  const token = (await readTokenFromTab()) ?? (await fetchTokenFromPage());
-  if (!token) throw new Error("missing_token");
+  const token = (await discoverTokenInOpenTab()) ?? (await discoverTokenFromFallbackPage());
+  if (!token) throw new Error("session_token_unavailable_v2");
   sessionCache = { dtsg: token, userId };
   sessionCachedAt = Date.now();
   return sessionCache;
@@ -208,7 +241,7 @@ async function getSession() {
 
 /* ---------------------------------------------------------------- GraphQL */
 
-function graphqlBody(session, friendly, docId, variables) {
+function encodeFacebookPayload(session, friendly, docId, variables) {
   const body = new URLSearchParams({
     av: session.userId,
     __user: session.userId,
@@ -223,7 +256,7 @@ function graphqlBody(session, friendly, docId, variables) {
   return body.toString();
 }
 
-async function callGraphql(session, friendly, docId, variables) {
+async function executeFacebookOperation(session, friendly, docId, variables) {
   await headerRuleReady;
   const response = await fetch(GRAPHQL_URL, {
     method: "POST",
@@ -232,7 +265,7 @@ async function callGraphql(session, friendly, docId, variables) {
       "content-type": "application/x-www-form-urlencoded",
       "x-fb-friendly-name": friendly
     },
-    body: graphqlBody(session, friendly, docId, variables)
+    body: encodeFacebookPayload(session, friendly, docId, variables)
   });
   const text = await response.text();
   let json;
@@ -241,13 +274,15 @@ async function callGraphql(session, friendly, docId, variables) {
     // several objects; the first line is the one that matters here.
     json = JSON.parse((text.startsWith("for (;;);") ? text.slice(9) : text).split("\n")[0]);
   } catch {
-    throw new Error(`bad_response http=${response.status}`);
+    throw new Error(`facebook_payload_invalid_v2 http=${response.status}`);
   }
-  if (json?.errors?.length) throw new Error(json.errors[0]?.message || "graphql_error");
+  if (json?.errors?.length) {
+    throw new Error(json.errors[0]?.message || "facebook_graphql_error_v2");
+  }
   return json;
 }
 
-function profileHandle(url) {
+function deriveProfileHandle(url) {
   try {
     const parsed = new URL(url, FACEBOOK_ORIGIN);
     const id = parsed.searchParams.get("id");
@@ -258,84 +293,84 @@ function profileHandle(url) {
   }
 }
 
-function toFriend(node) {
+function normalizeFriendNode(node) {
   if (!(node?.id && node.name && node.url)) return null;
   const friend = {
     id: node.id,
     name: node.name,
     url: node.url,
     avatar: node.profile_picture?.uri ?? null,
-    handle: profileHandle(node.url)
+    handle: deriveProfileHandle(node.url)
   };
   const context = node.social_context?.text;
   if (typeof context === "string" && context.trim()) friend.meta = context.trim();
   return friend;
 }
 
-async function loadFriendsPage(cursor) {
-  const session = await getSession();
-  const json = await callGraphql(
+async function fetchRosterPage(cursor) {
+  const session = await acquireFacebookSession();
+  const json = await executeFacebookOperation(
     session,
-    FRIENDS_QUERY.friendly,
-    FRIENDS_QUERY.docId,
-    FRIENDS_QUERY.variables(cursor ?? null, FRIENDS_PAGE_SIZE)
+    ROSTER_PAGE_OPERATION.friendly,
+    ROSTER_PAGE_OPERATION.docId,
+    ROSTER_PAGE_OPERATION.variables(cursor ?? null, FRIENDS_PAGE_SIZE)
   );
   const connection = json?.data?.viewer?.all_friends;
-  if (!connection) throw new Error("no_friend_list");
-  const friends = [];
+  if (!connection) throw new Error("roster_payload_missing_v2");
+  const records = [];
   for (const edge of connection.edges ?? []) {
-    const friend = toFriend(edge?.node);
-    if (friend) friends.push(friend);
+    const friend = normalizeFriendNode(edge?.node);
+    if (friend) records.push(friend);
   }
   const pageInfo = connection.page_info ?? {};
   const endCursor = pageInfo.end_cursor ?? null;
-  return { friends, endCursor, hasNext: Boolean(pageInfo.has_next_page && endCursor) };
+  return { records, nextCursor: endCursor, more: Boolean(pageInfo.has_next_page && endCursor) };
 }
 
-async function unfriend(friend) {
-  const session = await getSession();
-  const json = await callGraphql(
+async function commitFriendRemoval(friend) {
+  const session = await acquireFacebookSession();
+  const json = await executeFacebookOperation(
     session,
-    UNFRIEND_MUTATION.friendly,
-    UNFRIEND_MUTATION.docId,
-    UNFRIEND_MUTATION.variables(friend, session)
+    FRIEND_REMOVAL_OPERATION.friendly,
+    FRIEND_REMOVAL_OPERATION.docId,
+    FRIEND_REMOVAL_OPERATION.variables(friend, session)
   );
   const person = json?.data?.friend_remove?.unfriended_person;
-  if (!person) return { status: "failed", message: "unexpected_response" };
+  if (!person) return { outcome: "failed", reason: "removal_payload_unexpected_v2" };
   if (person.friendship_status && person.friendship_status === "ARE_FRIENDS") {
-    return { status: "failed", message: "still_friends" };
+    return { outcome: "failed", reason: "friendship_unchanged_v2" };
   }
-  return { status: "success" };
+  return { outcome: "success" };
 }
 
 /* ----------------------------------------------------- licence and quota */
 
 let usageQueue = Promise.resolve();
 
-function createLicenseKey() {
+function createLicenseToken() {
   return crypto.randomUUID?.() || `k-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
 
-async function getLicenseKey() {
-  const stored = await chrome.storage.sync.get(LICENSE_KEY_STORAGE);
-  if (stored[LICENSE_KEY_STORAGE]) return stored[LICENSE_KEY_STORAGE];
-  const key = createLicenseKey();
-  await chrome.storage.sync.set({ [LICENSE_KEY_STORAGE]: key });
+async function resolveLicenseToken() {
+  const stored = await chrome.storage.sync.get(SHARED_LICENSE_TOKEN);
+  if (stored[SHARED_LICENSE_TOKEN]) return stored[SHARED_LICENSE_TOKEN];
+  const key = createLicenseToken();
+  await chrome.storage.sync.set({ [SHARED_LICENSE_TOKEN]: key });
   return key;
 }
 
-async function setLicenseKey(value) {
+async function storeLicenseToken(value) {
   const key = String(value || "").trim();
-  if (!key) return getLicenseKey();
-  await chrome.storage.sync.set({ [LICENSE_KEY_STORAGE]: key });
-  await chrome.storage.local.remove(LICENSE_CACHE_STORAGE);
+  if (!key) return resolveLicenseToken();
+  await chrome.storage.sync.set({ [SHARED_LICENSE_TOKEN]: key });
+  await chrome.storage.local.remove(ENTITLEMENT_VAULT);
   return key;
 }
 
-async function checkLicense({ force = false, key: suppliedKey } = {}) {
-  const key = suppliedKey ? await setLicenseKey(suppliedKey) : await getLicenseKey();
-  const stored = await chrome.storage.local.get(LICENSE_CACHE_STORAGE);
-  const cache = stored[LICENSE_CACHE_STORAGE];
+async function verifyLicenseToken({ force = false, key: suppliedKey } = {}) {
+  const key = suppliedKey ? await storeLicenseToken(suppliedKey) : await resolveLicenseToken();
+  const stored = await chrome.storage.local.get(ENTITLEMENT_VAULT);
+  const cache = stored[ENTITLEMENT_VAULT];
   if (!force && cache?.key === key && Date.now() - cache.checkedAt < LICENSE_CACHE_TTL) {
     return { active: Boolean(cache.active), key };
   }
@@ -346,7 +381,7 @@ async function checkLicense({ force = false, key: suppliedKey } = {}) {
     const body = await response.json();
     const active = Boolean(body?.active || body?.result);
     await chrome.storage.local.set({
-      [LICENSE_CACHE_STORAGE]: { key, active, checkedAt: Date.now() }
+      [ENTITLEMENT_VAULT]: { key, active, checkedAt: Date.now() }
     });
     return { active, key };
   } catch (error) {
@@ -360,27 +395,27 @@ async function checkLicense({ force = false, key: suppliedKey } = {}) {
   }
 }
 
-function localDateKey() {
+function currentMeterDate() {
   const now = new Date();
   const month = String(now.getMonth() + 1).padStart(2, "0");
   const day = String(now.getDate()).padStart(2, "0");
   return `${now.getFullYear()}-${month}-${day}`;
 }
 
-async function getDailyUsage() {
-  const today = localDateKey();
-  const stored = await chrome.storage.local.get(DAILY_USAGE_STORAGE);
-  const usage = stored[DAILY_USAGE_STORAGE];
+async function readDailyMeter() {
+  const today = currentMeterDate();
+  const stored = await chrome.storage.local.get(DAILY_METER_VAULT);
+  const usage = stored[DAILY_METER_VAULT];
   if (usage?.date === today && Number.isFinite(usage.count)) {
     return { date: today, count: Math.max(0, Math.min(DAILY_LIMIT, usage.count)) };
   }
   const fresh = { date: today, count: 0 };
-  await chrome.storage.local.set({ [DAILY_USAGE_STORAGE]: fresh });
+  await chrome.storage.local.set({ [DAILY_METER_VAULT]: fresh });
   return fresh;
 }
 
-async function getAccessState(options = {}) {
-  const [license, usage] = await Promise.all([checkLicense(options), getDailyUsage()]);
+async function readEntitlementSnapshot(options = {}) {
+  const [license, usage] = await Promise.all([verifyLicenseToken(options), readDailyMeter()]);
   return {
     unlimited: license.active,
     licenseKey: license.key,
@@ -392,26 +427,26 @@ async function getAccessState(options = {}) {
   };
 }
 
-function broadcastAccessState(access) {
-  chrome.runtime.sendMessage({ type: "ACCESS_STATE_CHANGED", access }).catch(() => {});
+function emitEntitlementUpdate(access) {
+  chrome.runtime.sendMessage({ type: "ENTITLEMENT_UPDATED", entitlement: access }).catch(() => {});
 }
 
 // Serialised so two overlapping removals can never share one quota slot.
-function recordMeteredAction() {
+function recordRemovalUsage() {
   const task = usageQueue.then(async () => {
-    const access = await getAccessState();
+    const access = await readEntitlementSnapshot();
     if (access.unlimited) return { allowed: true, access };
     if (access.used >= DAILY_LIMIT) return { allowed: false, access };
 
-    const next = { date: localDateKey(), count: access.used + 1 };
-    await chrome.storage.local.set({ [DAILY_USAGE_STORAGE]: next });
+    const next = { date: currentMeterDate(), count: access.used + 1 };
+    await chrome.storage.local.set({ [DAILY_METER_VAULT]: next });
     const nextAccess = {
       ...access,
       used: next.count,
       remaining: Math.max(0, DAILY_LIMIT - next.count),
       date: next.date
     };
-    broadcastAccessState(nextAccess);
+    emitEntitlementUpdate(nextAccess);
     return { allowed: true, access: nextAccess };
   });
   usageQueue = task.catch(() => {});
@@ -423,14 +458,14 @@ function recordMeteredAction() {
 const handlers = {
   // The id is what the panel keys its local friends copy to, so one profile's
   // list can never show up under another account.
-  async SESSION_STATE() {
-    const userId = await getActorId();
-    return { ok: true, loggedIn: Boolean(userId), userId };
+  async PANEL_SESSION_PROBE() {
+    const accountId = await resolveSignedInAccount();
+    return { ok: true, loggedIn: Boolean(accountId), accountId };
   },
 
-  async LOAD_FRIENDS(message) {
+  async FRIEND_PAGE_FETCH(message) {
     try {
-      const page = await loadFriendsPage(message.cursor ?? null);
+      const page = await fetchRosterPage(message.pageCursor ?? null);
       return { ok: true, ...page };
     } catch (error) {
       return { ok: false, error: error instanceof Error ? error.message : String(error) };
@@ -439,51 +474,51 @@ const handlers = {
 
   // One removal, quota checked before the call and only counted when Facebook
   // confirmed it, so a stopped or failed batch never burns a free slot.
-  async UNFRIEND(message) {
-    const friend = message.friend;
-    if (!friend?.id) return { ok: false, status: "failed", message: "missing_friend" };
+  async FRIEND_REMOVE_COMMIT(message) {
+    const friend = message.target;
+    if (!friend?.id) return { ok: false, outcome: "failed", reason: "removal_target_missing_v2" };
 
-    const access = await getAccessState();
-    if (!access.unlimited && access.remaining <= 0) {
-      return { ok: true, status: "limit", access };
+    const entitlement = await readEntitlementSnapshot();
+    if (!entitlement.unlimited && entitlement.remaining <= 0) {
+      return { ok: true, outcome: "limit", entitlement };
     }
 
     let result;
     try {
-      result = await unfriend(friend);
+      result = await commitFriendRemoval(friend);
     } catch (error) {
       return {
         ok: false,
-        status: "failed",
-        message: error instanceof Error ? error.message : String(error),
-        access
+        outcome: "failed",
+        reason: error instanceof Error ? error.message : String(error),
+        entitlement
       };
     }
 
-    if (result.status !== "success") return { ok: true, ...result, access };
-    const metered = await recordMeteredAction();
-    return { ok: true, status: "success", access: metered.access };
+    if (result.outcome !== "success") return { ok: true, ...result, entitlement };
+    const metered = await recordRemovalUsage();
+    return { ok: true, outcome: "success", entitlement: metered.access };
   },
 
-  async GET_ACCESS_STATE() {
-    return { ok: true, access: await getAccessState() };
+  async ENTITLEMENT_READ() {
+    return { ok: true, entitlement: await readEntitlementSnapshot() };
   },
 
-  async CHECK_LICENSE(message) {
-    const access = await getAccessState({ force: true, key: message.licenseKey });
-    broadcastAccessState(access);
-    return { ok: true, access };
+  async ENTITLEMENT_VERIFY(message) {
+    const entitlement = await readEntitlementSnapshot({ force: true, key: message.licenseToken });
+    emitEntitlementUpdate(entitlement);
+    return { ok: true, entitlement };
   },
 
-  async OPEN_PURCHASE() {
-    const key = await getLicenseKey();
+  async CHECKOUT_LAUNCH() {
+    const key = await resolveLicenseToken();
     const url = new URL(PURCHASE_URL);
     url.searchParams.set("lk", key);
     const tab = await chrome.tabs.create({ url: url.toString() });
     return { ok: true, tabId: tab.id };
   },
 
-  async OPEN_REVIEW() {
+  async REVIEW_LAUNCH() {
     const tab = await chrome.tabs.create({ url: REVIEW_URL });
     return { ok: true, tabId: tab.id };
   },
@@ -492,8 +527,8 @@ const handlers = {
   // failure code, extension version and UI language travel — no friend data, no
   // licence key, no Facebook ids — and the site drops duplicates so a
   // Facebook-side change does not flood the mailbox.
-  async REPORT_ISSUE(message) {
-    const code = String(message.code || "load_failed");
+  async DIAGNOSTIC_SUBMIT(message) {
+    const code = String(message.code || "roster_load_exhausted_v2");
     try {
       const response = await fetch(REPORT_API, {
         method: "POST",
@@ -512,7 +547,7 @@ const handlers = {
     }
   },
 
-  async OPEN_FACEBOOK() {
+  async FACEBOOK_FRIENDS_OPEN() {
     const tab = await chrome.tabs.create({ url: `${FACEBOOK_URL}me/friends` });
     return { ok: true, tabId: tab.id };
   }
@@ -521,7 +556,8 @@ const handlers = {
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   const handler = handlers[message?.type];
   if (!handler) return false;
-  handler(message)
+  workerVaultReady
+    .then(() => handler(message))
     .then(sendResponse)
     .catch(error =>
       sendResponse({ ok: false, error: error instanceof Error ? error.message : String(error) })
